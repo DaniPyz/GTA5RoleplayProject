@@ -2,7 +2,7 @@ import { combineReducers } from 'redux';
 
 import rootState from './rootReducer';
 
-const reducers = {
+export const reducers = {
 	rootState
 };
 

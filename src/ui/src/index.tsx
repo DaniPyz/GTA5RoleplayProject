@@ -1,6 +1,6 @@
 import { createClientProxy, createServerProxy } from 'bridge/proxy';
-import type { ServerServices } from '@server/index';
-import type { ClientServices } from '@client/index';
+import type { ServerServices } from '../../server/services';
+import type { ClientServices } from '../../client/services';
 import ReactDOM from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { store } from 'store';
