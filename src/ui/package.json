@@ -1,33 +1,38 @@
 {
-  "name": "ui",
-  "version": "0.1.0",
-  "private": true,
-  "dependencies": {
-    "@types/node": "^16.11.62",
-    "@types/react": "^18.0.21",
-    "@types/react-dom": "^18.0.6",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-scripts": "5.0.1",
-    "sass": "^1.55.0",
-    "typescript": "^4.8.3",
-    "typescript-plugin-css-modules": "^3.4.0"
-  },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app"
-    ]
-  },
-  "browserslist": {
-    "production": [
-      "last 10 chrome version"
-    ],
-    "development": [
-      "last 1 chrome version"
-    ]
-  }
+	"name": "ui",
+	"version": "0.1.0",
+	"private": true,
+	"dependencies": {
+		"keycode": "^2.2.1",
+		"react": "^18.2.0",
+		"react-dom": "^18.2.0",
+		"react-redux": "^8.0.4",
+		"react-scripts": "5.0.1",
+		"redux": "^4.2.0"
+	},
+	"devDependencies": {
+		"@types/node": "^16.11.62",
+		"@types/react": "^18.0.21",
+		"@types/react-dom": "^18.0.6",
+		"sass": "^1.55.0",
+		"typescript": "^4.8.3",
+		"typescript-plugin-css-modules": "^3.4.0"
+	},
+	"scripts": {
+		"start": "react-scripts start",
+		"build": "react-scripts build"
+	},
+	"eslintConfig": {
+		"extends": [
+			"react-app"
+		]
+	},
+	"browserslist": {
+		"production": [
+			"last 10 chrome version"
+		],
+		"development": [
+			"last 1 chrome version"
+		]
+	}
 }

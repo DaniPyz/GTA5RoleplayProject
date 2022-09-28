@@ -4,8 +4,7 @@
 		"types": ["../../node_modules/@ragempcommunity/types-server", "./@types"],
 		"baseUrl": "./",
 		"paths": {
-			"@shared/*": ["../shared/*"],
-			"@/*": ["./*"]
+			"@shared/*": ["../shared/*"]
 		}
 	},
 	"include": ["./**/*.ts", "../shared/**/*.ts"],
