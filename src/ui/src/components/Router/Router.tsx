@@ -36,16 +36,17 @@ const Router: FC<IRouterProps> = (props) => {
 
 	return (
 		<>
-			{View && (
-				<IsolatedComponent>
-					<View />
-				</IsolatedComponent>
-			)}
 			{HudList.map((Hud) => (
 				<IsolatedComponent>
 					<Hud />
 				</IsolatedComponent>
 			))}
+
+			{View && (
+				<IsolatedComponent>
+					<View />
+				</IsolatedComponent>
+			)}
 		</>
 	);
 };

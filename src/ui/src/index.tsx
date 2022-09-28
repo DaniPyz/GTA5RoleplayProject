@@ -1,11 +1,18 @@
-import { Router } from 'components';
-import React from 'react';
+import { createClientProxy, createServerProxy } from 'bridge/proxy';
+import type { ServerServices } from '../../server/services';
+import type { ClientServices } from '../../client/services';
 import ReactDOM from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { store } from 'store';
 import { Temp } from 'views';
+import { Router } from 'components';
+import rpc from 'rage-rpc';
+import React from 'react';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
+
+export const server = createServerProxy<ServerServices>(rpc);
+export const client = createClientProxy<ClientServices>(rpc);
 
 let Temp2 = Temp;
 

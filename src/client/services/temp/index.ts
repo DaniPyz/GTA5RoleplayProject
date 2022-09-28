@@ -1,0 +1,1 @@
+export { Temp } from './Temp';
