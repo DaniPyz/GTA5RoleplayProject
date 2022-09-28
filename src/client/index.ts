@@ -1,6 +1,3 @@
-import { createClientProxy } from '../ui/src/bridge/proxy';
-import rpc from 'rage-rpc';
+import 'services';
 
-const proxy = createClientProxy(rpc);
-
-proxy;
+export { ClientServices } from 'services';

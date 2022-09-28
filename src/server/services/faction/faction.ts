@@ -14,8 +14,13 @@ class Faction extends Service {
 	}
 
 	@Service.access
-	public async rpcGetUser(player: PlayerMp, erfer: string) {
-		return;
+	public async rpcGetUserdAWD() {
+		return ;
+	}
+
+	@Service.access
+	public async rpcGetUser(player: PlayerMp, erfer: string): Promise<PlayerMp> {
+		return player;
 	}
 }
 
