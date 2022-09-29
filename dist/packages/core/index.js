@@ -222,6 +222,13 @@ let Faction = class Faction extends Service {
         return;
     }
     async rpcGetUser(player) {
+        player.dispatch({
+            type: "ROOT_HUD_PUSH",
+            hud: "Temp",
+        });
+        player.pushHud("Temp");
+        player.setView("Temp");
+        player.removeHud("Temp2");
         return player;
     }
 };
@@ -234,7 +241,7 @@ __decorate([
 __decorate([
     Service.access,
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [PlayerMp]),
+    __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], Faction.prototype, "rpcGetUser", null);
 Faction = __decorate([
@@ -1143,3 +1150,17 @@ __decorate([
 Vehicles = __decorate([
     typeorm.Entity()
 ], Vehicles);
+
+new typeorm.DataSource({
+    type: 'mysql',
+    host: 'localhost',
+    port: 3306,
+    username: 'root',
+    password: '',
+    database: 'newyork',
+    synchronize: true,
+    logging: false,
+    entities: [Fraction, Business, Characters, Houses, Vehicles, Users],
+    migrations: [],
+    subscribers: []
+});

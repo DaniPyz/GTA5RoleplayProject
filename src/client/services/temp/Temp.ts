@@ -2,7 +2,7 @@ import { Service } from '@/bridge';
 
 export class Temp {
 	@Service.access
-	rpcAwdadw() {
+	public rpcAwdadw() {
 		return 123;
 	}
 }
