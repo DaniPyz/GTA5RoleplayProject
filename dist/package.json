@@ -9,7 +9,10 @@
 	},
 	"dependencies": {
 		"colorette": "^2.0.16",
-		"rage-rpc": "^0.4.0"
+		"mysql": "^2.18.1",
+		"rage-rpc": "^0.4.0",
+		"reflect-metadata": "^0.1.13",
+		"typeorm": "^0.3.10"
 	},
 	"devDependencies": {
 		"@ragempcommunity/types-cef": "^2.0.2",

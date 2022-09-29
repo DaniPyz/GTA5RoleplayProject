@@ -48,5 +48,3 @@ mp.events.add('entityCreated', (player) => {
 		rpc.triggerBrowsers(player, 'internal.removeHud', hud);
 	};
 });
-
-export {};

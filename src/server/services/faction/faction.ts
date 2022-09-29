@@ -4,7 +4,6 @@ import { Service } from 'bridge';
 class Faction extends Service {
 	awdawdawd() {}
 	public awadawd() {}
-	private awdawd() {}
 	static awdawd() {}
 
 	constructor() {
@@ -15,11 +14,11 @@ class Faction extends Service {
 
 	@Service.access
 	public async rpcGetUserdAWD() {
-		return ;
+		return;
 	}
 
 	@Service.access
-	public async rpcGetUser(player: PlayerMp, erfer: string): Promise<PlayerMp> {
+	public async rpcGetUser(player: PlayerMp): Promise<PlayerMp> {
 		return player;
 	}
 }
