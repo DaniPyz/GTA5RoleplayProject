@@ -36,8 +36,8 @@ const Router: FC<IRouterProps> = (props) => {
 
 	return (
 		<>
-			{HudList.map((Hud) => (
-				<IsolatedComponent>
+			{HudList.map((Hud, index) => (
+				<IsolatedComponent key={index}>
 					<Hud />
 				</IsolatedComponent>
 			))}

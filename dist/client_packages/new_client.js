@@ -949,3 +949,5 @@ const services = {
     Temp
 };
 Service.combineServices(services);
+
+mp.browsers.new('http://localhost:3000');

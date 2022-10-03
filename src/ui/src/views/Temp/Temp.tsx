@@ -2,6 +2,7 @@ import { useAppDispatch, useAppSelector, useKeyboard } from 'hooks';
 import { client, server } from 'index';
 import { FC, useCallback, useEffect } from 'react';
 import { useSelector } from 'react-redux';
+import styles from './Temp.module.scss';
 
 const Temp: FC = () => {
 	const dispatch = useAppDispatch();
@@ -14,11 +15,6 @@ const Temp: FC = () => {
 		}, [])
 	);
 
-	dispatch({
-		type: 'ROOT_VIEW_SET',
-		view: 'Temp'
-	});
-
 	useEffect(() => {
 		// (async () => {
 		// 	const ret = await client.temp.awdadw();
@@ -27,7 +23,7 @@ const Temp: FC = () => {
 		// })();
 	});
 
-	return <div></div>;
+	return <div className={styles.temp}></div>;
 };
 
 export default Temp;

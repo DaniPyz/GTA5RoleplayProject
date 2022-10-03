@@ -8,6 +8,7 @@ import { Temp } from 'views';
 import { Router } from 'components';
 import rpc from 'rage-rpc';
 import React from 'react';
+import './styles/index.scss';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 
@@ -28,14 +29,6 @@ const views = {
 
 export type View = keyof typeof views | null;
 export type Hud = keyof typeof hudList;
-
-root.render(
-	<React.StrictMode>
-		<Provider store={store}>
-			<Router hudList={hudList} views={views} />
-		</Provider>
-	</React.StrictMode>
-);
 
 declare global {
 	interface Window {
@@ -75,3 +68,11 @@ rpc.on('internal.pushHud', (hud: Hud) => {
 rpc.on('internal.removeHud', (hud: Hud) => {
 	window.removeHud(hud);
 });
+
+root.render(
+	<React.StrictMode>
+		<Provider store={store}>
+			<Router hudList={hudList} views={views} />
+		</Provider>
+	</React.StrictMode>
+);
