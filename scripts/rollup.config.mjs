@@ -139,7 +139,7 @@ export default [
 	{
 		input: resolvePath([sourcePath, 'client', 'index.ts']),
 		output: {
-			file: resolvePath([buildOutput, 'client_packages', 'index.js']),
+			file: resolvePath([buildOutput, 'client_packages', 'new_client.js']),
 			format: 'cjs'
 		},
 		plugins: [
