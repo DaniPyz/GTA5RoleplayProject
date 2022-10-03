@@ -1,17 +1,18 @@
-import { FC, useState, useCallback, useEffect } from "react";
-import s from "./Autosalon.module.scss";
-import { ReactComponent as ExitVector } from "./vectors/exit.svg";
-import { ReactComponent as CarVector } from "./vectors/car.svg";
-import { ReactComponent as SearchVector } from "./vectors/search.svg";
-import { AUTOSALON_VEHICLE_STATS, AUTOSALON_CONFIG, AUTOSALON_COLORS } from "./autosalon.config";
-import cls from "classnames";
-import { animated } from "react-spring";
-import useMasterSpring from "./Autosalon.spring";
-import useKeyboard from "hooks/useKeyboard";
+import s from './Autosalon.module.scss';
+import { FC, useState, useCallback } from 'react';
+import { ReactComponent as ExitVector } from './vectors/exit.svg';
+import { ReactComponent as CarVector } from './vectors/car.svg';
+import { ReactComponent as SearchVector } from './vectors/search.svg';
+import { AUTOSALON_VEHICLE_STATS, AUTOSALON_CONFIG, AUTOSALON_COLORS } from './Autosalon.config';
+import cls from 'classnames';
+import { animated } from 'react-spring';
+import useMasterSpring from './Autosalon.spring';
+import { useKeyboard } from 'hooks';
+
 
 const Autosalon: FC = () => {
 	const [isOpened, setIsOpened] = useState(true);
-	const [search, setSearch] = useState("");
+	const [search, setSearch] = useState('');
 	const [selected, setSelected] = useState(0);
 	const [color, setColor] = useState(AUTOSALON_COLORS.length - 1);
 	const { leftBlockTransition, rightBlockTransition, hideTransition } = useMasterSpring({ isOpened });
@@ -23,21 +24,21 @@ const Autosalon: FC = () => {
 	// }, []);
 
 	useKeyboard(
-		"esc",
+		'esc',
 		useCallback(() => {
 			setIsOpened(false);
 		}, [])
 	);
 
 	useKeyboard(
-		"right",
+		'right',
 		useCallback(() => {
 			setSelected(Math.min(selected + 1, AUTOSALON_CONFIG.length));
 		}, [selected])
 	);
 
 	useKeyboard(
-		"left",
+		'left',
 		useCallback(() => {
 			setSelected(Math.max(selected - 1, 0));
 		}, [selected])

@@ -1,4 +1,14 @@
 import { Hud, View } from 'index';
+import { Temp, Autosalon } from 'views';
 
-export const DEFAULT_VIEW: View = 'Temp2';
+export const DEFAULT_VIEW: View = 'Temp';
 export const DEFAULT_HUD_LIST: Hud[] = ['Temp'];
+
+export const HUD_LIST = {
+	Temp
+};
+
+export const VIEW_LIST = {
+	Temp,
+	Autosalon
+};

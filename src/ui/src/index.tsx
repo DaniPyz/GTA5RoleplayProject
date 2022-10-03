@@ -4,31 +4,19 @@ import type { ClientServices } from '../../client/services';
 import ReactDOM from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { AppDispatch, store } from 'store';
-import { Temp } from 'views';
 import { Router } from 'components';
 import rpc from 'rage-rpc';
 import React from 'react';
 import './styles/index.scss';
+import { HUD_LIST, VIEW_LIST } from 'constant';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 
 export const server = createServerProxy<ServerServices>(rpc);
 export const client = createClientProxy<ClientServices>(rpc);
 
-let Temp2 = Temp;
-
-const hudList = {
-	Temp,
-	Temp2
-};
-
-const views = {
-	Temp,
-	Temp2
-};
-
-export type View = keyof typeof views | null;
-export type Hud = keyof typeof hudList;
+export type View = keyof typeof VIEW_LIST | null;
+export type Hud = keyof typeof HUD_LIST;
 
 declare global {
 	interface Window {
@@ -72,7 +60,7 @@ rpc.on('internal.removeHud', (hud: Hud) => {
 root.render(
 	<React.StrictMode>
 		<Provider store={store}>
-			<Router hudList={hudList} views={views} />
+			<Router hudList={HUD_LIST} views={VIEW_LIST} />
 		</Provider>
 	</React.StrictMode>
 );
