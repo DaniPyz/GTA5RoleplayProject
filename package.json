@@ -8,6 +8,13 @@
 		"start": "rollup -w -c ./scripts/rollup.config.mjs"
 	},
 	"dependencies": {
+		"dateformat": "^5.0.3",
+		"fs": "^0.0.1-security",
+		"js-sha256": "^0.9.0",
+		"moment": "^2.29.3",
+		"mysql2": "^2.3.0",
+		"path": "^0.12.7",
+		"svg-captcha": "^1.4.0",
 		"colorette": "^2.0.16",
 		"mysql": "^2.18.1",
 		"reflect-metadata": "^0.1.13",
