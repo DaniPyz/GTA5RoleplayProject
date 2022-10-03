@@ -1,0 +1,48 @@
+{
+    "clothesComponentID": {
+        "head": 0,
+        "mask": 1,
+        "hair": 2,
+        "torsos": 3,
+        "legs": 4,
+        "bags": 5,
+        "shoes": 6,
+        "accessories": 7,
+        "undershirts": 8,
+        "armour": 9,
+        "decals": 10,
+        "tops": 11
+    },
+    "keysSettings": {
+        "chatOpen": { "name": "Чат", "desc": "Открыть чат", "key": "T", "keyCode": 84, "isAdmin": 0, "noChange": false },
+        "hud_toggleHint": { "name": "Подсказки", "desc": "Скрыть/показать подсказываемые клавиши", "key": "F9", "keyCode": 120, "isAdmin": 0, "noChange": false },
+        "mainmenu": { "name": "Меню", "desc": "Открыть личное меню", "key": "M", "keyCode": 77, "isAdmin": 0, "noChange": false },
+        "adminmenu": { "name": "Админ меню", "desc": "Открыть админ панель", "key": "F6", "keyCode": 117, "isAdmin": 1, "noChange": false },
+        "fractionmenu": {
+            "name": "фракционное меню",
+            "desc": "Открыть фракционное меню",
+            "key": "O",
+            "keyCode": 79,
+            "isAdmin": 0,
+            "noChange": false
+        },
+        "interaction": { "name": "Взаимодействие", "desc": "Взаимодействие с миром", "key": "E", "keyCode": 69, "isAdmin": 0, "noChange": false },
+        "interactionMenu": {
+            "name": "Взаимодействие",
+            "desc": "Взаимодействие с миром",
+            "key": "G",
+            "keyCode": 71,
+            "isAdmin": 0,
+            "noChange": false
+        },
+        "voiceChat": { "name": "Voice chat", "desc": "Активировать войс чат", "key": "X", "keyCode": 88, "isAdmin": 0, "noChange": false },
+        "esc": { "name": "ESC", "desc": "Закрыть любое открытое меню", "key": "ESC", "keyCode": 27, "isAdmin": 0, "noChange": true },
+        "inventory": { "name": "Инвентарь", "desc": "Открыть инвентарь персонажа", "key": "I", "keyCode": 73, "isAdmin": 0, "noChange": false },
+        "vehicle_engine": { "name": "Двигатель транспорта", "desc": "Запустить/выключить двигатель транспорта", "key": "N", "keyCode": 78, "isAdmin": 0, "noChange": false, "noView": true },
+        "vehicle_locked": { "name": "Двери транспорта", "desc": "Открыть/закрыть двери транспорта", "key": "L", "keyCode": 76, "isAdmin": 0, "noChange": false, "noView": true },
+        "vehicle_belt": { "name": "Ремень безопастности", "desc": "Пристегнуть/отстегнуть ремень безопастности", "key": "J", "keyCode": 74, "isAdmin": 0, "noChange": false, "noView": true },
+        "phone": { "name": "Телефон", "desc": "Открыть/закрыть телефон", "key": "P", "keyCode": 80, "isAdmin": 0, "noChange": false, "noView": false }
+    },
+
+    "invMaxWeight": 4.0
+}

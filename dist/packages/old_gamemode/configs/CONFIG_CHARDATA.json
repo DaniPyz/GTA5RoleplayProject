@@ -1,0 +1,33 @@
+[
+    "id",
+    "userid",
+
+    "name",
+
+    "gender",
+    "age",
+    
+    "skin",
+    "clothes",
+
+    "birthday",
+
+    "level",
+    "exp",
+
+    "cash",
+    "bankcash",
+
+    "lastDate",
+    "createchar",
+
+    "quests",
+    "questsOld",
+
+    "inventory",
+    "backpack",
+
+    "backpackStatus",
+    "donateRoullete",
+    "fraction"
+]

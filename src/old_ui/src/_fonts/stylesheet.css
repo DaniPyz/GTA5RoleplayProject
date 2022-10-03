@@ -1,0 +1,172 @@
+@font-face {
+	font-family: "Digital Numbers Regular";
+	font-style: normal;
+	font-weight: normal;
+	src: local("Digital Numbers Regular"), url("DigitalNumbers-Regular.woff") format("woff");
+}
+
+@font-face {
+	font-family: "Montserrat";
+	src: url("./Montserrat.ttf");
+}
+
+@font-face {
+	font-family: "Gilroy";
+	src: url("./Gilroy/Gilroy-Regular.ttf");
+	src: local("Gilroy Regular"), local("Gilroy-Regular"), url("./Gilroy/Gilroy-Regular.ttf") format("truetype");
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: "Gilroy";
+	src: url("./Gilroy/Gilroy-ExtraboldItalic.ttf");
+	src: local("Gilroy Extrabold Italic"), local("Gilroy-ExtraboldItalic"), url("./Gilroy/Gilroy-ExtraboldItalic.ttf") format("truetype");
+	font-weight: 800;
+	font-style: italic;
+}
+
+@font-face {
+	font-family: "Gilroy";
+	src: url("./Gilroy/Gilroy-Bold.ttf");
+	src: local("Gilroy Bold"), local("Gilroy-Bold"), url("./Gilroy/Gilroy-Bold.ttf") format("truetype");
+	font-weight: bold;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: "Gilroy";
+	src: url("./Gilroy/Gilroy-Black.ttf");
+	src: local("Gilroy Black"), local("Gilroy-Black"), url("./Gilroy/Gilroy-Black.ttf") format("truetype");
+	font-weight: 900;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: "Gilroy";
+	src: url("./Gilroy/Gilroy-Light.ttf");
+	src: local("Gilroy Light"), local("Gilroy-Light"), url("./Gilroy/Gilroy-Light.ttf") format("truetype");
+	font-weight: 300;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: "Gilroy";
+	src: url("./Gilroy/Gilroy-Semibold.ttf");
+	src: local("Gilroy Semibold"), local("Gilroy-Semibold"), url("./Gilroy/Gilroy-Semibold.ttf") format("truetype");
+	font-weight: 600;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: "Gilroy";
+	src: url("./Gilroy/Gilroy-Medium.ttf");
+	src: local("Gilroy Medium"), local("Gilroy-Medium"), url("./Gilroy/Gilroy-Medium.ttf") format("truetype");
+	font-weight: 500;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: "Gilroy";
+	src: url("./Gilroy/Gilroy-MediumItalic.ttf");
+	src: local("Gilroy Medium Italic"), local("Gilroy-MediumItalic"), url("./Gilroy/Gilroy-MediumItalic.ttf") format("truetype");
+	font-weight: 500;
+	font-style: italic;
+}
+
+@font-face {
+	font-family: "Gilroy";
+	src: url("./Gilroy/Gilroy-BlackItalic.ttf");
+	src: local("Gilroy Black Italic"), local("Gilroy-BlackItalic"), url("./Gilroy/Gilroy-BlackItalic.ttf") format("truetype");
+	font-weight: 900;
+	font-style: italic;
+}
+
+@font-face {
+	font-family: "Gilroy";
+	src: url("./Gilroy/Gilroy-UltraLight.ttf");
+	src: local("Gilroy UltraLight"), local("Gilroy-UltraLight"), url("./Gilroy/Gilroy-UltraLight.ttf") format("truetype");
+	font-weight: 200;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: "Gilroy";
+	src: url("./Gilroy/Gilroy-RegularItalic.ttf");
+	src: local("Gilroy Regular Italic"), local("Gilroy-RegularItalic"), url("./Gilroy/Gilroy-RegularItalic.ttf") format("truetype");
+	font-weight: normal;
+	font-style: italic;
+}
+
+@font-face {
+	font-family: "Gilroy";
+	src: url("./Gilroy/Gilroy-SemiboldItalic.ttf");
+	src: local("Gilroy Semibold Italic"), local("Gilroy-SemiboldItalic"), url("./Gilroy/Gilroy-SemiboldItalic.ttf") format("truetype");
+	font-weight: 600;
+	font-style: italic;
+}
+
+@font-face {
+	font-family: "Gilroy";
+	src: url("./Gilroy/Gilroy-HeavyItalic.ttf");
+	src: local("Gilroy Heavy Italic"), local("Gilroy-HeavyItalic"), url("./Gilroy/Gilroy-HeavyItalic.ttf") format("truetype");
+	font-weight: 900;
+	font-style: italic;
+}
+
+@font-face {
+	font-family: "Gilroy";
+	src: url("./Gilroy/Gilroy-Extrabold.ttf");
+	src: local("Gilroy Extrabold"), local("Gilroy-Extrabold"), url("./Gilroy/Gilroy-Extrabold.ttf") format("truetype");
+	font-weight: 800;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: "Gilroy";
+	src: url("./Gilroy/Gilroy-BoldItalic.ttf");
+	src: local("Gilroy Bold Italic"), local("Gilroy-BoldItalic"), url("./Gilroy/Gilroy-BoldItalic.ttf") format("truetype");
+	font-weight: bold;
+	font-style: italic;
+}
+
+@font-face {
+	font-family: "Gilroy";
+	src: url("./Gilroy/Gilroy-UltraLightItalic.ttf");
+	src: local("Gilroy UltraLight Italic"), local("Gilroy-UltraLightItalic"), url("./Gilroy/Gilroy-UltraLightItalic.ttf") format("truetype");
+	font-weight: 200;
+	font-style: italic;
+}
+
+@font-face {
+	font-family: "Gilroy";
+	src: url("./Gilroy/Gilroy-LightItalic.ttf");
+	src: local("Gilroy Light Italic"), local("Gilroy-LightItalic"), url("./Gilroy/Gilroy-LightItalic.ttf") format("truetype");
+	font-weight: 300;
+	font-style: italic;
+}
+
+@font-face {
+	font-family: "Gilroy";
+	src: url("./Gilroy/Gilroy-Heavy.ttf");
+	src: local("Gilroy Heavy"), local("Gilroy-Heavy"), url("./Gilroy/Gilroy-Heavy.ttf") format("truetype");
+	font-weight: 900;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: "Gilroy";
+	src: url("./Gilroy/Gilroy-Thin.ttf");
+	src: local("Gilroy Thin"), local("Gilroy-Thin"), url("./Gilroy/Gilroy-Thin.ttf") format("truetype");
+	font-weight: 100;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: "Gilroy";
+	src: url("./Gilroy/Gilroy-ThinItalic.ttf");
+	src: local("Gilroy Thin Italic"), local("Gilroy-ThinItalic"), url("./Gilroy/Gilroy-ThinItalic.ttf") format("truetype");
+	font-weight: 100;
+	font-style: italic;
+}
+@import "./Joyride/stylesheet.css";

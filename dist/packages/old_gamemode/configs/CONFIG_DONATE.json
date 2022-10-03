@@ -1,0 +1,19 @@
+{
+    "roullete": [
+        { "name": "1.000.000$", "type": "medium", "img": "donate_cash_1kk.png", "item": {
+            "type": "cash", "count": 1000000 } },
+        { "name": "100.000$", "type": "low", "img": "donate_cash_100k.png", "item": {
+            "type": "cash", "count": 100000 } },
+        { "name": "Сумка 1", "type": "medium", "img": "backpack.png", "item": {
+            "type": "inventory", "count": 1 } },
+        { "name": "Сумка 2", "type": "legendary", "img": "backpack.png", "item": {
+            "type": "inventory", "count": 2 } },
+        { "name": "1.000 GC", "type": "legendary", "img": "1k_donate.png", "item": {
+            "type": "donate", "count": 1000 } }
+    ],
+    "cash": [
+        { "name": "Тестовый", "desc": "Тестовый пак для всех тестов", "cash": 1000000, "price": 1, "img": "donate_cash_1kk.png" }
+    ],
+    "cars": [],
+    "vip": []
+}

@@ -1,0 +1,180 @@
+.orgStockMenu {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+
+  background: url('./img/bgOrg.jpg');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+
+  .orgStockMenuWrapper {
+    margin: 95px 480px;
+
+    header {
+      display: flex;
+
+      h1 {
+        flex-direction: column;
+        align-items: baseline;
+        font-weight: 600;
+        font-size: 43.8261px;
+        line-height: 53px;
+
+        color: #FFFFFF;
+
+        span {
+          font-weight: 800;
+          font-size: 65.7391px;
+
+
+        }
+      }
+    }
+
+    .orgStockMenu-nav {
+      margin-top: 27px;
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+
+      .orgStockMenu-nav-item {
+        padding: 9px 57px;
+        clip-path: polygon(0% 0%, 88% 0%, 100% 100%, 12% 100%);
+        background: linear-gradient(90deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0) 97.53%);
+        font-weight: 500;
+        font-size: 14px;
+        line-height: 17px;
+        /* identical to box height */
+
+        text-align: center;
+
+        color: rgb(255, 255, 255, 0.25);
+
+        &-active {
+          transition: 0.5s;
+          background: linear-gradient(90deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0) 84.73%);
+          font-weight: 700;
+          font-size: 14px;
+          line-height: 17px;
+          /* identical to box height */
+
+
+          color: #FFFFFF;
+
+          text-shadow: 0px 0px 34px rgba(255, 255, 255, 0.55);
+        }
+      }
+    }
+
+    .orgStockMenu-info {
+      margin-top: 50px;
+
+      .info-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        .info-fraction-name {
+          h1 {
+            font-weight: 500;
+            font-size: 20px;
+            line-height: 24px;
+
+            color: #FFFFFF;
+            margin-bottom: 1px;
+          }
+
+          p {
+            font-weight: 500;
+            font-size: 16px;
+            line-height: 20px;
+            /* identical to box height */
+
+
+            color: rgba(255, 255, 255, 0.25);
+          }
+        }
+
+        .info-fraction-weight {
+          display: flex;
+
+          span {
+            font-weight: 500;
+            font-size: 20px;
+            line-height: 24px;
+            display: flex;
+            color: rgba(255, 255, 255, 0.55);
+            text-align: center;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+
+            p {
+              font-weight: 500;
+              font-size: 20px;
+              line-height: 24px;
+              margin-right: 6px;
+              color: #FFFFFF;
+            }
+          }
+
+        }
+      }
+
+      .info-progressBar {
+        margin-top: 12px;
+        // width: 952px;
+        height: 10px;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 4px;
+
+        #greenBar {
+          // max-width: 965px;
+          display: block;
+          height: 100%;
+          width: 0;
+          background: #B2EF30;
+          border-radius: 4px;
+
+        }
+      }
+    }
+    .orgMenuInventory{
+      width: 100%;
+        height: 56.25vw;
+        /*УСТАНОВИМ ЗАТЕМНЕНИЕ ДЛЯ НАШЕГО ПРОЕКТА*/
+        .list-slots {
+            position: relative;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            /*ЗАДАЕМ НАШИМ СЛОТАМ ПОЗИЦИЮ ПО СЕРЕДИНЕ ЭКРАНА*/
+        
+            background: rgba(0, 0, 0, .7);
+            width: 41.667vw;
+            height: 41.667vw;
+            max-width: 80%;
+          }
+        
+          .slots {
+            max-width: 87%;
+            margin: auto;
+            padding-top: 3.125vw;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+          }
+        
+          .slot {
+            width: 5.208vw;
+            height: 5.208vw;
+            background: rgba(255, 255, 255, .5);
+            margin-bottom: 0.781vw;
+          }
+    }
+  }
+
+}

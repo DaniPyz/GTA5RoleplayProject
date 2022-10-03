@@ -1,0 +1,104 @@
+.notf {
+    position: fixed;
+overflow: hidden;
+    bottom: 22px;
+    left: 50%;
+
+    transform: translateX(-50%);
+    z-index: 1000;
+}
+
+.progressBar {
+  
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 5px;
+
+
+    display: inline-block;
+    border-radius: 23px;
+    
+}
+
+.notf section {
+    width: calc(400px - 20px - 110px);
+    min-height: 54px;
+
+    backdrop-filter: blur(4px);
+    /* background: linear-gradient(1.28deg, rgba(178, 239, 48, 0.75) -184.48%, rgba(178, 239, 48, 0) 79.69%);? */
+    border-radius: 2px;
+
+    padding: 22px 30px;
+    padding-left: 110px;
+
+    color: white;
+
+    display: flex;
+    align-items: center;
+    /* justify-content: center; */
+
+    position: relative;
+    transition: .3s;
+}
+
+.notf section + section {
+    margin-top: 10px;
+}
+
+.notf section img {
+    position: absolute;
+    border-radius: 50%;
+    top: 50%;
+    left: 30px;
+
+    transform: translateY(-50%);
+
+    width: 36px;
+    height: 36px;
+}
+
+.notf .notf-wrapper {}
+
+.notf section h1 {
+    
+
+    text-align: left;
+    width: 100%;
+
+    font-family: 'Montserrat';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 20px;
+    margin-bottom: 4px;
+}
+
+.notf section span {
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 15px;
+
+    color: #FFFFFF;
+
+    text-align: left;
+    width: 100%;
+}
+
+
+.notf .notf-donate div {
+    /* position: absolute;
+
+    top: 50%;
+    left: 30px;
+
+    transform: translateY(-50%); */
+
+    /* min-width: 30px; */
+    /* height: 30px; */
+
+    /* background-color: #C2943D; */
+    /* border-radius: 50%; */
+
+    /* border: 5px solid #EDB243;  */
+}

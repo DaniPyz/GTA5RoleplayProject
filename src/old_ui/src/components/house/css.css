@@ -1,0 +1,81 @@
+.dialog {
+    position: fixed;
+
+    top: 50%;
+    left: 50%;
+
+    transform: translate(-50%, -50%);
+
+    min-width: calc(460px - 60px);
+    max-width: calc(600px - 60px);
+
+    background: #12131CC2;
+    color: white;
+
+    padding: 30px;
+}
+.dialog:before {
+    position: absolute;
+
+    display: block;
+    content: url('./images/bg.png');
+
+    bottom: -5px;
+    right: 0;
+}
+
+.dialog .dialog-title {
+    width: 100%;
+    text-align: center;
+
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 29px;
+}
+
+.dialog .dialog-body {
+    margin-top: 20px;
+
+    font-size: 12px;
+    font-weight: 600;
+
+    color: rgba(255, 255, 255, 0.5);
+
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+.dialog .dialog-body span {
+    font-size: 12px;
+    font-weight: 600;
+
+    margin-left: 5px;
+}
+.dialog .dialog-body input {
+    width: calc(100% - 48px);
+    margin-top: 15px;
+
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+
+    text-align: center;
+}
+.dialog .dialog-body input::placeholder {
+    text-align: center;
+    color: #FFFFFF40;
+}
+.dialog .dialog-body input:focus::placeholder {
+    opacity: 0;
+}
+
+.dialog .dialog-btn {
+    margin-top: 20px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.dialog .dialog-btn .btn {
+    margin: 0 10px;
+    padding: 12px 40px;
+}

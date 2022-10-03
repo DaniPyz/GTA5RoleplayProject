@@ -1,0 +1,37 @@
+[
+    { "name": "givedonate", "desc": "Выдает (или забирает) донат на аккаунте", "params": [
+        { "desc": "Ник аккаунта", "maxlength": 60, "type": "text" },
+        { "desc": "Количество доната", "maxlength": 10, "type": "number" }
+    ] },
+    { "name": "tpcord", "desc": "Телепортирует админа на заданные координаты", "params": [
+        { "desc": "POS X", "maxlength": 10, "type": "number" },
+        { "desc": "POS Y", "maxlength": 10, "type": "number" },
+        { "desc": "POS Z", "maxlength": 10, "type": "number" },
+        { "desc": "VW (по желанию)", "maxlength": 7, "type": "number" }
+    ] },
+    { "name": "plveh", "desc": "Создает временный транспорт для игрока", "params": [
+        { "desc": "vehicle name", "maxlength": 20, "type": "text" },
+        { "desc": "charname or playerid", "maxlength": 40, "type": "text" }
+    ] },
+    {
+        "name": "createFraction",
+        "desc": "Создает фракцию",
+        "params": [
+            {
+                "desc": "Name",
+                "maxlength": 10,
+                "type": "text"
+            },
+            {
+                "desc": "Description",
+                "maxlength": 50,
+                "type": "text"
+            },
+            {
+                "desc": "maxRank",
+                "maxlength": "20" ,
+                "type": "number"
+            }
+        ]
+    }
+]

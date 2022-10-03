@@ -1,0 +1,178 @@
+[
+    {
+        "name": "Телефон",
+        "type": "phone",
+        "drop": "prop_amb_phone",
+        "weight": 0.5,
+        "img": "phone.png",
+        "desc": "Телефон чтобы звонить",
+        "info": [
+            {
+                "name": "Модель",
+                "value": "Sony Ericsson"
+            }
+        ]
+    },
+    {
+        "name": "Сумка 1",
+        "type": "backpack",
+        "weight": 0.01,
+        "img": "backpack.png",
+        "desc": "Сумка вместимостью 5 килограмм",
+        "info": [
+            {
+                "name": "Вместимость",
+                "value": "5 кг."
+            }
+        ],
+        "maxWeight": 5,
+        "bags": 100
+    },
+    {
+        "name": "Сумка 2",
+        "type": "backpack",
+        "weight": 0.01,
+        "img": "backpack.png",
+        "desc": "Сумка вместимостью 5 килограмм",
+        "info": [
+            {
+                "name": "Вместимость",
+                "value": "5 кг."
+            }
+        ],
+        "maxWeight": 5,
+        "bags": 101
+    },
+    {
+        "name": "Сумка 3",
+        "type": "backpack",
+        "weight": 0.01,
+        "img": "backpack.png",
+        "desc": "Сумка вместимостью 5 килограмм",
+        "info": [
+            {
+                "name": "Вместимость",
+                "value": "5 кг."
+            }
+        ],
+        "maxWeight": 5,
+        "bags": 103
+    },
+    {
+        "name": "Сумка 4",
+        "type": "backpack",
+        "weight": 0.01,
+        "img": "backpack.png",
+        "desc": "Сумка вместимостью 5 килограмм",
+        "info": [
+            {
+                "name": "Вместимость",
+                "value": "5 кг."
+            }
+        ],
+        "maxWeight": 5,
+        "bags": 105
+    },
+    {
+        "name": "Сумка 5",
+        "type": "backpack",
+        "weight": 0.01,
+        "img": "backpack.png",
+        "desc": "Сумка вместимостью 5 килограмм",
+        "info": [
+            {
+                "name": "Вместимость",
+                "value": "5 кг."
+            }
+        ],
+        "maxWeight": 5,
+        "bags": 106
+    },
+    {
+        "name": "Сумка 6",
+        "type": "backpack",
+        "weight": 0.01,
+        "img": "backpack.png",
+        "desc": "Сумка вместимостью 5 килограмм",
+        "info": [
+            {
+                "name": "Вместимость",
+                "value": "5 кг."
+            }
+        ],
+        "maxWeight": 5,
+        "bags": 107
+    },
+    {
+        "name": "Сумка 7",
+        "type": "backpack",
+        "weight": 0.01,
+        "img": "backpack.png",
+        "desc": "Сумка вместимостью 10 килограмм",
+        "info": [
+            {
+                "name": "Вместимость",
+                "value": "10 кг."
+            }
+        ],
+        "maxWeight": 10,
+        "bags": 102
+    },
+    {
+        "name": "Сумка 8",
+        "type": "backpack",
+        "weight": 0.01,
+        "img": "backpack.png",
+        "desc": "Сумка вместимостью 10 килограмм",
+        "info": [
+            {
+                "name": "Вместимость",
+                "value": "10 кг."
+            }
+        ],
+        "maxWeight": 10,
+        "bags": 104
+    },
+    {
+        "name": "Сумка 9",
+        "type": "backpack",
+        "weight": 0.01,
+        "img": "backpack.png",
+        "desc": "Сумка вместимостью 10 килограмм",
+        "info": [
+            {
+                "name": "Вместимость",
+                "value": "10 кг."
+            }
+        ],
+        "maxWeight": 10,
+        "bags": 108
+    },
+    {
+        "name": "Семена",
+        "type": "seed",
+        "drop": "prop_drug_package_02",
+        "weight": 0.01,
+        "img": "phone.png",
+        "desc": "Семечко",
+        "info": [
+            {
+                "name": "Семя авокадо",
+                "value": "Для выращивания"
+            }
+        ]
+    },
+    {
+        "name": "Растение",
+        "type": "plant",
+        "weight": 0.5,
+        "img": "phone.png",
+        "desc": "Растение",
+        "info": [
+            {
+                "name": "Растение которое вы вырасли",
+                "value": "Ваше растение"
+            }
+        ]
+    }
+]

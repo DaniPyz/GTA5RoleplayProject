@@ -1,0 +1,97 @@
+.death {
+    position: fixed;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 100%;
+
+    background-image: url('./images/bg.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+
+    color: white;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.death .death-wrap {
+
+}
+
+.death h1,
+.death h2 {
+    width: 100%;
+    text-align: center;
+}
+
+.death h1 {
+    font-size: 24px;
+    font-weight: 500;
+
+    line-height: 29px;
+    margin-bottom: 10px;
+}
+.death h2 {
+    font-weight: 800;
+    font-size: 48px;
+
+    line-height: 58px;
+    text-transform: uppercase;
+
+    color: #420e0e;
+    text-shadow:0px 1px 0 rgb(239,48,48),0px -1px 0 rgb(239,48,48),1px 0px 0 rgb(239,48,48),-1px 0px 0 rgb(239,48,48),1px 1px 0 rgb(239,48,48),1px -1px 0 rgb(239,48,48),-1px 1px 0 rgb(239,48,48),-1px -1px 0 rgb(239,48,48);
+}
+
+.death .death-img {
+    margin: 80px 0;
+
+    width: 500px;
+    height: 300px;
+
+    position: relative;
+}
+.death .death-img img {
+    width: 100%;
+    height: auto;
+
+    position: absolute;
+
+    top: 0;
+    left: 0;
+}
+.death .death-img img:nth-child(2) {
+    transform: translate(-7px, -83px);
+}
+.death .death-img img:nth-child(3) {
+    width: 45%;
+    transform: translate(135px, -20px);
+}
+
+.death .death-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.death .death-btn .btn {
+    margin: 0 10px;
+    padding: 12px 35px;
+
+    border-radius: 0;
+}
+.death .death-btn .btn:last-child {
+    background: rgba(239, 48, 48, 0.25);
+    border: 1px solid #EF3030;
+
+    color: white;
+}
+.death .death-btn .btn:last-child:hover {
+    background: rgba(239, 48, 48);
+}
+.death .death-btn .btn:last-child.btn-clicked {
+    background: #ad1d1d;
+}

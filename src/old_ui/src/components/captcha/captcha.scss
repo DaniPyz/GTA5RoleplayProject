@@ -1,0 +1,70 @@
+.captcha {
+  height: 100vh;
+
+  .captcha-wrapper {
+
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    width: 233px;
+    height: 172px;
+    border-radius: 15px;
+    background: rgba(18, 19, 28, 0.946);
+    align-items: center;
+    text-align: center;
+
+    h1 {
+      margin-top: 8px;
+      font-weight: 600;
+      font-size: 24px;
+      line-height: 29px;
+      text-align: center;
+
+      color: #FFFFFF;
+
+      text-shadow: 0px 0px 207px rgba(255, 255, 255, 0.55);
+    }
+
+    div {
+      margin: 0 25px;
+      margin-top: 8px;
+      width: 182px;
+      height: 68px;
+
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      border-radius: 5px;
+
+      svg {
+        width: auto;
+        height: auto;
+      }
+    }
+
+    input {
+      text-align: center;
+      margin-top: 8px;
+      width: 108px;
+      height: 33px;
+      background: rgba(235, 48, 239, 0.25);
+      border: 1px solid #EB30EF;
+      border-radius: 5px;
+      padding: 0 10px;
+      color: #FFFFFF;
+
+      text-shadow: 0px 0px 207px rgba(255, 255, 255, 0.55);
+    }
+
+    input::placeholder {
+      font-weight: 600;
+      font-size: 13px;
+      line-height: 16px;
+      /* identical to box height */
+
+
+      color: rgba(255, 255, 255, 0.25);
+    }
+  }
+}

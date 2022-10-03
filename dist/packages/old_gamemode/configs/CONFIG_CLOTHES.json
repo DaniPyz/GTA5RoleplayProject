@@ -1,0 +1,173 @@
+{
+    "none": [
+        {
+            "head": 0,
+            "mask": 0,
+            "torsos": 15,
+            "legs": 18,
+            "bags": 0,
+            "shoes": 34,
+            "accessories": 0,
+            "undershirts": 15,
+            "armour": 0,
+            "decals": 0,
+            "tops": 15
+        },
+        {
+            "head": 0,
+            "mask": 0,
+            "torsos": 15,
+            "legs": 17,
+            "bags": 0,
+            "shoes": 35,
+            "accessories": 0,
+            "undershirts": 15,
+            "armour": 0,
+            "decals": 0,
+            "tops": 15
+        }
+    ],
+    "work": [
+        {
+            "head": 0,
+            "mask": 0,
+            "torsos": 0,
+            "legs": 134,
+            "bags": 0,
+            "shoes": 71,
+            "accessories": 0,
+            "undershirts": 0,
+            "armour": 0,
+            "decals": 0,
+            "tops": 251
+        },
+        {
+            "head": 0,
+            "mask": 0,
+            "torsos": 0,
+            "legs": 134,
+            "bags": 0,
+            "shoes": 71,
+            "accessories": 0,
+            "undershirts": 0,
+            "armour": 0,
+            "decals": 0,
+            "tops": 251
+        }
+    ],
+
+    "createchar_top_0": [
+        {
+            "tops": 15,
+            "torsos": 15,
+            "undershirts": 15
+        },
+        {
+            "tops": 15,
+            "torsos": 15,
+            "undershirts": 15
+        }
+    ],
+    "createchar_top_1": [
+        {
+            "tops": 0,
+            "torsos": 0,
+            "undershirts": 15
+        },
+        {
+            "tops": 14,
+            "torsos": 11,
+            "undershirts": 15
+        }
+    ],
+    "createchar_top_2": [
+        {
+            "tops": 16,
+            "torsos": 0,
+            "undershirts": 15
+        },
+        {
+            "tops": 2,
+            "torsos": 2,
+            "undershirts": 15
+        }
+    ],
+    "createchar_top_3": [
+        {
+            "tops": 3,
+            "torsos": 1,
+            "undershirts": 23
+        },
+        {
+            "tops": 3,
+            "torsos": 3,
+            "undershirts": 2
+        }
+    ],
+
+    "createchar_bottom_0": [
+        {
+            "legs": 18
+        },
+        {
+            "legs": 17
+        }
+    ],
+    "createchar_bottom_1": [
+        {
+            "legs": 0
+        },
+        {
+            "legs": 0
+        }
+    ],
+    "createchar_bottom_2": [
+        {
+            "legs": 2
+        },
+        {
+            "legs": 25
+        }
+    ],
+    "createchar_bottom_3": [
+        {
+            "legs": 3
+        },
+        {
+            "legs": 2
+        }
+    ],
+
+    "createchar_shoes_0": [
+        {
+            "shoes": 34
+        },
+        {
+            "shoes": 35
+        }
+    ],
+    "createchar_shoes_1": [
+        {
+            "shoes": 7
+        },
+        {
+            "shoes": 4
+        }
+    ],
+    "createchar_shoes_2": [
+        {
+            "shoes": 1
+        },
+        {
+            "shoes": 3
+        }
+    ],
+    "createchar_shoes_3": [
+        {
+            "shoes": 5
+        },
+        {
+            "shoes": 5
+        }
+    ]
+}

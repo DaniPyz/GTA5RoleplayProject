@@ -1,0 +1,271 @@
+.reg {
+    position: fixed;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 100%;
+
+    /* background: url(./images/bg.png); */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+
+    color: white;
+}
+
+.reg-bg-color,
+.reg-bg-color div {
+    position: absolute;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 100%;
+
+    background: radial-gradient(50% 50% at 50% 50%, rgba(25, 27, 38, 0.95) 0%, rgba(24, 29, 51, 0.98) 100%);
+}
+.reg-bg-color div {
+    /* background: url('./images/bg_2.png'); */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+
+    opacity: .5;
+}
+.reg-bg-color section {
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+
+    position: absolute;
+    bottom: 0;
+
+    opacity: .5;
+    width: 600px;
+}
+.reg-bg-color section:nth-child(2) {
+    left: 0;
+    background-image: url(./images/bl_img.png);
+
+    height: 260px;
+}
+.reg-bg-color section:nth-child(3) {
+    right: 0;
+    background-image: url(./images/br_img.png);
+
+    height: 155px;
+}
+.reg-bg-color section:nth-child(4) {
+    left: 0;
+    background-image: url(./images/bl_center_img.png);
+
+    transform: translateX(50%);
+    height: 220px;
+}
+.reg-bg-color section:nth-child(5) {
+    right: 0;
+    background-image: url(./images/br_center_img.png);
+
+    transform: translateX(-50%);
+    height: 200px;
+}
+
+.reg .reg-header,
+.reg .reg-body,
+.reg .reg-error {
+    position: relative;
+    z-index: 5;
+}
+
+.reg .reg-header {
+    position: absolute;
+
+    top: 40px;
+    left: 50%;
+
+    transform: translateX(-50%);
+}
+
+
+.reg .reg-body {
+    position: absolute;
+
+    top: 150px;
+    left: 50%;
+
+    transform: translateX(-50%);
+    width: 390px;
+}
+.reg .reg-body .reg-body-title {
+    text-transform: uppercase;
+
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+
+    text-align: center;
+    width: 100%;
+}
+.reg .reg-body .reg-body-title h1 {
+    font-weight: 700;
+    font-size: 36px;
+
+    line-height: 43px;
+    text-shadow: 0px 0px 34px rgba(255, 255, 255, 0.55);
+
+    width: 100%;
+    position: relative;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.reg .reg-body .reg-body-title h1:before,
+.reg .reg-body .reg-body-title h1:after {
+    display: block;
+    content: url(./images/title_img.png);
+}
+.reg .reg-body .reg-body-title h1:before {
+    transform: translateY(-12%) translateX(-15%);
+}
+.reg .reg-body .reg-body-title h1:after {
+    right: 0;
+    transform: translateY(10%) translateX(15%) rotate(180deg);
+}
+
+
+.reg .reg-body .reg-body-inputs {
+    width: 85%;
+
+    margin: 0 auto;
+    margin-top: 30px;
+}
+.reg .reg-body .reg-body-input {
+    width: 100%;
+    position: relative;
+}
+.reg .reg-body .reg-body-input + .reg-body-input
+{
+    margin-top: 20px;
+}
+.reg .reg-body .reg-body-inputs .input {
+    width: calc(100% - 40px);
+
+    padding: 13px 20px;
+    padding-top: 30px;
+
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+}
+.reg .reg-body .reg-body-inputs label {
+    position: absolute;
+
+    top: 12px;
+    left: 20px;
+
+    font-weight: 400;
+    line-height: 16px;
+
+    color: #FFFFFF8C;
+}
+
+
+.reg .reg-body .reg-body-saveme {
+    display: flex;
+    align-items: center;
+
+    width: 85%;
+
+    margin: 0 auto;
+    margin-top: 20px;
+}
+.reg .reg-body .reg-body-saveme input {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.02);
+}
+.reg .reg-body .reg-body-saveme div {
+    margin-left: 10px;
+}
+.reg .reg-body .reg-body-saveme div h2 {
+    font-size: 16px;
+}
+.reg .reg-body .reg-body-saveme div span {
+    color: #FFFFFF40;
+    font-weight: 400;
+}
+
+.reg .reg-body .reg-body-btn {
+    width: 85%;
+
+    margin: 0 auto;
+    margin-top: 20px;
+}
+.reg .reg-body .reg-body-btn .btn {
+    color: #303030;
+    width: 100%;
+}
+
+
+.reg .reg-error {
+    position: absolute;
+
+    bottom: 40px;
+    left: 50%;
+
+    transform: translateX(-50%);
+    width: 300px;
+
+    text-align: center;
+
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+.reg .reg-error:after {
+    position: absolute;
+
+    display: block;
+    content: url('./images/error.png');
+}
+.reg .reg-error span,
+.reg .reg-error h1 {
+    width: 100%;
+}
+.reg .reg-error h1 {
+    color: #ED4343;
+    font-weight: 700;
+    font-size: 16px;
+}
+.reg .reg-error span {
+    font-weight: 500;
+    color: #FFFFFF8C;
+}
+.reg .reg-error .btn {
+    border: 2px solid rgba(255, 255, 255, 0.06);
+    background-color: transparent;
+
+    padding: 10px 50px;
+    margin-top: 15px;
+
+    color: #FFFFFFA6;
+    border-radius: 5px;
+}
+
+
+.key {
+    background: rgba(21, 21, 21, 0.51);
+    border-radius: 50%;
+
+    width: 12px;
+    height: 12px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 10px;
+    font-size: 12px;
+}

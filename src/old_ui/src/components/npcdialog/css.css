@@ -1,0 +1,75 @@
+.npcdialog {
+    position: fixed;
+
+    bottom: 50px;
+    left: 50%;
+
+    transform: translateX(-50%);
+
+    width: 600px;
+    color: white;
+
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.npcdialog h1 {
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 38px;
+
+    text-shadow: 0px 0px 15px #000000;
+    width: 100%;
+}
+.npcdialog h2 {
+    font-weight: 500;
+
+    background: #CC051B;
+    box-shadow: 0px 4px 9px rgba(204, 5, 27, 0.55);
+
+    border-radius: 37px;
+    padding: 5px 15px;
+
+    margin-top: 5px;
+}
+.npcdialog div {
+    width: 100%;
+}
+
+.npcdialog .npcdialog-text {
+    margin-top: 30px;
+
+    background: radial-gradient(47.87% 50% at 47.87% 50%, rgba(194, 194, 194, 0.31) 0%, rgba(255, 255, 255, 0.22) 100%);
+
+    padding: 20px;
+    border-radius: 4px;
+
+    /* clip-path: polygon(5% 0, 100% 0, 95% 100%, 0% 100%); */
+    font-weight: 500;
+}
+.npcdialog .npcdialog-btn {
+    margin-top: 10px;
+    transform: translateX(5px);
+}
+.npcdialog .npcdialog-btn .btn {
+    /* clip-path: polygon(6% 0, 100% 0, 94% 100%, 0% 100%); */
+
+    border-radius: 4px;
+    clip-path: none;
+
+    width: calc(100% / 2 - 10px);
+    background: radial-gradient(48.85% 50% at 48.85% 50%, rgba(194, 194, 194, 0.02) 0%, rgba(255, 255, 255, 0.12) 100%);
+
+    margin-right: 10px;
+    margin-bottom: 5px;
+
+    text-transform: none;
+    font-weight: 500;
+
+    opacity: 1;
+    color: white;
+}
+.npcdialog .npcdialog-btn .btn.btn-select,
+.npcdialog .npcdialog-btn .btn:hover {
+    background: rgba(178, 239, 48, 0.25);
+}

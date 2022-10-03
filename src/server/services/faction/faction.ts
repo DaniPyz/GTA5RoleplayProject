@@ -28,7 +28,7 @@ class Faction extends Service {
 		player.setView("Temp");
 		player.setView(null);
 		player.removeHud("Temp2");
-		let s = await player.clientProxy.temp.awdadw();
+		// let s = await player.clientProxy.temp.awdadw();
 
 		return player;
 	}

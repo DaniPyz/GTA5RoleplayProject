@@ -1,0 +1,165 @@
+.choicechar
+{
+    position: fixed;
+
+    top: 0;
+    left: 0;
+
+    width: calc(100% - 1000px + 2px);
+    height: calc(100% - 400px + 2px);
+
+    z-index: 5;
+
+    background: url('./images/bg.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+
+    color: white;
+    padding: 200px 500px;
+}
+
+.choicechar .choicechar-title
+{
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+
+    position: relative;
+}
+.choicechar .choicechar-title:before {
+    display: block;
+    content: url('./images/title_img.png');
+
+    position: absolute;
+
+    top: 50%;
+    left: -15px;
+
+    transform: translateY(-30%) translateX(-100%);
+}
+.choicechar .choicechar-title h1 {
+    font-weight: 700;
+    font-size: 36px;
+    line-height: 43px;
+
+    text-shadow: 0px 0px 34px rgba(255, 255, 255, 0.55);
+    white-space: nowrap;
+
+    text-transform: uppercase;
+}
+.choicechar .choicechar-title span {
+    font-weight: 500;
+}
+
+
+.choicechar .choicechar-body {
+    margin-top: 40px;
+
+    display: flex;
+    align-items: center;
+
+    width: calc(400px * 2);
+}
+.choicechar .choicechar-body .choicechar-body-elem {
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0) 100%);
+    border-radius: 2px;
+
+    padding: 10px 15px;
+
+    width: calc(400px - 30px);
+    height: calc(435px - 20px);
+}
+.choicechar .choicechar-body .choicechar-body-elem + .choicechar-body-elem {
+    margin-left: 20px;
+}
+.choicechar .choicechar-body .choicechar-body-elem .choicechar-body-elem-title {
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 15px 0;
+}
+.choicechar .choicechar-body .choicechar-body-elem.choicechar-body-elem-buy .choicechar-body-elem-title {
+    align-items: flex-start;
+}
+.choicechar .choicechar-body .choicechar-body-elem .choicechar-body-elem-title h1 {
+    font-size: 24px;
+    line-height: 32px;
+
+    display: flex;
+    align-items: center;
+}
+.choicechar .choicechar-body .choicechar-body-elem .choicechar-body-elem-title h1:before {
+    display: block;
+    content: "";
+
+    width: 12px;
+    height: 12px;
+
+    border-radius: 2px;
+    background-color: white;
+
+    margin-right: 10px;
+}
+.choicechar .choicechar-body .choicechar-body-elem .choicechar-body-elem-title span {
+    border: 2px solid white;
+    border-radius: 50%;
+
+    width: 32px;
+    height: 29px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.choicechar .choicechar-body .choicechar-body-elem.choicechar-body-elem-buy .choicechar-body-elem-title span {
+    border: none;
+    content: url('./images/buy_slot.png');
+
+    width: 72px;
+    height: 72px;
+}
+
+.choicechar .choicechar-body .choicechar-body-elem .choicechar-body-elem-desc {
+    width: 100%;
+}
+.choicechar .choicechar-body .choicechar-body-elem.choicechar-body-elem-buy .choicechar-body-elem-desc {
+    padding: 100px 0;
+
+    font-size: 14px;
+    line-height: 21px;
+
+    text-align: center;
+}
+.choicechar .choicechar-body .choicechar-body-elem.choicechar-body-elem-free .choicechar-body-elem-desc {
+    margin-top: 40px;
+}
+.choicechar .choicechar-body .choicechar-body-elem .choicechar-body-elem-desc div {
+    width: calc(100% - 20px);
+    display: flex;
+
+    border-radius: 2px;
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0) 100%);
+
+    border: 1px solid rgba(255, 255, 255, 0.06);
+
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 15px 10px;
+}
+.choicechar .choicechar-body .choicechar-body-elem .choicechar-body-elem-desc div + div {
+    margin-top: 7px;
+}
+
+
+.choicechar .choicechar-body .choicechar-body-elem .choicechar-body-elem-btn {
+    width: 100%;
+    margin-top: 15px;
+}
+.choicechar .choicechar-body .choicechar-body-elem .choicechar-body-elem-btn .btn {
+    width: 100%;
+}

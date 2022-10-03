@@ -1,0 +1,289 @@
+.createchar {
+    position: fixed;
+
+    top: 0;
+    left: 0;
+
+    height: 100%;
+    width: 80%;
+
+    background: linear-gradient(270.29deg, rgba(9, 9, 12, 0) 0.25%, rgba(5, 7, 18, 0.25) 60.93%, rgba(5, 7, 18, 0.85) 71.32%, #050712 99.74%);
+    color: white;
+}
+.createchar .createchar-wrap {
+    width: 32%;
+    min-width: 450px;
+    height: 100%;
+}
+
+
+.createchar .createchar-title {
+    padding: 30px 0;
+    padding-left: 150px;
+
+    position: relative;
+}
+.createchar .createchar-title:before {
+    position: absolute;
+
+    display: block;
+    content: url('./images/title_img.png');
+
+    top: 50%;
+    left: 65px;
+
+    transform: translateY(-45%) translateX(-50%);
+}
+.createchar .createchar-title h1 {
+    font-weight: 700;
+    font-size: 36px;
+    line-height: 43px;
+
+    text-shadow: 0px 0px 34px rgba(255, 255, 255, 0.55);
+    text-transform: uppercase;
+}
+.createchar .createchar-title span {
+    font-weight: 500;
+    font-size: 14px;
+    text-transform: uppercase;
+}
+
+
+.createchar .createchar-body {
+    width: 100%;
+    display: flex;
+
+    height: calc(100% - 140px);
+    position: relative;
+}
+.createchar .createchar-body .createchar-body-list {
+    height: calc(97% + 1px);
+    min-width: 130px;
+
+    overflow: auto;
+    direction: rtl;
+}
+.createchar .createchar-body .createchar-body-list div {
+    width: calc(100% - 2px - 20px);
+    height: calc(100px - 3px - 17px);
+
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+
+    border-radius: 3px;
+
+    display: flex;
+    flex-wrap: wrap;
+
+    padding: 10px;
+}
+.createchar .createchar-body .createchar-body-list div.createchar-body-list-select,
+.createchar .createchar-body .createchar-body-list div:hover {
+    background: linear-gradient(268.01deg, #B2EF30 1.68%, rgba(178, 239, 48, 0) 145.35%);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+}
+.createchar .createchar-body .createchar-body-list div + div {
+    margin-top: 10px;
+}
+.createchar .createchar-body .createchar-body-list div img {
+    width: 30px;
+    height: 30px;
+}
+.createchar .createchar-body .createchar-body-list div span {
+    width: 100%;
+    margin-top: 30px;
+
+    font-weight: 500;
+}
+
+.createchar .createchar-body .createchar-body-top {
+    margin-left: 10px;
+    width: calc(100% - 130px);
+
+    height: 97%;
+    position: relative;
+}
+.createchar .createchar-body .createchar-body-top .createchar-body-top-wrap {
+    height: calc(100% - 65px);
+    overflow: auto;
+}
+
+.createchar .createchar-body .createchar-body-input {
+    width: 100%;
+
+    display: flex;
+    flex-wrap: wrap;
+}
+.createchar .createchar-body .createchar-body-input + .createchar-body-input {
+    margin-top: 10px;
+}
+.createchar .createchar-body .createchar-body-input span,
+.createchar .createchar-body .createchar-body-input input:not(.input-radio),
+.createchar .createchar-body .createchar-body-input-choice section {
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0) 100%);
+    border-radius: 2px;
+
+    width: calc(100% - 14px);
+    padding: 7px;
+}
+.createchar .createchar-body .createchar-body-input input.input-range {
+    padding: 14px 7px;
+}
+.createchar .createchar-body .createchar-body-input span {
+    margin-bottom: 5px;
+
+    display: flex;
+    align-items: center;
+
+    white-space: nowrap;
+}
+.createchar .createchar-body .createchar-body-input.createchar-body-input-flex span {
+    justify-content: space-between;
+    width: 100%;
+}
+.createchar .createchar-body .createchar-body-input input:not(.input-radio) {
+    color: white;
+}
+.createchar .createchar-body .createchar-body-input input:not(.input-radio)::placeholder {
+    transition: .2s;
+    color: #FFFFFF40;
+}
+.createchar .createchar-body .createchar-body-input input:not(.input-radio):focus::placeholder {
+    opacity: 0;
+}
+.createchar .createchar-body .createchar-body-input:not(.createchar-body-input-flex) span:after {
+    display: block;
+    content: url('./images/input_img.png');
+
+    margin-left: 10px;
+    transform: translateY(-1px);
+}
+.createchar .createchar-body .createchar-body-input.createchar-body-input-flex span h1 {
+    text-align: right;
+
+    color: #FFFFFF8C;
+    font-weight: 400;
+}
+
+.createchar .createchar-body .createchar-body-input-choice section,
+.createchar .createchar-body .createchar-body-input-choice div {
+    display: flex;
+    align-items: center;
+}
+.createchar .createchar-body .createchar-body-input-choice div + div {
+    margin-left: 20px;
+}
+.createchar .createchar-body .createchar-body-input-choice div label {
+    font-weight: 500;
+    font-size: 13px;
+
+    margin-left: 5px;
+    opacity: .55;
+}
+.createchar .createchar-body .createchar-body-input-choice div .input-radio:checked + label {
+    opacity: 1;
+}
+
+.createchar .createchar-body .createchar-body-input-color section {
+    flex-wrap: wrap;
+}
+.createchar .createchar-body .createchar-body-input-color div {
+    width: 20px;
+    height: 20px;
+
+    background-color: white;
+    border-radius: 2px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin-right: 2px;
+    margin-bottom: 2px;
+}
+.createchar .createchar-body .createchar-body-input-color div + div {
+    margin-left: 0;
+}
+.createchar .createchar-body .createchar-body-input-color div.createchar-body-input-color-sel:before {
+    display: block;
+    content: "";
+
+    width: 60%;
+    height: 60%;
+
+    border-radius: 50%;
+    background-color: white;
+}
+
+/* .createchar .createchar-body .createchar-body-input-color div:first-child.createchar-body-input-color-sel:before {
+    background-color: black;
+} */
+
+
+.createchar .createchar-body .createchar-body-list-choice
+{
+    margin: 10px 0;
+
+    max-height: calc(120px * 3 + 15px + 6px);
+    overflow: auto;
+
+    width: 100%;
+}
+.createchar .createchar-body .createchar-body-list-choice img {
+    height: calc(110px);
+    width: calc(100% / 3 - 8px - 10px);
+
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 2px;
+
+    padding: 0 5px;
+    padding-top: 10px;
+
+    margin: 0 2px;
+}
+.createchar .createchar-body .createchar-body-list-choice img.createchar-body-list-choice-select {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.25) 100%);
+    border: 1px solid #B2EF30;
+}
+
+
+.createchar .createchar-body .createchar-body-input-choice .input-choice {
+    width: 100%;
+}
+
+.createchar .createchar-body .createchar-body-btn {
+    position: absolute;
+
+    bottom: 0;
+    left: 0;
+
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+}
+.createchar .createchar-body .createchar-body-btn button.btn {
+    width: 100%;
+    padding: 13px 50px;
+
+    font-weight: 500;
+}
+.createchar .createchar-body .createchar-body-btn button:not(.btn) {
+    padding: 12px;
+    border-radius: 2px;
+
+    background: linear-gradient(180deg, #FFFFFF 0%, #C7C7C7 100%);
+    border: 1px solid rgba(255, 255, 255, 0.02);
+    box-shadow: 0px 31px 34px -25px rgba(255, 255, 255, 0.25);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin-left: 5px;
+}
+.createchar .createchar-body .createchar-body-btn button:not(.btn) img {
+    width: 22px;
+    height: 22px;
+}
