@@ -8,16 +8,13 @@ import cls from 'classnames';
 import { animated } from 'react-spring';
 import useMasterSpring from './Autosalon.spring';
 import { useKeyboard } from 'hooks';
-import { IViewControllerProps } from 'components/Router/Router';
 import { setView } from 'index';
 
-interface IAutosalonProps extends IViewControllerProps {}
-
-const Autosalon: FC<IAutosalonProps> = (props) => {
+const Autosalon: FC = () => {
 	const [search, setSearch] = useState('');
 	const [selected, setSelected] = useState(0);
 	const [color, setColor] = useState(AUTOSALON_COLORS.length - 1);
-	const { leftBlockTransition, rightBlockTransition, hideTransition } = useMasterSpring(props);
+	const { leftBlockTransition, rightBlockTransition, hideTransition } = useMasterSpring();
 
 	useEffect(() => {
 		console.log('mount');
@@ -25,12 +22,6 @@ const Autosalon: FC<IAutosalonProps> = (props) => {
 			console.log('unmount');
 		};
 	}, []);
-
-	// useEffect(() => {
-	// 	return () => {
-
-	// 	};l
-	// }, []);
 
 	useKeyboard(
 		'esc',

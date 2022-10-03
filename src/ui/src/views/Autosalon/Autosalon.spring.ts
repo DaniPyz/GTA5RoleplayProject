@@ -1,34 +1,36 @@
-import { IViewControllerProps } from 'components/Router/Router';
+import { useViewController } from 'hooks';
 import { useEffect } from 'react';
 import { useTransition } from 'react-spring';
 
-const useMasterSpring = ({ component }: IViewControllerProps) => {
-	const hideTransition = useTransition(component.render, {
+const useMasterSpring = () => {
+	const controller = useViewController();
+
+	const hideTransition = useTransition(controller.render, {
 		from: { opacity: 0 },
 		leave: { opacity: 0 },
 		enter: { opacity: 1 }
 	});
 
-	const leftBlockTransition = useTransition(component.render, {
+	const leftBlockTransition = useTransition(controller.render, {
 		from: { x: '-55%', opacity: 0 },
 		leave: { x: '-55%', opacity: 0 },
 		enter: { x: '0', opacity: 1 }
 	});
 
-	const rightBlockTransition = useTransition(component.render, {
+	const rightBlockTransition = useTransition(controller.render, {
 		from: { x: '55%', opacity: 0 },
 		leave: { x: '55%', opacity: 0 },
 		enter: { x: '0', opacity: 1 },
 		onRest: () => {
-			if (!component.render && component.isInUnmountQueue) {
-				component.fetchUnmount();
+			if (!controller.render && controller.isInUnmountQueue) {
+				controller.fetchUnmount();
 			}
 		}
 	});
 
 	useEffect(() => {
-		component.delayUnmount();
-	}, [component, component.render]);
+		controller.delayUnmount();
+	}, [controller, controller.render]);
 
 	return { leftBlockTransition, rightBlockTransition, hideTransition };
 };

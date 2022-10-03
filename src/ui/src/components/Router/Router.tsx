@@ -1,4 +1,4 @@
-import { FC, ReactNode, useEffect, useMemo, useState } from 'react';
+import { createContext, FC, ReactNode, useEffect, useMemo, useState } from 'react';
 import { useAppSelector } from 'hooks';
 import style from './Router.module.scss';
 import { Hud } from 'index';
@@ -12,14 +12,18 @@ interface IISolatedProps {
 	children: ReactNode;
 }
 
-export interface IViewControllerProps {
-	component: {
-		render: boolean;
-		isInUnmountQueue: boolean; // Запрос на удаление компонента;
-		fetchUnmount: () => void; // Удалить компонент, если isInUnmountQueue = true;
-		delayUnmount: () => void; // Задержать рендер компонента;
-	};
+interface IViewControllerContext {
+	render: boolean;
+	isInUnmountQueue: boolean; // Запрос на удаление компонента;
+	fetchUnmount: () => void; // Удалить компонент, если isInUnmountQueue = true;
+	delayUnmount: () => void; // Задержать рендер компонента;
 }
+
+export interface IViewControllerProps {
+	component: IViewControllerContext;
+}
+
+export const ViewControllerContext = createContext<IViewControllerContext>(null as any);
 
 export interface IDefaultViewProps {
 	render: boolean;
@@ -38,23 +42,25 @@ const withViewController = (Component: FC<any>): FC<IDefaultViewProps> => {
 			}
 		}, [props.render]);
 
-		const injectedProps: IViewControllerProps = {
-			component: {
-				render: props.render,
-				isInUnmountQueue,
-				delayUnmount() {
-					setIsInUnmountQueue(true);
-				},
-				fetchUnmount() {
-					setRender(false);
-					setIsInUnmountQueue(false);
-				}
+		const injectedProps: IViewControllerContext = {
+			render: props.render,
+			isInUnmountQueue,
+			delayUnmount() {
+				setIsInUnmountQueue(true);
+			},
+			fetchUnmount() {
+				setRender(false);
+				setIsInUnmountQueue(false);
 			}
 		};
 
 		if (!render && !isInUnmountQueue) return null;
 
-		return <Component {...injectedProps} />;
+		return (
+			<ViewControllerContext.Provider value={injectedProps}>
+				<Component component={injectedProps} />
+			</ViewControllerContext.Provider>
+		);
 	};
 };
 
