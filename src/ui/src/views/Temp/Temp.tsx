@@ -20,11 +20,11 @@ const Temp: FC = () => {
 	});
 
 	useEffect(() => {
-		(async () => {
-			const ret = await client.temp.awdadw();
-			const ret2 = await server.faction.getUserdAWD();
-			const noRet = server.faction.getUser.noRet('awdawd');
-		})();
+		// (async () => {
+		// 	const ret = await client.temp.awdadw();
+		// 	const ret2 = await server.faction.getUserdAWD();
+		// 	const noRet = server.faction.getUser.noRet('awdawd');
+		// })();
 	});
 
 	return <div></div>;
