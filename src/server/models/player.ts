@@ -3,7 +3,7 @@ import type { RuntimeTypes } from '../../ui/src/bridge/types';
 import { createClientProxy } from '../../ui/src/bridge/proxy';
 import type { AppDispatch } from '../../ui/src/store';
 import type { ClientServices } from '../../client';
-import rpc from 'rage-rpc';
+import * as rpc from '../../shared/lib/rpc';
 
 type ClientProxy = RuntimeTypes.IProxyClient<ClientServices>;
 
