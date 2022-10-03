@@ -17,7 +17,22 @@ export const AUTOSALON_VEHICLE_STATS = ["Cкорость", "Ускорение",
 
 export const AUTOSALON_CONFIG = [
 	{
-		vehicleId: "oracle",
+		vehicleId: "oracle1",
+		vehicleName: "Mitsubishi Lancer Evo X",
+		price: 1000000,
+	},
+	{
+		vehicleId: "oracle2",
+		vehicleName: "Mitsubishi Lancer Evo X",
+		price: 1000000,
+	},
+	{
+		vehicleId: "oracle3",
+		vehicleName: "Mitsubishi Lancer Evo X",
+		price: 1000000,
+	},
+	{
+		vehicleId: "oracle4",
 		vehicleName: "Mitsubishi Lancer Evo X",
 		price: 1000000,
 	},
@@ -27,73 +42,58 @@ export const AUTOSALON_CONFIG = [
 		price: 1000000,
 	},
 	{
-		vehicleId: "oracle",
+		vehicleId: "oracle5",
 		vehicleName: "Mitsubishi Lancer Evo X",
 		price: 1000000,
 	},
 	{
-		vehicleId: "oracle",
+		vehicleId: "oracle6",
 		vehicleName: "Mitsubishi Lancer Evo X",
 		price: 1000000,
 	},
 	{
-		vehicleId: "oracle",
+		vehicleId: "oracle7",
 		vehicleName: "Mitsubishi Lancer Evo X",
 		price: 1000000,
 	},
 	{
-		vehicleId: "oracle",
+		vehicleId: "oracle8",
 		vehicleName: "Mitsubishi Lancer Evo X",
 		price: 1000000,
 	},
 	{
-		vehicleId: "oracle",
+		vehicleId: "oracle9",
 		vehicleName: "Mitsubishi Lancer Evo X",
 		price: 1000000,
 	},
 	{
-		vehicleId: "oracle",
+		vehicleId: "oracle123",
 		vehicleName: "Mitsubishi Lancer Evo X",
 		price: 1000000,
 	},
 	{
-		vehicleId: "oracle",
-		vehicleName: "Mitsubishi Lancer Evo X",
-		price: 1000000,
-	},
-	{
-		vehicleId: "oracle",
-		vehicleName: "Mitsubishi Lancer Evo X",
-		price: 1000000,
-	},
-	{
-		vehicleId: "oracle",
-		vehicleName: "Mitsubishi Lancer Evo X",
-		price: 1000000,
-	},
-	{
-		vehicleId: "oracle",
+		vehicleId: "oracle123123324",
 		vehicleName: "Mitsubishi Lancer Evo X",
 		price: 1000000,
 	},
 
 	{
-		vehicleId: "oracle",
+		vehicleId: "oracle2341",
 		vehicleName: "Mitsubishi Lancer Evo X",
 		price: 1000000,
 	},
 	{
-		vehicleId: "oracle",
+		vehicleId: "oracwefle",
 		vehicleName: "Mitsubishi Lancer Evo X",
 		price: 1000000,
 	},
 	{
-		vehicleId: "oracle",
+		vehicleId: "ora234rcle",
 		vehicleName: "Mitsubishi Lancer Evo X",
 		price: 1000000,
 	},
 	{
-		vehicleId: "oracle",
+		vehicleId: "oracfewle",
 		vehicleName: "Mitsubishi Lancer Evo X",
 		price: 1000000,
 	},

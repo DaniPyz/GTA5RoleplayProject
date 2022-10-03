@@ -27,6 +27,10 @@ declare global {
 	}
 }
 
+export const setView = window.setView;
+export const pushHud = window.pushHud;
+export const removeHud = window.removeHud;
+
 window.setView = (view) => {
 	store.dispatch({ type: 'ROOT_VIEW_SET', view });
 };

@@ -1,5 +1,5 @@
 import s from './Autosalon.module.scss';
-import { FC, useState, useCallback } from 'react';
+import { FC, useState, useCallback, useEffect } from 'react';
 import { ReactComponent as ExitVector } from './vectors/exit.svg';
 import { ReactComponent as CarVector } from './vectors/car.svg';
 import { ReactComponent as SearchVector } from './vectors/search.svg';
@@ -8,14 +8,23 @@ import cls from 'classnames';
 import { animated } from 'react-spring';
 import useMasterSpring from './Autosalon.spring';
 import { useKeyboard } from 'hooks';
+import { IViewControllerProps } from 'components/Router/Router';
+import { setView } from 'index';
 
+interface IAutosalonProps extends IViewControllerProps {}
 
-const Autosalon: FC = () => {
-	const [isOpened, setIsOpened] = useState(true);
+const Autosalon: FC<IAutosalonProps> = (props) => {
 	const [search, setSearch] = useState('');
 	const [selected, setSelected] = useState(0);
 	const [color, setColor] = useState(AUTOSALON_COLORS.length - 1);
-	const { leftBlockTransition, rightBlockTransition, hideTransition } = useMasterSpring({ isOpened });
+	const { leftBlockTransition, rightBlockTransition, hideTransition } = useMasterSpring(props);
+
+	useEffect(() => {
+		console.log('mount');
+		return () => {
+			console.log('unmount');
+		};
+	}, []);
 
 	// useEffect(() => {
 	// 	return () => {
@@ -26,7 +35,7 @@ const Autosalon: FC = () => {
 	useKeyboard(
 		'esc',
 		useCallback(() => {
-			setIsOpened(false);
+			setView(null);
 		}, [])
 	);
 
@@ -78,6 +87,7 @@ const Autosalon: FC = () => {
 												return name.includes(search.toLowerCase()) || id.includes(search.toLowerCase());
 											}).map((vehicle, index) => (
 												<div
+													key={vehicle.vehicleId}
 													onClick={() => setSelected(index)}
 													className={cls({ [s.item]: true, [s.selected]: index === selected })}
 												>
@@ -100,7 +110,7 @@ const Autosalon: FC = () => {
 							(style, isOpened) =>
 								isOpened && (
 									<animated.div style={style} className={s.rightColumn}>
-										<div className={s.exitLabel} onClick={() => setIsOpened(false)}>
+										<div className={s.exitLabel} onClick={() => setView(null)}>
 											<div className={s.text}>Выйти из салона</div>
 											<div className={s.icon}>
 												<ExitVector />
@@ -116,7 +126,7 @@ const Autosalon: FC = () => {
 
 												<div className={s.items}>
 													{AUTOSALON_VEHICLE_STATS.map((value) => (
-														<div className={s.item}>
+														<div className={s.item} key={value}>
 															<div className={s.prop}>{value}</div>
 															<div className={s.bar}>
 																<div className={s.progress} />
@@ -134,6 +144,7 @@ const Autosalon: FC = () => {
 												<div className={s.items}>
 													{AUTOSALON_COLORS.map((c, index) => (
 														<div
+															key={index}
 															onClick={() => setColor(index)}
 															className={cls({ [s.item]: true, [s.selected]: color === index })}
 															style={{ background: c }}
@@ -159,8 +170,4 @@ const Autosalon: FC = () => {
 	);
 };
 
-const withController = (Component: FC) => {
-	return Component;
-};
-
-export default withController(Autosalon);
+export default Autosalon;

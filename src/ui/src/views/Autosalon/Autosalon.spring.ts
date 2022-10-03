@@ -1,27 +1,34 @@
+import { IViewControllerProps } from 'components/Router/Router';
+import { useEffect } from 'react';
 import { useTransition } from 'react-spring';
 
-interface IAutosalonSpring {
-	isOpened: boolean;
-}
-
-const useMasterSpring = ({ isOpened }: IAutosalonSpring) => {
-	const hideTransition = useTransition(isOpened, {
+const useMasterSpring = ({ component }: IViewControllerProps) => {
+	const hideTransition = useTransition(component.render, {
 		from: { opacity: 0 },
 		leave: { opacity: 0 },
 		enter: { opacity: 1 }
 	});
 
-	const leftBlockTransition = useTransition(isOpened, {
+	const leftBlockTransition = useTransition(component.render, {
 		from: { x: '-55%', opacity: 0 },
 		leave: { x: '-55%', opacity: 0 },
 		enter: { x: '0', opacity: 1 }
 	});
 
-	const rightBlockTransition = useTransition(isOpened, {
+	const rightBlockTransition = useTransition(component.render, {
 		from: { x: '55%', opacity: 0 },
 		leave: { x: '55%', opacity: 0 },
-		enter: { x: '0', opacity: 1 }
+		enter: { x: '0', opacity: 1 },
+		onRest: () => {
+			if (!component.render && component.isInUnmountQueue) {
+				component.fetchUnmount();
+			}
+		}
 	});
+
+	useEffect(() => {
+		component.delayUnmount();
+	}, [component, component.render]);
 
 	return { leftBlockTransition, rightBlockTransition, hideTransition };
 };
