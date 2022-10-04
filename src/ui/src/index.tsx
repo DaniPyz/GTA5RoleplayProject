@@ -1,14 +1,16 @@
-import { createClientProxy, createServerProxy } from 'bridge/proxy';
-import type { ServerServices } from '../../server/services';
-import type { ClientServices } from '../../client/services';
-import ReactDOM from 'react-dom/client';
-import { Provider } from 'react-redux';
-import { AppDispatch, store } from 'store';
-import { Temp } from 'views';
-import { Router } from 'components';
-import rpc from 'rage-rpc';
-import React from 'react';
 import './styles/index.scss';
+
+import { AppDispatch, store } from 'store';
+import { Fraction, Temp } from 'views';
+import { createClientProxy, createServerProxy } from 'bridge/proxy';
+
+import type { ClientServices } from '../../client/services';
+import { Provider } from 'react-redux';
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import { Router } from 'components';
+import type { ServerServices } from '../../server/services';
+import rpc from 'rage-rpc';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 
@@ -19,12 +21,14 @@ let Temp2 = Temp;
 
 const hudList = {
 	Temp,
-	Temp2
+	Temp2,
+	
 };
 
 const views = {
 	Temp,
-	Temp2
+	Temp2,
+	Fraction
 };
 
 export type View = keyof typeof views | null;
