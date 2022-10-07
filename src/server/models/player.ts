@@ -17,13 +17,9 @@ declare global {
 	}
 }
 
-export const isPlayer = (entity: EntityMp): entity is PlayerMp => {
-	if (entity.type === RageEnums.EntityType.PLAYER) {
-		return true;
-	} else {
-		return false;
-	}
-};
+export const isPlayer = (entity: EntityMp): entity is PlayerMp => entity.type === RageEnums.EntityType.PLAYER;
+
+console.log(RageEnums.EntityType.PLAYER);
 
 mp.events.add('entityCreated', (player) => {
 	if (!isPlayer(player)) return;
