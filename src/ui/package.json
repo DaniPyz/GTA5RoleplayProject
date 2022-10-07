@@ -7,6 +7,8 @@
 		"keycode": "^2.2.1",
 		"rage-rpc": "^0.4.0",
 		"react": "^18.2.0",
+		"react-dnd": "^16.0.1",
+		"react-dnd-html5-backend": "^16.0.1",
 		"react-dom": "^18.2.0",
 		"react-redux": "^8.0.4",
 		"react-scripts": "5.0.1",
@@ -14,6 +16,7 @@
 		"redux": "^4.2.0"
 	},
 	"devDependencies": {
+		"@redux-devtools/extension": "^3.2.3",
 		"@types/node": "^16.11.62",
 		"@types/react": "^18.0.21",
 		"@types/react-dom": "^18.0.6",

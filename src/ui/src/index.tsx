@@ -1,20 +1,13 @@
-import { createClientProxy, createServerProxy } from 'bridge/proxy';
-import type { ServerServices } from '../../server/services';
-import type { ClientServices } from '../../client/services';
-import ReactDOM from 'react-dom/client';
-import { Provider } from 'react-redux';
-import { AppDispatch, store } from 'store';
-import { Router } from 'components';
-import rpc from 'rage-rpc';
-import React from 'react';
 import './styles/index.scss';
-import { HUD_LIST, VIEW_LIST } from 'constant';
 
 import { AppDispatch, store } from 'store';
 import { Fraction, Temp } from 'views';
+import { HUD_LIST, VIEW_LIST } from 'constant';
 import { createClientProxy, createServerProxy } from 'bridge/proxy';
 
 import type { ClientServices } from '../../client/services';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 import { Provider } from 'react-redux';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
@@ -44,6 +37,7 @@ export const pushHud = window.pushHud;
 export const removeHud = window.removeHud;
 
 window.setView = (view) => {
+	console.log(view)
 	store.dispatch({ type: 'ROOT_VIEW_SET', view });
 };
 
@@ -76,7 +70,9 @@ rpc.on('internal.removeHud', (hud: Hud) => {
 root.render(
 	<React.StrictMode>
 		<Provider store={store}>
-			<Router hudList={HUD_LIST} views={VIEW_LIST} />
+			<DndProvider backend={HTML5Backend}>
+				<Router hudList={HUD_LIST} views={VIEW_LIST} />
+			</DndProvider>
 		</Provider>
 	</React.StrictMode>
 );

@@ -936,44 +936,72 @@ function __metadata(metadataKey, metadataValue) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(metadataKey, metadataValue);
 }
 
-let Faction = class Faction extends Service {
-    awdawdawd() { }
-    awadawd() { }
-    static awdawd() { }
+var Faction_1;
+const AUTOSALON_LIST = [
+    {
+        name: 'San Andreas',
+        pos: new mp.Vector3(0, 100, 100),
+        // vehiclePos: new mp.Vector3(-43.445411682128906, -1096.7337646484375, 26.422353744506836),
+        vehicleHeading: 195
+    }
+];
+const autosalonShapes = new Map();
+// export interface IFaction {
+// }
+let Faction = Faction_1 = class Faction extends Service {
     constructor() {
         super();
-        this.services;
-    }
-    async rpcGetUserdAWD() {
-        return;
-    }
-    async rpcGetUser(player) {
-        player.dispatch({
-            type: "ROOT_HUD_PUSH",
-            hud: "Temp",
+        // /**
+        //  * @param {PlayerServer} player
+        //  * @param {ColshapeMp} colshape
+        //  * @return {void}
+        //  */
+        Object.defineProperty(this, "autosalonShapes", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: void 0
         });
-        player.pushHud("Temp");
-        player.pushHud("Temp2");
-        player.setView("Temp");
-        player.setView(null);
-        player.removeHud("Temp2");
-        // let s = await player.clientProxy.temp.awdadw();
-        return player;
+        this.services;
+        this.autosalonShapes = new Map();
+    }
+    // @Service.access
+    static enterInAutosalon(player, colshape) {
+        console.log('Я сработал');
+        const autosalon = autosalonShapes.get(colshape);
+        if (autosalon) {
+            player.setView(null);
+        }
     }
 };
-__decorate([
-    Service.access,
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
-    __metadata("design:returntype", Promise)
-], Faction.prototype, "rpcGetUserdAWD", null);
-__decorate([
-    Service.access,
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
-    __metadata("design:returntype", Promise)
-], Faction.prototype, "rpcGetUser", null);
-Faction = __decorate([
+// @Service.access
+// public async rpcGetUserdAWD() {
+// 	return;
+// }
+// @Service.access
+// public async rpcGetUser(player: PlayerServer): Promise<PlayerServer> {
+// 	player.dispatch({
+// 		type: 'ROOT_HUD_PUSH',
+// 		hud: 'Temp'
+// 	});
+// 	player.pushHud();
+// 	player.pushHud('Temp2');
+// 	player.setView('Temp');
+// 	player.setView(null);
+// 	player.removeHud('Temp2');
+// 	// let s = await player.clientProxy.temp.awdadw();
+// 	return player;
+// }
+(() => {
+    console.log('Я загрузился');
+    for (let autosalon of AUTOSALON_LIST) {
+        const autosalonShape = mp.colshapes.newTube(autosalon.pos.x, autosalon.pos.y, autosalon.pos.z, 1000, 20, 0);
+        mp.blips.new(1, autosalon.pos);
+        autosalonShapes.set(autosalonShape, autosalon);
+    }
+    mp.events.add('playerEnterColshape', (player, colshape) => Faction_1.enterInAutosalon(player, colshape));
+})();
+Faction = Faction_1 = __decorate([
     Service.namespace,
     __metadata("design:paramtypes", [])
 ], Faction);

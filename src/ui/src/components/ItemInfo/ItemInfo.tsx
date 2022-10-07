@@ -14,7 +14,7 @@ const ItemInfo: FC<Props> = ({ img, name, weight }: Props) => {
     <div className={s.ItemInfo}>
       <div className={s.header}>
         <section>
-          <img src={img} alt='' />
+          <img src={require(`./img/${img}`)} alt='' />
         </section>
         <div>
           <h1>{name}</h1>

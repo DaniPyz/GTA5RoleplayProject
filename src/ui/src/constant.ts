@@ -1,4 +1,4 @@
-import { Autosalon, Temp } from 'views';
+import { Autosalon, Fraction, Temp } from 'views';
 import { Hud, View } from 'index';
 
 export const DEFAULT_VIEW: View = 'Fraction';
@@ -10,5 +10,6 @@ export const HUD_LIST = {
 
 export const VIEW_LIST = {
 	Temp,
-	Autosalon
+	Autosalon,
+	Fraction
 };

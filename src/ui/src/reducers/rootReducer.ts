@@ -1,6 +1,7 @@
+import { Hud, View } from '../index';
+
 import { DEFAULT_HUD_LIST } from '../constant';
 import { DEFAULT_VIEW } from '../constant';
-import { Hud, View } from '../index';
 
 type RootReducerActions = ArrayToUnion<
 	[
@@ -22,6 +23,7 @@ type RootReducerActions = ArrayToUnion<
 interface IRootState {
 	view: View | null;
 	hudList: Hud[];
+	
 }
 
 const initial: IRootState = {
