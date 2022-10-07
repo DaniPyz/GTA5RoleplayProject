@@ -1900,3 +1900,53 @@ new typeorm.DataSource({
     migrations: [],
     subscribers: []
 });
+
+const createClientProxy = (rpc) => {
+    const clientProxyCache = new Map();
+    return new Proxy({}, {
+        get(_, service) {
+            if (clientProxyCache.has(service)) {
+                return clientProxyCache.get(service);
+            }
+            else {
+                const proxy = new Proxy({}, {
+                    get(_, event) {
+                        const call = (noRet, ...args) => {
+                            const eventName = `${service.capitalize()}${event.capitalize()}`;
+                            return rpc.callClient(eventName, args, noRet ? { noRet: true } : { timeout: 60 * 1000, noRet: false });
+                        };
+                        const f = call.bind(null, false);
+                        f.noRet = (...args) => {
+                            call(true, ...args);
+                        };
+                        return f;
+                    }
+                });
+                clientProxyCache.set(service, proxy);
+                return proxy;
+            }
+        }
+    });
+};
+
+const isPlayer = (entity) => entity.type === "player" /* RageEnums.EntityType.PLAYER */;
+console.log("player" /* RageEnums.EntityType.PLAYER */);
+mp.events.add('entityCreated', (player) => {
+    if (!isPlayer(player))
+        return;
+    player.clientProxy = createClientProxy({
+        callClient: (name, args, opt) => callClient(player, name, args, opt)
+    });
+    player.dispatch = (action) => {
+        triggerBrowsers(player, 'internal.dispatch', action);
+    };
+    player.setView = (view) => {
+        triggerBrowsers(player, 'internal.setView', view);
+    };
+    player.pushHud = (hud) => {
+        triggerBrowsers(player, 'internal.pushHud', hud);
+    };
+    player.removeHud = (hud) => {
+        triggerBrowsers(player, 'internal.removeHud', hud);
+    };
+});

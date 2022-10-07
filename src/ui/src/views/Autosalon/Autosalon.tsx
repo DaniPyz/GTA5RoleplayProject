@@ -7,7 +7,7 @@ import { AUTOSALON_VEHICLE_STATS, AUTOSALON_CONFIG, AUTOSALON_COLORS } from './A
 import cls from 'classnames';
 import { animated } from 'react-spring';
 import useMasterSpring from './Autosalon.spring';
-import { useKeyboard } from 'hooks';
+import { useKeyboard, useViewController } from 'hooks';
 import { setView } from 'index';
 
 const Autosalon: FC = () => {
@@ -15,6 +15,14 @@ const Autosalon: FC = () => {
 	const [selected, setSelected] = useState(0);
 	const [color, setColor] = useState(AUTOSALON_COLORS.length - 1);
 	const { leftBlockTransition, rightBlockTransition, hideTransition } = useMasterSpring();
+
+	const { render } = useViewController();
+
+	useKeyboard('esc', () => {
+		if (!render) return;
+
+		// some code
+	});
 
 	useEffect(() => {
 		console.log('mount');
