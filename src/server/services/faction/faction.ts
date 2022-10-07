@@ -14,27 +14,26 @@ const autosalonShapes = new Map();
 // }
 @Service.namespace
 class Faction extends Service {
-	// /**
-	//  * @param {PlayerServer} player
-	//  * @param {ColshapeMp} colshape
-	//  * @return {void}
-	//  */
 	autosalonShapes: Map<string, string>;
 
 	constructor() {
 		super();
-		this.services;
 		this.autosalonShapes = new Map();
+
+		for (let autosalon of AUTOSALON_LIST) {
+			const autosalonShape = mp.colshapes.newTube(autosalon.pos.x, autosalon.pos.y, autosalon.pos.z, 1000, 20, 0);
+			mp.blips.new(1, autosalon.pos);
+			autosalonShapes.set(autosalonShape, autosalon);
+		}
+		mp.events.add('playerEnterColshape', (player: PlayerServer, colshape: RageEnums.ColshapeType) => this.enterInAutosalon(player, colshape));
 	}
 
 	// @Service.access
-	static enterInAutosalon(player: PlayerServer, colshape: RageEnums.ColshapeType): void {
-		console.log('Я сработал');
-
+	public enterInAutosalon(player: PlayerServer, colshape: RageEnums.ColshapeType): void {
 		const autosalon = autosalonShapes.get(colshape);
 
 		if (autosalon) {
-				player.setView(null);
+			player.setView(null);
 		}
 	}
 
@@ -58,15 +57,6 @@ class Faction extends Service {
 
 	// 	return player;
 	// }
-	static {
-		console.log('Я загрузился');
-		for (let autosalon of AUTOSALON_LIST) {
-			const autosalonShape = mp.colshapes.newTube(autosalon.pos.x, autosalon.pos.y, autosalon.pos.z, 1000, 20, 0);
-			mp.blips.new(1, autosalon.pos);
-			autosalonShapes.set(autosalonShape, autosalon);
-		}
-		mp.events.add('playerEnterColshape', (player: PlayerServer, colshape: RageEnums.ColshapeType) => Faction.enterInAutosalon(player, colshape));
-	}
 }
 
 export default Faction;
