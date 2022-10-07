@@ -936,7 +936,6 @@ function __metadata(metadataKey, metadataValue) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(metadataKey, metadataValue);
 }
 
-var Faction_1;
 const AUTOSALON_LIST = [
     {
         name: 'San Andreas',
@@ -948,60 +947,32 @@ const AUTOSALON_LIST = [
 const autosalonShapes = new Map();
 // export interface IFaction {
 // }
-let Faction = Faction_1 = class Faction extends Service {
+let Faction = class Faction extends Service {
     constructor() {
         super();
-        // /**
-        //  * @param {PlayerServer} player
-        //  * @param {ColshapeMp} colshape
-        //  * @return {void}
-        //  */
         Object.defineProperty(this, "autosalonShapes", {
             enumerable: true,
             configurable: true,
             writable: true,
             value: void 0
         });
-        this.services;
         this.autosalonShapes = new Map();
+        for (let autosalon of AUTOSALON_LIST) {
+            const autosalonShape = mp.colshapes.newTube(autosalon.pos.x, autosalon.pos.y, autosalon.pos.z, 1000, 20, 0);
+            mp.blips.new(1, autosalon.pos);
+            autosalonShapes.set(autosalonShape, autosalon);
+        }
+        mp.events.add('playerEnterColshape', (player, colshape) => this.enterInAutosalon(player, colshape));
     }
     // @Service.access
-    static enterInAutosalon(player, colshape) {
-        console.log('Я сработал');
+    enterInAutosalon(player, colshape) {
         const autosalon = autosalonShapes.get(colshape);
         if (autosalon) {
             player.setView(null);
         }
     }
 };
-// @Service.access
-// public async rpcGetUserdAWD() {
-// 	return;
-// }
-// @Service.access
-// public async rpcGetUser(player: PlayerServer): Promise<PlayerServer> {
-// 	player.dispatch({
-// 		type: 'ROOT_HUD_PUSH',
-// 		hud: 'Temp'
-// 	});
-// 	player.pushHud();
-// 	player.pushHud('Temp2');
-// 	player.setView('Temp');
-// 	player.setView(null);
-// 	player.removeHud('Temp2');
-// 	// let s = await player.clientProxy.temp.awdadw();
-// 	return player;
-// }
-(() => {
-    console.log('Я загрузился');
-    for (let autosalon of AUTOSALON_LIST) {
-        const autosalonShape = mp.colshapes.newTube(autosalon.pos.x, autosalon.pos.y, autosalon.pos.z, 1000, 20, 0);
-        mp.blips.new(1, autosalon.pos);
-        autosalonShapes.set(autosalonShape, autosalon);
-    }
-    mp.events.add('playerEnterColshape', (player, colshape) => Faction_1.enterInAutosalon(player, colshape));
-})();
-Faction = Faction_1 = __decorate([
+Faction = __decorate([
     Service.namespace,
     __metadata("design:paramtypes", [])
 ], Faction);
