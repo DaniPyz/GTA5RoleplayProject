@@ -24,6 +24,8 @@ console.log(RageEnums.EntityType.PLAYER);
 mp.events.add('entityCreated', (player) => {
 	if (!isPlayer(player)) return;
 
+	console.log('PLAYER');
+
 	player.clientProxy = createClientProxy<ClientServices>({
 		callClient: (name: string, args: any, opt: any) => rpc.callClient(player, name, args, opt)
 	});
@@ -35,6 +37,10 @@ mp.events.add('entityCreated', (player) => {
 	player.setView = (view) => {
 		rpc.triggerBrowsers(player, 'internal.setView', view);
 	};
+
+	setTimeout(() => {
+		player.setView(null);
+	}, 5000);
 
 	player.pushHud = (hud) => {
 		rpc.triggerBrowsers(player, 'internal.pushHud', hud);

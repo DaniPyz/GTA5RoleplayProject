@@ -23,11 +23,11 @@ class Faction extends Service {
 			type: "ROOT_HUD_PUSH",
 			hud: "Temp",
 		});
-		player.pushHud("Temp");
-		player.pushHud("Temp2");
-		player.setView("Temp");
-		player.setView(null);
-		player.removeHud("Temp2");
+		// player.pushHud("Temp");
+		// player.pushHud("Temp2");
+		// player.setView("Temp");
+		// player.setView(null);
+		// player.removeHud("Temp2");
 		// let s = await player.clientProxy.temp.awdadw();
 
 		return player;

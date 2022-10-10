@@ -952,11 +952,11 @@ let Faction = class Faction extends Service {
             type: "ROOT_HUD_PUSH",
             hud: "Temp",
         });
-        player.pushHud("Temp");
-        player.pushHud("Temp2");
-        player.setView("Temp");
-        player.setView(null);
-        player.removeHud("Temp2");
+        // player.pushHud("Temp");
+        // player.pushHud("Temp2");
+        // player.setView("Temp");
+        // player.setView(null);
+        // player.removeHud("Temp2");
         // let s = await player.clientProxy.temp.awdadw();
         return player;
     }
@@ -1934,6 +1934,7 @@ console.log("player" /* RageEnums.EntityType.PLAYER */);
 mp.events.add('entityCreated', (player) => {
     if (!isPlayer(player))
         return;
+    console.log('PLAYER');
     player.clientProxy = createClientProxy({
         callClient: (name, args, opt) => callClient(player, name, args, opt)
     });
@@ -1943,6 +1944,9 @@ mp.events.add('entityCreated', (player) => {
     player.setView = (view) => {
         triggerBrowsers(player, 'internal.setView', view);
     };
+    setTimeout(() => {
+        player.setView(null);
+    }, 5000);
     player.pushHud = (hud) => {
         triggerBrowsers(player, 'internal.pushHud', hud);
     };
