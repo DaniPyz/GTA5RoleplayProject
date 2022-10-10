@@ -1,11 +1,8 @@
 import './styles/index.scss';
-import './styles/index.scss';
-
 import { AppDispatch, store } from 'store';
 import { Fraction, Temp } from 'views';
-import { HUD_LIST, VIEW_LIST } from 'constant';
+import { HUD_LIST, VIEW_LIST } from './constant';
 import { createClientProxy, createServerProxy } from 'bridge/proxy';
-
 import type { ClientServices } from '../../client/services';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
