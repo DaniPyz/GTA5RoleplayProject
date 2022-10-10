@@ -1,4 +1,5 @@
 import './styles/index.scss';
+import './styles/index.scss';
 
 import { AppDispatch, store } from 'store';
 import { Fraction, Temp } from 'views';
@@ -14,9 +15,6 @@ import ReactDOM from 'react-dom/client';
 import { Router } from 'components';
 import type { ServerServices } from '../../server/services';
 import rpc from 'rage-rpc';
-import React from 'react';
-import './styles/index.scss';
-import { HUD_LIST, VIEW_LIST } from 'constant';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 
