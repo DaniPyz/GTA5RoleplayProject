@@ -38,9 +38,17 @@ class Faction extends Service {
 	}
 
 	// @Service.access
-	// public async rpcGetUserdAWD() {
-	// 	return;
-	// }
+	// public async rpcGetUser(player: PlayerServer): Promise<PlayerServer> {
+	// 	player.dispatch({
+	// 		type: "ROOT_HUD_PUSH",
+	// 		hud: "Temp",
+	// 	});
+		// player.pushHud("Temp");
+		// player.pushHud("Temp2");
+		// player.setView("Temp");
+		// player.setView(null);
+		// player.removeHud("Temp2");
+		// let s = await player.clientProxy.temp.awdadw();
 
 	// @Service.access
 	// public async rpcGetUser(player: PlayerServer): Promise<PlayerServer> {

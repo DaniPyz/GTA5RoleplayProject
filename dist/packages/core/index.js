@@ -1933,6 +1933,7 @@ console.log("player" /* RageEnums.EntityType.PLAYER */);
 mp.events.add('entityCreated', (player) => {
     if (!isPlayer(player))
         return;
+    console.log('PLAYER');
     player.clientProxy = createClientProxy({
         callClient: (name, args, opt) => callClient(player, name, args, opt)
     });
@@ -1942,6 +1943,9 @@ mp.events.add('entityCreated', (player) => {
     player.setView = (view) => {
         triggerBrowsers(player, 'internal.setView', view);
     };
+    setTimeout(() => {
+        player.setView(null);
+    }, 5000);
     player.pushHud = (hud) => {
         triggerBrowsers(player, 'internal.pushHud', hud);
     };

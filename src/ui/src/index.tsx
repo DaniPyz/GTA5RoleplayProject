@@ -14,6 +14,9 @@ import ReactDOM from 'react-dom/client';
 import { Router } from 'components';
 import type { ServerServices } from '../../server/services';
 import rpc from 'rage-rpc';
+import React from 'react';
+import './styles/index.scss';
+import { HUD_LIST, VIEW_LIST } from 'constant';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 
@@ -31,10 +34,6 @@ declare global {
 		removeHud(hud: Hud): void;
 	}
 }
-
-export const setView = window.setView;
-export const pushHud = window.pushHud;
-export const removeHud = window.removeHud;
 
 window.setView = (view) => {
 	console.log(view)
@@ -76,3 +75,7 @@ root.render(
 		</Provider>
 	</React.StrictMode>
 );
+
+export const setView = window.setView;
+export const pushHud = window.pushHud;
+export const removeHud = window.removeHud;
