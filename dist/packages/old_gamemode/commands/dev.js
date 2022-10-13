@@ -24,11 +24,11 @@ try {
         },
 
         'savepos': (player, str, args) => {
-            if (!user.isAdminLoggedText(player, 12)) return
+            // if (!user.isAdminLoggedText(player, 12)) return
             if (!str.length) return chat.cmd(player, '/savepos [name]')
 
             const pos = player.position
-            fs.appendFile('saved/savepos.txt', `Position: ${player.position.x}, ${player.position.y}, ${player.position.z}, ${player.heading} - ${str}\r\n`, err => {
+            fs.appendFile('./savepos.txt', `Position: ${player.position.x}, ${player.position.y}, ${player.position.z}, ${player.heading} - ${str}\r\n`, err => {
                 if (err) user.notify(player, `Не удалось сохранить: ${err}`, 'error')
                 else user.notify(player, `Позиция сохранена (${str})`)
             });

@@ -1,45 +1,47 @@
-import React, { FC, useState } from 'react'
-import { useDrag, useDrop } from 'react-dnd';
-
+import { DragManager } from './DragManager';
 import cls from 'classnames';
 import s from './ItemCell.module.scss';
-import { store } from 'store';
 import { useAppDispatch } from 'hooks';
 
 interface Props {
   index: number,
-  selected?: number | null,
+  selectedCell?: number | null,
   img?: string,
   count?: number,
   change?: (index: number) => void;
   selectedFilter: number
 }
-const ItemCell = ({ index, selected, img, change, selectedFilter }: Props) => {
+
+const ItemCell = ({ index, change, selectedCell = null, img, selectedFilter }: Props) => {
+
   const dispatch = useAppDispatch();
+  let dragging = false
+  DragManager.onDragCancel = function (dragObject) {
+    dragObject.avatar.rollback();
+  };
 
 
-  const [{ isOver }, drop] = useDrop({
-    accept: "image",
-    drop: (item: any) => {
-      if (change && item.id === item.idOfSelected) {
-        change(index)
-      }
+  DragManager.onDragEnd = function (dragObject, dropElem) {
+    dragObject.elem.style.display = 'none';
+    dispatch({ type: 'WAREHOUSE_CHANGE', data: { index: parseInt(dragObject.initId), indexNew: parseInt(dropElem.id), selectedFilter: selectedFilter } });
+    if (change && parseInt(dragObject.initId) === selectedCell) {
 
-      dispatch({ type: 'WAREHOUSE_CHANGE', data: { index: item.id, indexNew: index, selectedFilter: selectedFilter } });
-    },
-    collect: (monitor: any) => ({
-      isOver: !!monitor.isOver(),
-    }),
-  })
-  const [{ isDragging }, drag] = useDrag({
-    type: "image",
-    item: { id: index, idOfSelected: selected },
-    collect: (monitor: any) => ({
-      isDragging: !!monitor.isDragging()
-      // data[0].isDragging: !!monitor.isDragging(),
-    }),
-  })
+      let newId = parseInt(dropElem.id)
+      change(newId)
+    }
+    
+  };
+  DragManager.onDragInit = function (status: { status: boolean }) {
 
+    if (status.status) {
+
+
+      dragging = status.status
+    } else {
+
+      dragging = false
+    }
+  };
 
 
 
@@ -49,14 +51,24 @@ const ItemCell = ({ index, selected, img, change, selectedFilter }: Props) => {
 
       {
         img ? (
-          <div ref={drag}
-            className={cls({ [s.ItemCell]: true, [s.ItemCell_exist]: img && index !== selected, [s.ItemCell_selected]: index === selected, [s.ItemCell_element]: isDragging })} >
+          <div
+            className={"draggable " + cls({ [s.ItemCell]: true, [s.ItemCell_exist]: img && index !== selectedCell, [s.ItemCell_selected]: index === selectedCell, [s.ItemCell_element]: dragging })}
+
+            // onMouseDown={onClickDown}
+            id={index.toString()}
+            onDragStart={() => {
+              return false;
+            }}
+
+          >
+
             {
-              img ? <img src={require(`../ItemInfo/img/${img}`)} alt='' /> : ''
+
+              img ? <img className="" src={require(`../ItemInfo/img/${img}`)} alt='' /> : ''
             }
           </div >
         ) : (
-          <div ref={drop} className={cls({ [s.ItemCell]: true, [s.ItemCell_exist]: img && index !== selected, [s.ItemCell_selected]: index === selected, [s.ItemCell_target]: isOver })} >
+          <div className={'droppable ' + cls({ [s.ItemCell]: true, [s.ItemCell_exist]: img && index !== selectedCell, [s.ItemCell_selected]: index === selectedCell, [s.ItemCell_target]: false })} id={index.toString()}>
             {
               img ? <img src={require(`../ItemInfo/img/${img}`)} alt='' /> : ''
             }

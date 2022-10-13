@@ -939,8 +939,7 @@ function __metadata(metadataKey, metadataValue) {
 const AUTOSALON_LIST = [
     {
         name: 'San Andreas',
-        pos: new mp.Vector3(0, 100, 100),
-        // vehiclePos: new mp.Vector3(-43.445411682128906, -1096.7337646484375, 26.422353744506836),
+        pos: new mp.Vector3(-20.840431213378906, -699.7188720703125, 250.41355895996094),
         vehicleHeading: 195
     }
 ];
@@ -958,8 +957,9 @@ let Faction = class Faction extends Service {
         });
         this.autosalonShapes = new Map();
         for (let autosalon of AUTOSALON_LIST) {
-            const autosalonShape = mp.colshapes.newTube(autosalon.pos.x, autosalon.pos.y, autosalon.pos.z, 1000, 20, 0);
+            const autosalonShape = mp.colshapes.newSphere(autosalon.pos.x, autosalon.pos.y, autosalon.pos.z, 2, 0);
             mp.blips.new(1, autosalon.pos);
+            mp.markers.new(1, autosalon.pos, 1);
             autosalonShapes.set(autosalonShape, autosalon);
         }
         mp.events.add('playerEnterColshape', (player, colshape) => this.enterInAutosalon(player, colshape));
@@ -968,7 +968,8 @@ let Faction = class Faction extends Service {
     enterInAutosalon(player, colshape) {
         const autosalon = autosalonShapes.get(colshape);
         if (autosalon) {
-            player.setView(null);
+            player.call('server::user:cursor', [true, false]);
+            player.setView('Fraction');
         }
     }
 };
@@ -1933,7 +1934,6 @@ console.log("player" /* RageEnums.EntityType.PLAYER */);
 mp.events.add('entityCreated', (player) => {
     if (!isPlayer(player))
         return;
-    console.log('PLAYER');
     player.clientProxy = createClientProxy({
         callClient: (name, args, opt) => callClient(player, name, args, opt)
     });
@@ -1943,9 +1943,10 @@ mp.events.add('entityCreated', (player) => {
     player.setView = (view) => {
         triggerBrowsers(player, 'internal.setView', view);
     };
-    setTimeout(() => {
-        player.setView(null);
-    }, 5000);
+    // setTimeout(() => {
+    // 	console.log('Отработал')
+    // 	player.setView('Fraction');
+    // }, 10000);
     player.pushHud = (hud) => {
         triggerBrowsers(player, 'internal.pushHud', hud);
     };
