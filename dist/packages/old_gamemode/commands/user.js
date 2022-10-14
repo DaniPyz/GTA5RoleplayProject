@@ -74,7 +74,7 @@ try {
             let id = player.dimension - 50
 
             let ServerId = houses.getServerID(id)
-
+            console.log(id, ServerId)
             if (houses.getOwner(ServerId).id === user.getID(player) && houses.getOwner(ServerId).id !== 0) {
                 user.toggleHud(player, false)
                 user.showHouseDialog(player, 'info', 'Квартира', id, "Люкс", 10, houses.getOwner(id).name, 20, 70, [`${houses.getLocked(ServerId) ? 'Открыть' : 'Закрыть'}`, 'Мебель', 'Открыть шкаф', 'Продать'], 1000)

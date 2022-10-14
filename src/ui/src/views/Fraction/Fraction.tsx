@@ -1,3 +1,4 @@
+import { DndProvider, useDrag, useDrop } from 'react-dnd';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { client, server } from 'index';
 import { useAppDispatch, useAppSelector, useKeyboard } from 'hooks';
@@ -14,13 +15,15 @@ import { setView } from 'index';
 import useMasterSpring from './Fraction.spring';
 
 const Fraction: FC = () => {
+	const dispatch = useAppDispatch();
 	const state = useAppSelector((state) => state.warehouseState);
 
+	const [hasDropped, setHasDropped] = useState(false);
 	const [fractionId, setFractionId] = useState(0);
 	const [selected, setSelected] = useState(0);
 	const [selectedCell, setSelectedCell] = useState<number | null>(null);
 	const { hideTransition } = useMasterSpring();
-	
+
 	useKeyboard(
 		'esc',
 		useCallback(() => {
@@ -51,13 +54,12 @@ const Fraction: FC = () => {
 	);
 
 	const changeSelection = (index: number) => {
-		console.log('Working', index)
 		setSelectedCell(index);
 	};
 
-	
+	// dispatch({ type: 'ROOT_HUD_PUSH', hud });
 	return hideTransition(
-		(style, isOpened) =>
+		(style: any, isOpened: boolean) =>
 			isOpened && (
 				<animated.div style={style} className={s.fraction}>
 					<>
@@ -98,20 +100,15 @@ const Fraction: FC = () => {
 									<div style={{ width: ` 8%` }} />
 								</div>
 							</div>
-							<div className={s.cells}
-							>
-								{Array.from({ length: 72 }, (_, index: number) => {
-									{
-									}
+							<div className={s.cells}>
+								{Array.from({ length: 72 }, (_, index) => {
 									if (state.warehouse && state.warehouse[selected] && state.warehouse[selected][index]) {
-										// console.log(selected, index, selectedCell, state.warehouse[selected][index]!.img)
-
 										return (
-											<section key={index} onClick={() => changeSelection(index)}>
+											<section key={index} onClick={() => setSelectedCell(index)}>
 												<ItemCell
 													index={index}
 													change={changeSelection}
-													selectedCell={selectedCell}
+													selected={selectedCell}
 													img={state.warehouse[selected][index]!.img}
 													count={state.warehouse[selected][index]!.count}
 													selectedFilter={selected}
@@ -120,19 +117,15 @@ const Fraction: FC = () => {
 										);
 									} else {
 										return (
-											<section key={index + 'new'} onClick={() => {
-
-												setSelectedCell(null)
-
-
-											}}>
-												<ItemCell index={index} selectedCell={selectedCell} change={changeSelection} selectedFilter={selected} />
+											<section key={index + 'new'} onClick={() => setSelectedCell(null)}>
+												<ItemCell index={index} change={changeSelection} selectedFilter={selected} />
 											</section>
 										);
 									}
 								})}
 							</div>
 						</div>
+						{}
 						{selectedCell !== null ? (
 							<div className={s.infoDialog}>
 								<ItemInfo
