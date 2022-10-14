@@ -1,8 +1,10 @@
-import { Service } from 'bridge';
+import { Ems } from './faction';
 import { Faction } from './faction';
+import { Service } from 'bridge';
 
 const services = {
-	Faction
+	Faction,
+	Ems
 };
 
 Service.combineServices(services);

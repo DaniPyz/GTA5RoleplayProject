@@ -1,3 +1,4 @@
+import { AppDataSource } from 'data-source';
 import { Service } from 'bridge';
 const AUTOSALON_LIST = [
 	{
@@ -8,9 +9,15 @@ const AUTOSALON_LIST = [
 ];
 
 const autosalonShapes = new Map();
-// export interface IFaction {
-
-// }
+export interface IGivePlayerItem {
+	player: PlayerServer;
+	id: number;
+	count: number;
+	data: {};
+	onlyInv: boolean;
+	customWeight: number;
+	canStack: boolean;
+}
 @Service.namespace
 class Faction extends Service {
 	autosalonShapes: Map<string, string>;
@@ -29,42 +36,56 @@ class Faction extends Service {
 	}
 
 	// @Service.access
-	public enterInAutosalon(player: PlayerServer, colshape: RageEnums.ColshapeType): void {
+	public async enterInAutosalon(player: PlayerServer, colshape: RageEnums.ColshapeType): Promise<void> {
 		const autosalon = autosalonShapes.get(colshape);
+		const users = AppDataSource.getRepository('Fraction');
+		const user = await users.findOneBy({
+			id: 1
+		});
+		if (user === null) return;
 
 		if (autosalon) {
 			player.call('server::user:cursor', [true, false]);
+			player.dispatch({ type: 'WAREHOUSE_ADD', warehouse: user.warehouse });
 			player.setView('Fraction');
 		}
 	}
+	// player, id, count = 1, data = {}, onlyInv = false, customWeight = 0, canStack = false
+
+	@Service.access
+	public async rpcGivePlayerItem(player: PlayerServer, id: number, _fractionId: number, selected: number, selectedCell: number): Promise<void> {
+		const users = AppDataSource.getRepository('Fraction');
+		const user = await users.findOneBy({
+			id: 1
+		});
+		if (user === null) return;
+
+		let newData = user.warehouse;
+		newData[selected][selectedCell] = null;
+		user.warehouse = newData;
+		await users.save(user);
+		player.dispatch({ type: 'WAREHOUSE_ADD', warehouse: newData });
+
+		mp.events.call('serverNew::give:item', player, id, 1, {}, false, 0, false);
+	}
 
 	// @Service.access
-	// public async rpcGetUser(player: PlayerServer): Promise<PlayerServer> {
-	// 	player.dispatch({
-	// 		type: "ROOT_HUD_PUSH",
-	// 		hud: "Temp",
-	// 	});
-	// player.pushHud("Temp");
-	// player.pushHud("Temp2");
-	// player.setView("Temp");
-	// player.setView(null);
-	// player.removeHud("Temp2");
-	// let s = await player.clientProxy.temp.awdadw();
-
+	// public async rpcDropItem({ player, id }: IGivePlayerItem): Promise<void> {
+	// 	console.log(id);
+	// 	mp.events.call('serverNew::give:item', player, id, 1, {}, false, 0, false);
+	// }
 	// @Service.access
 	// public async rpcGetUser(player: PlayerServer): Promise<PlayerServer> {
 	// 	player.dispatch({
 	// 		type: 'ROOT_HUD_PUSH',
 	// 		hud: 'Temp'
 	// 	});
-	// 	player.pushHud();
+	// 	player.pushHud('Temp');
 	// 	player.pushHud('Temp2');
 	// 	player.setView('Temp');
 	// 	player.setView(null);
 	// 	player.removeHud('Temp2');
-	// 	// let s = await player.clientProxy.temp.awdadw();
-
-	// 	return player;
+	// 	let s = await player.clientProxy.temp.awdadw();
 	// }
 }
 

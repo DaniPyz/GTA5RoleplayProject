@@ -20,7 +20,7 @@ const Fraction: FC = () => {
 	const [selected, setSelected] = useState(0);
 	const [selectedCell, setSelectedCell] = useState<number | null>(null);
 	const { hideTransition } = useMasterSpring();
-	
+
 	useKeyboard(
 		'esc',
 		useCallback(() => {
@@ -31,10 +31,14 @@ const Fraction: FC = () => {
 	useKeyboard(
 		'right',
 		useCallback(() => {
+			setSelectedCell(null)
+			setSelectedCell(null)
+
 			if (selected + 1 === FRACTION_DATA[fractionId].categories.length) {
 				setSelected(0);
 				return;
 			}
+
 			setSelected(Math.min(selected + 1, FRACTION_DATA[fractionId].categories.length));
 		}, [selected])
 	);
@@ -42,6 +46,8 @@ const Fraction: FC = () => {
 	useKeyboard(
 		'left',
 		useCallback(() => {
+			setSelectedCell(null)
+
 			if (selected === 0) {
 				setSelected(FRACTION_DATA[fractionId].categories.length - 1);
 				return;
@@ -50,12 +56,12 @@ const Fraction: FC = () => {
 		}, [selected])
 	);
 
-	const changeSelection = (index: number) => {
-		console.log('Working', index)
+	const changeSelection = (index: number | null) => {
+
 		setSelectedCell(index);
 	};
 
-	
+
 	return hideTransition(
 		(style, isOpened) =>
 			isOpened && (
@@ -75,7 +81,12 @@ const Fraction: FC = () => {
 							<div className={s.category}>
 								{FRACTION_DATA[fractionId].categories.map((el, index) => (
 									<button
-										onClick={() => setSelected(index)}
+										onClick={() => {
+
+											setSelectedCell(null)
+											setSelected(index)
+
+										}}
 										key={index}
 										className={`${s.btn_ui} ${index === selected && s.btn_ui_select}`}
 									>
@@ -101,8 +112,7 @@ const Fraction: FC = () => {
 							<div className={s.cells}
 							>
 								{Array.from({ length: 72 }, (_, index: number) => {
-									{
-									}
+
 									if (state.warehouse && state.warehouse[selected] && state.warehouse[selected][index]) {
 										// console.log(selected, index, selectedCell, state.warehouse[selected][index]!.img)
 
@@ -136,9 +146,14 @@ const Fraction: FC = () => {
 						{selectedCell !== null ? (
 							<div className={s.infoDialog}>
 								<ItemInfo
+									id={state.warehouse[selected][selectedCell]!.id}
 									img={state.warehouse[selected][selectedCell]!.img}
 									name={state.warehouse[selected][selectedCell]!.name}
 									weight={state.warehouse[selected][selectedCell]!.weight}
+									fractionId={fractionId}
+									selected={selected}
+									selectedCell={selectedCell}
+									change={changeSelection}
 								/>
 							</div>
 						) : (

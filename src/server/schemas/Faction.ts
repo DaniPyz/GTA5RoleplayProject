@@ -43,11 +43,13 @@ export class Fraction {
 	@Column()
 	stock!: number;
 
-	// @Column()
-	// users: {
-	//     id: number,
-	//     name: string,
-	//     rank: number,
-	//     status: number
-	// };
+	@Column('simple-json', {
+		array: true
+	})
+	warehouse!: ({
+		name: string;
+		img: string;
+		weight: number;
+		count: number;
+	} | null)[][];
 }

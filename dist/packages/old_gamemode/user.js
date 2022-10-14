@@ -330,7 +330,7 @@ try {
     user.choiceChar = player => {
         if (user.isLogged(player) === true) return
 
-        mysql.query(`select id, name, birthday, level, cash, bankcash, fraction from characters where userid = ?`, [user.getID(player)], (err, res) => {
+        mysql.query(`select id, name, birthday, level, cash, bankcash, fractionId, fractionRank from characters where userid = ?`, [user.getID(player)], (err, res) => {
             if (err) return logger.error('user.choiceChar', err)
 
             try {
@@ -343,7 +343,7 @@ try {
                         birthDay: item.birthday,
                         level: item.level,
                         cash: item.cash,
-                        frac: JSON.parse(item.fraction)[1] !== undefined ? JSON.parse(item.fraction)[1] : 'Отсутствует',
+                        frac: item.fractionId !== undefined ? 'Отсутствует' : item.fractionId ,
                         bankCash: item.bankcash
                     })
                     // JSON.parse(item.fraction)[1] !== undefined ? JSON.parse(item.fraction)[1] : 
@@ -1557,6 +1557,11 @@ try {
     }
     user.isWorkingAtIdWork = (player, id) => {
         if (container.get('user', player.id, "work") === undefined && container.get('user', player.id, "work")[0] !== id) return false
+
+        return true
+    }
+    user.isWorkingAtIdFraction = (player, id) => {
+        if (container.get('user', player.id, "fractionId") === undefined && container.get('user', player.id, "fractionId") !== id) return false
 
         return true
     }

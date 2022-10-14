@@ -1,15 +1,31 @@
-import React, { FC } from 'react'
+import React, { FC, useEffect } from 'react'
 
 import s from './ItemInfo.module.scss';
+import { server } from 'index';
 
 type Props = {
-  img: string,
-  name: string,
-  weight: number
+  id: number;
+  img: string;
+  name: string;
+  weight: number;
+  fractionId: number;
+  selected: number;
+  selectedCell: number;
+  change: (index: number| null) => void
 }
-const ItemInfo: FC<Props> = ({ img, name, weight }: Props) => {
+const ItemInfo: FC<Props> = ({ id, img, name, weight, selected, selectedCell, fractionId, change }: Props) => {
+
+ 
 
 
+  
+  let takeItem = (id: number) => {
+
+    change(null)
+    //@ts-ignore
+
+    server.faction.givePlayerItem(id, fractionId, selected, selectedCell);
+  }
   return (
     <div className={s.ItemInfo}>
       <div className={s.header}>
@@ -32,7 +48,7 @@ const ItemInfo: FC<Props> = ({ img, name, weight }: Props) => {
       <div className={s.footer}>
         <h1>Взаимодействие</h1>
 
-        <button>Взять</button>
+        <button onClick={()=>takeItem(id)} >Взять</button>
         <button>Выбросить</button>
         <button>Разделить</button>
       </div>

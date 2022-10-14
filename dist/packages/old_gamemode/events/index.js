@@ -1,6 +1,7 @@
 require('./logger')
 require('./user')
 require('./chat')
+require('./newServer')
 require('./other')
 require('./vehicle')
 require('./autosalon')
@@ -96,6 +97,7 @@ mp.events.add({
 
     'playerDeath': (player, reason, killer) => {
         if (!user.isLogged(player)) return user.kick(player)
+        // player.setToRagdoll(1000, 1000, 0, true, true, true);
 
         user.uiSend(player, 'client::death', 'death', {
             timer: 30000
@@ -111,7 +113,7 @@ mp.events.add({
             a: player.position.heading,
             vw: player.dimension
         })
-        user.freeze(player, true)
+        // user.freeze(player, true)
     },
 
     'playerEnterVehicle': (player, vech, seat) => {

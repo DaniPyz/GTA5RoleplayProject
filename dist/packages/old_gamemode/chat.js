@@ -58,6 +58,12 @@ try {
            
         })
     }
+    chat.ems = (id, text) => {
+        mp.players.forEach(pl => {
+            if (user.isWorkingAtIdFraction(pl, id)) chat.me(pl, `[ Ems ] {#e0e0e0}${text}`, false, '#e76969')
+                    
+        })
+    }
 
     module.exports = chat
 }

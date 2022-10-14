@@ -3,6 +3,32 @@
 var typeorm = require('typeorm');
 require('reflect-metadata');
 
+/******************************************************************************
+Copyright (c) Microsoft Corporation.
+
+Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted.
+
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
+REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
+AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
+INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
+LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
+OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
+PERFORMANCE OF THIS SOFTWARE.
+***************************************************************************** */
+
+function __decorate(decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+}
+
+function __metadata(metadataKey, metadataValue) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(metadataKey, metadataValue);
+}
+
 String.prototype.capitalize = function capitalize() {
     return this.charAt(0).toUpperCase() + this.slice(1);
 };
@@ -890,63 +916,34 @@ var index = {
 };
 
 var rpc = /*#__PURE__*/Object.freeze({
-	__proto__: null,
-	register: register,
-	unregister: unregister,
-	call: call,
-	callServer: callServer,
-	callClient: callClient,
-	callBrowsers: callBrowsers,
-	callBrowser: callBrowser,
-	on: on,
-	off: off,
-	trigger: trigger,
-	triggerClient: triggerClient,
-	triggerServer: triggerServer,
-	triggerBrowsers: triggerBrowsers,
-	triggerBrowser: triggerBrowser,
-	'default': index
+    __proto__: null,
+    register: register,
+    unregister: unregister,
+    call: call,
+    callServer: callServer,
+    callClient: callClient,
+    callBrowsers: callBrowsers,
+    callBrowser: callBrowser,
+    on: on,
+    off: off,
+    trigger: trigger,
+    triggerClient: triggerClient,
+    triggerServer: triggerServer,
+    triggerBrowsers: triggerBrowsers,
+    triggerBrowser: triggerBrowser,
+    'default': index
 });
 
 const Service = install(rpc, 'server');
 
-/******************************************************************************
-Copyright (c) Microsoft Corporation.
-
-Permission to use, copy, modify, and/or distribute this software for any
-purpose with or without fee is hereby granted.
-
-THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
-REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
-AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
-INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
-LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
-OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
-PERFORMANCE OF THIS SOFTWARE.
-***************************************************************************** */
-
-function __decorate(decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-}
-
-function __metadata(metadataKey, metadataValue) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(metadataKey, metadataValue);
-}
-
-const AUTOSALON_LIST = [
-    {
-        name: 'San Andreas',
-        pos: new mp.Vector3(-20.840431213378906, -699.7188720703125, 250.41355895996094),
-        vehicleHeading: 195
-    }
-];
-const autosalonShapes = new Map();
-// export interface IFaction {
-// }
-let Faction = class Faction extends Service {
+// const AUTOSALON_LIST = [
+// 	{
+// 		name: 'San Andreas',
+// 		pos: new mp.Vector3(-20.840431213378906, -699.7188720703125, 250.41355895996094),
+// 		vehicleHeading: 195
+// 	}
+// ];
+let Ems = class Ems extends Service {
     constructor() {
         super();
         Object.defineProperty(this, "autosalonShapes", {
@@ -956,397 +953,25 @@ let Faction = class Faction extends Service {
             value: void 0
         });
         this.autosalonShapes = new Map();
-        for (let autosalon of AUTOSALON_LIST) {
-            const autosalonShape = mp.colshapes.newSphere(autosalon.pos.x, autosalon.pos.y, autosalon.pos.z, 2, 0);
-            mp.blips.new(1, autosalon.pos);
-            mp.markers.new(1, autosalon.pos, 1);
-            autosalonShapes.set(autosalonShape, autosalon);
-        }
-        mp.events.add('playerEnterColshape', (player, colshape) => this.enterInAutosalon(player, colshape));
-    }
-    // @Service.access
-    enterInAutosalon(player, colshape) {
-        const autosalon = autosalonShapes.get(colshape);
-        if (autosalon) {
-            player.call('server::user:cursor', [true, false]);
-            player.setView('Fraction');
-        }
+        mp.events.add({
+            'server::new:death': (player) => {
+                mp.events.call('chat::fraction:ems', `Человек умер напишите /accept ${player.id} что бы принять вызов`);
+            }
+        });
     }
 };
-Faction = __decorate([
+Ems = __decorate([
     Service.namespace,
     __metadata("design:paramtypes", [])
-], Faction);
-var Faction$1 = Faction;
-
-const services = {
-    Faction: Faction$1
-};
-Service.combineServices(services);
+], Ems);
+var Ems$1 = Ems;
 
 const CONFIG_DATABASE_TYPE = 'mysql';
 const CONFIG_DATABASE_HOST = 'localhost';
 const CONFIG_DATABASE_PORT = 3306;
 const CONFIG_DATABASE_USER = 'root';
 const CONFIG_DATABASE_DB = 'newyork';
-const CONFIG_DATABASE_PASS = 'newyork';
-
-let Business = class Business {
-    constructor() {
-        Object.defineProperty(this, "id", {
-            enumerable: true,
-            configurable: true,
-            writable: true,
-            value: void 0
-        });
-        Object.defineProperty(this, "type", {
-            enumerable: true,
-            configurable: true,
-            writable: true,
-            value: void 0
-        });
-        Object.defineProperty(this, "owner", {
-            enumerable: true,
-            configurable: true,
-            writable: true,
-            value: void 0
-        });
-        Object.defineProperty(this, "position", {
-            enumerable: true,
-            configurable: true,
-            writable: true,
-            value: void 0
-        });
-        Object.defineProperty(this, "interior", {
-            enumerable: true,
-            configurable: true,
-            writable: true,
-            value: void 0
-        });
-        Object.defineProperty(this, "dimension", {
-            enumerable: true,
-            configurable: true,
-            writable: true,
-            value: void 0
-        });
-        Object.defineProperty(this, "locked", {
-            enumerable: true,
-            configurable: true,
-            writable: true,
-            value: void 0
-        });
-        Object.defineProperty(this, "price", {
-            enumerable: true,
-            configurable: true,
-            writable: true,
-            value: void 0
-        });
-        Object.defineProperty(this, "balance", {
-            enumerable: true,
-            configurable: true,
-            writable: true,
-            value: void 0
-        });
-        Object.defineProperty(this, "accountBalance", {
-            enumerable: true,
-            configurable: true,
-            writable: true,
-            value: void 0
-        });
-        Object.defineProperty(this, "warehouse", {
-            enumerable: true,
-            configurable: true,
-            writable: true,
-            value: void 0
-        });
-        Object.defineProperty(this, "stats", {
-            enumerable: true,
-            configurable: true,
-            writable: true,
-            value: void 0
-        });
-        Object.defineProperty(this, "settings", {
-            enumerable: true,
-            configurable: true,
-            writable: true,
-            value: void 0
-        });
-    }
-};
-__decorate([
-    typeorm.PrimaryGeneratedColumn(),
-    __metadata("design:type", Number)
-], Business.prototype, "id", void 0);
-__decorate([
-    typeorm.Column(),
-    __metadata("design:type", Number)
-], Business.prototype, "type", void 0);
-__decorate([
-    typeorm.Column('simple-json'),
-    __metadata("design:type", Object)
-], Business.prototype, "owner", void 0);
-__decorate([
-    typeorm.Column('simple-json'),
-    __metadata("design:type", Object)
-], Business.prototype, "position", void 0);
-__decorate([
-    typeorm.Column('simple-json'),
-    __metadata("design:type", Object)
-], Business.prototype, "interior", void 0);
-__decorate([
-    typeorm.Column(),
-    __metadata("design:type", Number)
-], Business.prototype, "dimension", void 0);
-__decorate([
-    typeorm.Column(),
-    __metadata("design:type", Number)
-], Business.prototype, "locked", void 0);
-__decorate([
-    typeorm.Column(),
-    __metadata("design:type", Number)
-], Business.prototype, "price", void 0);
-__decorate([
-    typeorm.Column(),
-    __metadata("design:type", Number)
-], Business.prototype, "balance", void 0);
-__decorate([
-    typeorm.Column(),
-    __metadata("design:type", Number)
-], Business.prototype, "accountBalance", void 0);
-__decorate([
-    typeorm.Column('jsonb', { nullable: true }),
-    __metadata("design:type", Array)
-], Business.prototype, "warehouse", void 0);
-__decorate([
-    typeorm.Column('simple-json'),
-    __metadata("design:type", Object)
-], Business.prototype, "stats", void 0);
-__decorate([
-    typeorm.Column('simple-json'),
-    __metadata("design:type", Object)
-], Business.prototype, "settings", void 0);
-Business = __decorate([
-    typeorm.Entity()
-], Business);
-
-let Character = class Character {
-    constructor() {
-        Object.defineProperty(this, "id", {
-            enumerable: true,
-            configurable: true,
-            writable: true,
-            value: void 0
-        });
-        Object.defineProperty(this, "userid", {
-            enumerable: true,
-            configurable: true,
-            writable: true,
-            value: void 0
-        });
-        Object.defineProperty(this, "name", {
-            enumerable: true,
-            configurable: true,
-            writable: true,
-            value: void 0
-        });
-        Object.defineProperty(this, "gender", {
-            enumerable: true,
-            configurable: true,
-            writable: true,
-            value: void 0
-        });
-        Object.defineProperty(this, "age", {
-            enumerable: true,
-            configurable: true,
-            writable: true,
-            value: void 0
-        });
-        Object.defineProperty(this, "skin", {
-            enumerable: true,
-            configurable: true,
-            writable: true,
-            value: void 0
-        });
-        Object.defineProperty(this, "clothes", {
-            enumerable: true,
-            configurable: true,
-            writable: true,
-            value: void 0
-        });
-        Object.defineProperty(this, "birthday", {
-            enumerable: true,
-            configurable: true,
-            writable: true,
-            value: void 0
-        });
-        Object.defineProperty(this, "level", {
-            enumerable: true,
-            configurable: true,
-            writable: true,
-            value: void 0
-        });
-        Object.defineProperty(this, "exp", {
-            enumerable: true,
-            configurable: true,
-            writable: true,
-            value: void 0
-        });
-        Object.defineProperty(this, "cash", {
-            enumerable: true,
-            configurable: true,
-            writable: true,
-            value: void 0
-        });
-        Object.defineProperty(this, "bankcash", {
-            enumerable: true,
-            configurable: true,
-            writable: true,
-            value: void 0
-        });
-        Object.defineProperty(this, "createchar", {
-            enumerable: true,
-            configurable: true,
-            writable: true,
-            value: void 0
-        });
-        Object.defineProperty(this, "lastDate", {
-            enumerable: true,
-            configurable: true,
-            writable: true,
-            value: void 0
-        });
-        Object.defineProperty(this, "quests", {
-            enumerable: true,
-            configurable: true,
-            writable: true,
-            value: void 0
-        });
-        Object.defineProperty(this, "questsOld", {
-            enumerable: true,
-            configurable: true,
-            writable: true,
-            value: void 0
-        });
-        Object.defineProperty(this, "inventory", {
-            enumerable: true,
-            configurable: true,
-            writable: true,
-            value: void 0
-        });
-        Object.defineProperty(this, "backpack", {
-            enumerable: true,
-            configurable: true,
-            writable: true,
-            value: void 0
-        });
-        Object.defineProperty(this, "backpackStatus", {
-            enumerable: true,
-            configurable: true,
-            writable: true,
-            value: void 0
-        });
-        Object.defineProperty(this, "donateRoullete", {
-            enumerable: true,
-            configurable: true,
-            writable: true,
-            value: void 0
-        });
-        Object.defineProperty(this, "fraction", {
-            enumerable: true,
-            configurable: true,
-            writable: true,
-            value: void 0
-        });
-    }
-};
-__decorate([
-    typeorm.PrimaryGeneratedColumn(),
-    __metadata("design:type", Number)
-], Character.prototype, "id", void 0);
-__decorate([
-    typeorm.Column(),
-    __metadata("design:type", Number)
-], Character.prototype, "userid", void 0);
-__decorate([
-    typeorm.Column(),
-    __metadata("design:type", Array)
-], Character.prototype, "name", void 0);
-__decorate([
-    typeorm.Column({ default: 0 }),
-    __metadata("design:type", Number)
-], Character.prototype, "gender", void 0);
-__decorate([
-    typeorm.Column({ default: 0 }),
-    __metadata("design:type", Number)
-], Character.prototype, "age", void 0);
-__decorate([
-    typeorm.Column('simple-json'),
-    __metadata("design:type", Object)
-], Character.prototype, "skin", void 0);
-__decorate([
-    typeorm.Column('simple-json', { default: () => '{}' }),
-    __metadata("design:type", Object)
-], Character.prototype, "clothes", void 0);
-__decorate([
-    typeorm.Column({ type: 'timestamp', default: 'CURRENT_TIMESTAMP' }),
-    __metadata("design:type", String)
-], Character.prototype, "birthday", void 0);
-__decorate([
-    typeorm.Column({ default: 1 }),
-    __metadata("design:type", Number)
-], Character.prototype, "level", void 0);
-__decorate([
-    typeorm.Column({ default: 0 }),
-    __metadata("design:type", Number)
-], Character.prototype, "exp", void 0);
-__decorate([
-    typeorm.Column({ default: 200 }),
-    __metadata("design:type", Number)
-], Character.prototype, "cash", void 0);
-__decorate([
-    typeorm.Column({ default: 0 }),
-    __metadata("design:type", Number)
-], Character.prototype, "bankcash", void 0);
-__decorate([
-    typeorm.Column({ default: 1 }),
-    __metadata("design:type", Number)
-], Character.prototype, "createchar", void 0);
-__decorate([
-    typeorm.Column({ type: 'timestamp', default: 'CURRENT_TIMESTAMP' }),
-    __metadata("design:type", String)
-], Character.prototype, "lastDate", void 0);
-__decorate([
-    typeorm.Column('simple-json', { default: () => '{}' }),
-    __metadata("design:type", Object)
-], Character.prototype, "quests", void 0);
-__decorate([
-    typeorm.Column('simple-json', { default: () => '[]' }),
-    __metadata("design:type", Array)
-], Character.prototype, "questsOld", void 0);
-__decorate([
-    typeorm.Column('simple-json', { default: () => '[]' }),
-    __metadata("design:type", Array)
-], Character.prototype, "inventory", void 0);
-__decorate([
-    typeorm.Column('simple-json', { default: () => '[]' }),
-    __metadata("design:type", Array)
-], Character.prototype, "backpack", void 0);
-__decorate([
-    typeorm.Column({ default: 0 }),
-    __metadata("design:type", Number)
-], Character.prototype, "backpackStatus", void 0);
-__decorate([
-    typeorm.Column({ default: '{ "status": false, "data": [], "time": 0 }' }),
-    __metadata("design:type", Object)
-], Character.prototype, "donateRoullete", void 0);
-__decorate([
-    typeorm.Column({ default: () => '[]' }),
-    __metadata("design:type", Array)
-], Character.prototype, "fraction", void 0);
-Character = __decorate([
-    typeorm.Entity()
-], Character);
-console.log(123);
+const CONFIG_DATABASE_PASS = '';
 
 let Fraction = class Fraction {
     constructor() {
@@ -1410,13 +1035,12 @@ let Fraction = class Fraction {
             writable: true,
             value: void 0
         });
-        // @Column()
-        // users: {
-        //     id: number,
-        //     name: string,
-        //     rank: number,
-        //     status: number
-        // };
+        Object.defineProperty(this, "warehouse", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: void 0
+        });
     }
 };
 __decorate([
@@ -1459,447 +1083,108 @@ __decorate([
     typeorm.Column(),
     __metadata("design:type", Number)
 ], Fraction.prototype, "stock", void 0);
+__decorate([
+    typeorm.Column('simple-json', {
+        array: true
+    }),
+    __metadata("design:type", Array)
+], Fraction.prototype, "warehouse", void 0);
 Fraction = __decorate([
     typeorm.Entity()
 ], Fraction);
 
-let Houses = class Houses {
-    constructor() {
-        Object.defineProperty(this, "id", {
-            enumerable: true,
-            configurable: true,
-            writable: true,
-            value: void 0
-        });
-        Object.defineProperty(this, "type", {
-            enumerable: true,
-            configurable: true,
-            writable: true,
-            value: void 0
-        });
-        Object.defineProperty(this, "class", {
-            enumerable: true,
-            configurable: true,
-            writable: true,
-            value: void 0
-        });
-        Object.defineProperty(this, "owner", {
-            enumerable: true,
-            configurable: true,
-            writable: true,
-            value: void 0
-        });
-        Object.defineProperty(this, "position", {
-            enumerable: true,
-            configurable: true,
-            writable: true,
-            value: void 0
-        });
-        Object.defineProperty(this, "dimension", {
-            enumerable: true,
-            configurable: true,
-            writable: true,
-            value: void 0
-        });
-        Object.defineProperty(this, "interior", {
-            enumerable: true,
-            configurable: true,
-            writable: true,
-            value: void 0
-        });
-        Object.defineProperty(this, "price", {
-            enumerable: true,
-            configurable: true,
-            writable: true,
-            value: void 0
-        });
-        Object.defineProperty(this, "garage", {
-            enumerable: true,
-            configurable: true,
-            writable: true,
-            value: void 0
-        });
-        Object.defineProperty(this, "locked", {
-            enumerable: true,
-            configurable: true,
-            writable: true,
-            value: void 0
-        });
-    }
-};
-__decorate([
-    typeorm.PrimaryGeneratedColumn(),
-    __metadata("design:type", Number)
-], Houses.prototype, "id", void 0);
-__decorate([
-    typeorm.Column(),
-    __metadata("design:type", Number)
-], Houses.prototype, "type", void 0);
-__decorate([
-    typeorm.Column(),
-    __metadata("design:type", Number)
-], Houses.prototype, "class", void 0);
-__decorate([
-    typeorm.Column('simple-json'),
-    __metadata("design:type", Object)
-], Houses.prototype, "owner", void 0);
-__decorate([
-    typeorm.Column('simple-json'),
-    __metadata("design:type", Object)
-], Houses.prototype, "position", void 0);
-__decorate([
-    typeorm.Column(),
-    __metadata("design:type", Number)
-], Houses.prototype, "dimension", void 0);
-__decorate([
-    typeorm.Column('simple-json'),
-    __metadata("design:type", Object)
-], Houses.prototype, "interior", void 0);
-__decorate([
-    typeorm.Column(),
-    __metadata("design:type", Number)
-], Houses.prototype, "price", void 0);
-__decorate([
-    typeorm.Column('simple-json'),
-    __metadata("design:type", Object)
-], Houses.prototype, "garage", void 0);
-__decorate([
-    typeorm.Column(),
-    __metadata("design:type", Number)
-], Houses.prototype, "locked", void 0);
-Houses = __decorate([
-    typeorm.Entity()
-], Houses);
-
-let Users = class Users {
-    constructor() {
-        Object.defineProperty(this, "id", {
-            enumerable: true,
-            configurable: true,
-            writable: true,
-            value: void 0
-        });
-        Object.defineProperty(this, "username", {
-            enumerable: true,
-            configurable: true,
-            writable: true,
-            value: void 0
-        });
-        Object.defineProperty(this, "password", {
-            enumerable: true,
-            configurable: true,
-            writable: true,
-            value: void 0
-        });
-        Object.defineProperty(this, "email", {
-            enumerable: true,
-            configurable: true,
-            writable: true,
-            value: void 0
-        });
-        Object.defineProperty(this, "promo", {
-            enumerable: true,
-            configurable: true,
-            writable: true,
-            value: void 0
-        });
-        Object.defineProperty(this, "regIP", {
-            enumerable: true,
-            configurable: true,
-            writable: true,
-            value: void 0
-        });
-        Object.defineProperty(this, "regDate", {
-            enumerable: true,
-            configurable: true,
-            writable: true,
-            value: void 0
-        });
-        Object.defineProperty(this, "buy_slots_chars", {
-            enumerable: true,
-            configurable: true,
-            writable: true,
-            value: void 0
-        });
-        Object.defineProperty(this, "lastDate", {
-            enumerable: true,
-            configurable: true,
-            writable: true,
-            value: void 0
-        });
-        Object.defineProperty(this, "lastIP", {
-            enumerable: true,
-            configurable: true,
-            writable: true,
-            value: void 0
-        });
-        Object.defineProperty(this, "settings", {
-            enumerable: true,
-            configurable: true,
-            writable: true,
-            value: void 0
-        });
-        Object.defineProperty(this, "admin", {
-            enumerable: true,
-            configurable: true,
-            writable: true,
-            value: void 0
-        });
-        Object.defineProperty(this, "adminPassword", {
-            enumerable: true,
-            configurable: true,
-            writable: true,
-            value: void 0
-        });
-        Object.defineProperty(this, "adminData", {
-            enumerable: true,
-            configurable: true,
-            writable: true,
-            value: void 0
-        });
-        Object.defineProperty(this, "adminBan", {
-            enumerable: true,
-            configurable: true,
-            writable: true,
-            value: void 0
-        });
-        Object.defineProperty(this, "online", {
-            enumerable: true,
-            configurable: true,
-            writable: true,
-            value: void 0
-        });
-        Object.defineProperty(this, "onlineChar", {
-            enumerable: true,
-            configurable: true,
-            writable: true,
-            value: void 0
-        });
-        Object.defineProperty(this, "keysSettings", {
-            enumerable: true,
-            configurable: true,
-            writable: true,
-            value: void 0
-        });
-        Object.defineProperty(this, "donate", {
-            enumerable: true,
-            configurable: true,
-            writable: true,
-            value: void 0
-        });
-    }
-};
-__decorate([
-    typeorm.PrimaryGeneratedColumn(),
-    __metadata("design:type", Number)
-], Users.prototype, "id", void 0);
-__decorate([
-    typeorm.Column(),
-    __metadata("design:type", String)
-], Users.prototype, "username", void 0);
-__decorate([
-    typeorm.Column('varchar', { length: 200 }),
-    __metadata("design:type", String)
-], Users.prototype, "password", void 0);
-__decorate([
-    typeorm.Column('varchar', { length: 70 }),
-    __metadata("design:type", String)
-], Users.prototype, "email", void 0);
-__decorate([
-    typeorm.Column(),
-    __metadata("design:type", String)
-], Users.prototype, "promo", void 0);
-__decorate([
-    typeorm.Column(),
-    __metadata("design:type", String)
-], Users.prototype, "regIP", void 0);
-__decorate([
-    typeorm.Column({ type: 'timestamp', default: 'CURRENT_TIMESTAMP' }),
-    __metadata("design:type", String)
-], Users.prototype, "regDate", void 0);
-__decorate([
-    typeorm.Column({ default: '[0]' }),
-    __metadata("design:type", Array)
-], Users.prototype, "buy_slots_chars", void 0);
-__decorate([
-    typeorm.Column({ type: 'timestamp', default: 'CURRENT_TIMESTAMP' }),
-    __metadata("design:type", String)
-], Users.prototype, "lastDate", void 0);
-__decorate([
-    typeorm.Column(),
-    __metadata("design:type", String)
-], Users.prototype, "lastIP", void 0);
-__decorate([
-    typeorm.Column('simple-json', { default: () => '{}' }),
-    __metadata("design:type", Object)
-], Users.prototype, "settings", void 0);
-__decorate([
-    typeorm.Column(),
-    __metadata("design:type", Number)
-], Users.prototype, "admin", void 0);
-__decorate([
-    typeorm.Column('varchar', { length: 200 }),
-    __metadata("design:type", String)
-], Users.prototype, "adminPassword", void 0);
-__decorate([
-    typeorm.Column('simple-json', { default: () => '{}' }),
-    __metadata("design:type", Object)
-], Users.prototype, "adminData", void 0);
-__decorate([
-    typeorm.Column(),
-    __metadata("design:type", Number)
-], Users.prototype, "adminBan", void 0);
-__decorate([
-    typeorm.Column({ default: () => -1 }),
-    __metadata("design:type", Number)
-], Users.prototype, "online", void 0);
-__decorate([
-    typeorm.Column({ default: () => -1 }),
-    __metadata("design:type", Number)
-], Users.prototype, "onlineChar", void 0);
-__decorate([
-    typeorm.Column({ default: () => '{}' }),
-    __metadata("design:type", Object)
-], Users.prototype, "keysSettings", void 0);
-__decorate([
-    typeorm.Column({ default: () => 0 }),
-    __metadata("design:type", Number)
-], Users.prototype, "donate", void 0);
-Users = __decorate([
-    typeorm.Entity()
-], Users);
-
-let Vehicles = class Vehicles {
-    constructor() {
-        Object.defineProperty(this, "id", {
-            enumerable: true,
-            configurable: true,
-            writable: true,
-            value: void 0
-        });
-        Object.defineProperty(this, "model", {
-            enumerable: true,
-            configurable: true,
-            writable: true,
-            value: void 0
-        });
-        Object.defineProperty(this, "position", {
-            enumerable: true,
-            configurable: true,
-            writable: true,
-            value: void 0
-        });
-        Object.defineProperty(this, "heading", {
-            enumerable: true,
-            configurable: true,
-            writable: true,
-            value: void 0
-        });
-        Object.defineProperty(this, "dimension", {
-            enumerable: true,
-            configurable: true,
-            writable: true,
-            value: void 0
-        });
-        Object.defineProperty(this, "owner", {
-            enumerable: true,
-            configurable: true,
-            writable: true,
-            value: void 0
-        });
-        Object.defineProperty(this, "locked", {
-            enumerable: true,
-            configurable: true,
-            writable: true,
-            value: void 0
-        });
-        Object.defineProperty(this, "number", {
-            enumerable: true,
-            configurable: true,
-            writable: true,
-            value: void 0
-        });
-        Object.defineProperty(this, "color", {
-            enumerable: true,
-            configurable: true,
-            writable: true,
-            value: void 0
-        });
-        Object.defineProperty(this, "mileage", {
-            enumerable: true,
-            configurable: true,
-            writable: true,
-            value: void 0
-        });
-        Object.defineProperty(this, "fuel", {
-            enumerable: true,
-            configurable: true,
-            writable: true,
-            value: void 0
-        });
-    }
-};
-__decorate([
-    typeorm.PrimaryGeneratedColumn(),
-    __metadata("design:type", Number)
-], Vehicles.prototype, "id", void 0);
-__decorate([
-    typeorm.Column(),
-    __metadata("design:type", Object)
-], Vehicles.prototype, "model", void 0);
-__decorate([
-    typeorm.Column('simple-json'),
-    __metadata("design:type", Object)
-], Vehicles.prototype, "position", void 0);
-__decorate([
-    typeorm.Column(),
-    __metadata("design:type", Number)
-], Vehicles.prototype, "heading", void 0);
-__decorate([
-    typeorm.Column(),
-    __metadata("design:type", Number)
-], Vehicles.prototype, "dimension", void 0);
-__decorate([
-    typeorm.Column('simple-json'),
-    __metadata("design:type", String)
-], Vehicles.prototype, "owner", void 0);
-__decorate([
-    typeorm.Column(),
-    __metadata("design:type", Number)
-], Vehicles.prototype, "locked", void 0);
-__decorate([
-    typeorm.Column(),
-    __metadata("design:type", Object)
-], Vehicles.prototype, "number", void 0);
-__decorate([
-    typeorm.Column(),
-    __metadata("design:type", Object)
-], Vehicles.prototype, "color", void 0);
-__decorate([
-    typeorm.Column(),
-    __metadata("design:type", Number)
-], Vehicles.prototype, "mileage", void 0);
-__decorate([
-    typeorm.Column(),
-    __metadata("design:type", Number)
-], Vehicles.prototype, "fuel", void 0);
-Vehicles = __decorate([
-    typeorm.Entity()
-], Vehicles);
-
-new typeorm.DataSource({
+// import { Houses } from './schemas/House';
+// import { Users } from './schemas/User';
+// import { Vehicles } from './schemas/Vehicles';
+const AppDataSource = new typeorm.DataSource({
     type: CONFIG_DATABASE_TYPE,
     host: CONFIG_DATABASE_HOST,
     port: CONFIG_DATABASE_PORT,
     username: CONFIG_DATABASE_USER,
     password: CONFIG_DATABASE_PASS,
     database: CONFIG_DATABASE_DB,
-    synchronize: true,
+    synchronize: false,
     logging: false,
-    entities: [Fraction, Business, Character, Houses, Vehicles, Users],
+    entities: [Fraction],
+    // Business, Character, Houses, Vehicles, Users
     migrations: [],
     subscribers: []
 });
+
+const AUTOSALON_LIST = [
+    {
+        name: 'San Andreas',
+        pos: new mp.Vector3(-20.840431213378906, -699.7188720703125, 250.41355895996094),
+        vehicleHeading: 195
+    }
+];
+const autosalonShapes = new Map();
+let Faction = class Faction extends Service {
+    constructor() {
+        super();
+        Object.defineProperty(this, "autosalonShapes", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: void 0
+        });
+        this.autosalonShapes = new Map();
+        for (let autosalon of AUTOSALON_LIST) {
+            const autosalonShape = mp.colshapes.newSphere(autosalon.pos.x, autosalon.pos.y, autosalon.pos.z, 2, 0);
+            mp.blips.new(1, autosalon.pos);
+            mp.markers.new(1, autosalon.pos, 1);
+            autosalonShapes.set(autosalonShape, autosalon);
+        }
+        mp.events.add('playerEnterColshape', (player, colshape) => this.enterInAutosalon(player, colshape));
+    }
+    // @Service.access
+    async enterInAutosalon(player, colshape) {
+        const autosalon = autosalonShapes.get(colshape);
+        const users = AppDataSource.getRepository('Fraction');
+        const user = await users.findOneBy({
+            id: 1
+        });
+        if (user === null)
+            return;
+        if (autosalon) {
+            player.call('server::user:cursor', [true, false]);
+            player.dispatch({ type: 'WAREHOUSE_ADD', warehouse: user.warehouse });
+            player.setView('Fraction');
+        }
+    }
+    // player, id, count = 1, data = {}, onlyInv = false, customWeight = 0, canStack = false
+    async rpcGivePlayerItem(player, id, _fractionId, selected, selectedCell) {
+        const users = AppDataSource.getRepository('Fraction');
+        const user = await users.findOneBy({
+            id: 1
+        });
+        if (user === null)
+            return;
+        let newData = user.warehouse;
+        newData[selected][selectedCell] = null;
+        user.warehouse = newData;
+        await users.save(user);
+        player.dispatch({ type: 'WAREHOUSE_ADD', warehouse: newData });
+        mp.events.call('serverNew::give:item', player, id, 1, {}, false, 0, false);
+    }
+};
+__decorate([
+    Service.access,
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, Number, Number, Number, Number]),
+    __metadata("design:returntype", Promise)
+], Faction.prototype, "rpcGivePlayerItem", null);
+Faction = __decorate([
+    Service.namespace,
+    __metadata("design:paramtypes", [])
+], Faction);
+var Faction$1 = Faction;
+
+const services = {
+    Faction: Faction$1,
+    Ems: Ems$1
+};
+Service.combineServices(services);
 
 const createClientProxy = (rpc) => {
     const clientProxyCache = new Map();
@@ -1954,3 +1239,8 @@ mp.events.add('entityCreated', (player) => {
         triggerBrowsers(player, 'internal.removeHud', hud);
     };
 });
+
+AppDataSource.initialize()
+    .then(async () => {
+})
+    .catch((error) => console.log(error));

@@ -61,10 +61,23 @@ try {
                 const id = parseInt(args[0])
                 const caller = user.getPlayerForID(id)
                 if (caller === undefined || sys_works_cab.playerOrderedCab(caller) === false) return chat.cmd(player, '/accept [id]')
-                if (player.id == id) return chat.error(player, 'Вы не можете принимать свойже заказ.')
+                if (player.id == id) return chat.error(player, 'Вы не можете принимать свой же заказ.')
                 sys_works_cab.removePlayerOrder(caller)
                 player.call('server::user:setMarker', [caller.position.x, caller.position.y, caller.position.z, 0, 'Клиент', true, 77])
                 player.call('server::user:setColshape', [caller.position.x, caller.position.y, caller.position.z, 0, 'cabDeparture']);
+
+
+            } else if (user.isWorkingAtIdFraction(player, 1)) {
+                const id = parseInt(args[0])
+                const caller = user.getPlayerForID(id)
+                if (caller === undefined) return chat.cmd(player, '/accept [id]')
+                // if (player.id == id) return chat.error(player, 'Вы не можете принимать свой же вызов.')
+           
+                // @ts-ignore
+                player.call('server::user:setMarker', [caller.position.x, caller.position.y, caller.position.z, 0, 'Пациент', true, 77])
+                // @ts-ignore
+
+                player.call('server::user:setColshape', [caller.position.x, caller.position.y, caller.position.z, 0, 'emsDeparture']);
 
 
             } else return

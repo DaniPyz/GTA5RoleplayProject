@@ -33,7 +33,6 @@ declare global {
 }
 
 window.setView = (view) => {
-	console.log(view)
 	store.dispatch({ type: 'ROOT_VIEW_SET', view });
 };
 
@@ -52,6 +51,7 @@ rpc.on('internal.dispatch', (action: ReturnType<AppDispatch>) => {
 });
 
 rpc.on('internal.setView', (view: View) => {
+	console.log('Z nen')
 	window.setView(view);
 });
 
@@ -62,6 +62,7 @@ rpc.on('internal.pushHud', (hud: Hud) => {
 rpc.on('internal.removeHud', (hud: Hud) => {
 	window.removeHud(hud);
 });
+console.log('Я включился')
 
 root.render(
 	<React.StrictMode>
