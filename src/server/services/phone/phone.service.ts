@@ -1,14 +1,51 @@
 import { Service } from 'bridge';
 import { Player } from 'models/player.model';
 
-interface IPhoneCall {
-	caller: PlayerServer;
-	target: PlayerServer;
-	time: number;
+interface IPlayerPhone {
+	activeCall: Call | null;
 }
 
-interface IPlayerPhone {
-	activeCall: IPhoneCall | null;
+enum CallStatus {
+	connecting,
+	waiting,
+	progress,
+	canceled
+}
+
+class Call {
+	public status: CallStatus = CallStatus.connecting;
+	public callerId: string;
+	public targetId: string;
+	public caller: PlayerServer;
+	public target: PlayerServer | null;
+	public time: number = 0;
+
+	constructor(caller: PlayerServer, targetId: string) {
+		this.caller = caller;
+		this.targetId = targetId;
+		this.callerId = caller.character.phone.callerId;
+		this.target = Player.getPlayerList({ hasAuth: true, hasCharacter: true }).find((p) => p.character.phone.callerId === targetId) || null;
+	}
+
+	start() {
+		if (this.caller.phone.activeCall) {
+			return; // вызвать alert, что игрок недоступен;
+		}
+
+		if (!this.target) {
+			return; // Абонент не в сети;
+		}
+
+		this.status = CallStatus.waiting;
+
+		// Совершить вызов
+	}
+
+	cancel() {
+		this.status = CallStatus.canceled;
+		// this.caller.dispatch({});
+		// this.target?.dispatch({});
+	}
 }
 
 @Service.namespace
@@ -24,7 +61,7 @@ class Phone extends Service {
 			return (player) => {
 				const call = player.phone.activeCall;
 				if (call) {
-					this.cancelCall(call);
+          call.cancel();
 				}
 			};
 		});
@@ -39,21 +76,7 @@ class Phone extends Service {
 
 	public rpcSendDialogMessage(player: PlayerServer, callerId: string, message: string) {}
 
-	public rpcRequestCall(player: PlayerServer, callerId: string) {
-		if (player.phone.activeCall) {
-			return; // вызвать alert, что игрок недоступен;
-		}
-
-		const target = Player.getPlayerList({ hasAuth: true, hasCharacter: true }).find((p) => p.character.phone.callerId === callerId);
-
-		if (!target) {
-			return; // Абонент не в сети;
-		}
-
-		// Совершить вызов
-	}
-
-	private cancelCall(call: IPhoneCall) {}
+	public rpcRequestCall(player: PlayerServer, callerId: string) {}
 }
 
 declare global {

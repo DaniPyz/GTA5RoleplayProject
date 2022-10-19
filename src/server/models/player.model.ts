@@ -64,10 +64,6 @@ export class Player {
 				rpc.triggerBrowsers(player, 'internal.setView', view);
 			};
 
-			setTimeout(() => {
-				player.setView(null);
-			}, 5000);
-
 			player.pushHud = (hud) => {
 				rpc.triggerBrowsers(player, 'internal.pushHud', hud);
 			};
