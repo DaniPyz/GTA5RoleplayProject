@@ -1,6 +1,11 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
+class Phone {
+	@Column() public callerId: string = '';
+}
+
+@Entity()
 export class Character {
 	@PrimaryGeneratedColumn()
 	id!: number;
@@ -136,6 +141,8 @@ export class Character {
 
 	@Column({ default: () => '[]' })
 	fraction!: [number, string, number];
+
+	@Column() public phone: Phone = new Phone();
 }
 
 console.log(123);
