@@ -61,22 +61,28 @@ class Phone extends Service {
 			return (player) => {
 				const call = player.phone.activeCall;
 				if (call) {
-          call.cancel();
+					call.cancel();
 				}
 			};
 		});
 	}
 
 	@Service.access
-	public rpcSyncMyContacts(player: PlayerServer) {}
+	public rpcSyncMyContacts(_player: PlayerServer) {}
 
-	public rpcGetMyDialogList(player: PlayerServer) {}
+	@Service.access
+	public rpcGetMyDialogList(_player: PlayerServer) {}
 
-	public rpcGetDialogMessages(player: PlayerServer) {}
+	@Service.access
+	public rpcGetDialogMessages(_player: PlayerServer) {}
 
-	public rpcSendDialogMessage(player: PlayerServer, callerId: string, message: string) {}
+	@Service.access
+	public rpcSendDialogMessage(_player: PlayerServer, _callerId: string, _message: string) {}
 
-	public rpcRequestCall(player: PlayerServer, callerId: string) {}
+	@Service.access
+	public rpcRequestCall(_player: PlayerServer, callerId: string) {
+		console.log('phoneCall', callerId);
+	}
 }
 
 declare global {

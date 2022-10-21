@@ -98,6 +98,9 @@ const install = (rpc, env) => {
                     console.log(name, 'system ready');
                     if (env === 'client') {
                         // @ts-ignore
+                        mp.console.logInfo(name);
+                        // console.log(name);
+                        // @ts-ignore
                         rpc.register(name, (argumentList) => Service.procedures.get(name)(...argumentList));
                     }
                     else {
@@ -978,8 +981,195 @@ Faction = __decorate([
 ], Faction);
 var Faction$1 = Faction;
 
+const createClientProxy = (rpc) => {
+    const clientProxyCache = new Map();
+    return new Proxy({}, {
+        get(_, service) {
+            if (clientProxyCache.has(service)) {
+                return clientProxyCache.get(service);
+            }
+            else {
+                const proxy = new Proxy({}, {
+                    get(_, event) {
+                        const call = (noRet, ...args) => {
+                            const eventName = `${service.capitalize()}${event.capitalize()}`;
+                            return rpc.callClient(eventName, args, noRet ? { noRet: true } : { timeout: 60 * 1000, noRet: false });
+                        };
+                        const f = call.bind(null, false);
+                        f.noRet = (...args) => {
+                            call(true, ...args);
+                        };
+                        return f;
+                    }
+                });
+                clientProxyCache.set(service, proxy);
+                return proxy;
+            }
+        }
+    });
+};
+
+class Player {
+    /**
+     * Обертка entityCreated, entityDestroyed.
+     * Первый callback вызывается, когда игрок создается, коллбек, который был возвращен, когда игрок уничтожился
+     */
+    static created(callback) {
+        let destroyedCallback = undefined;
+        mp.events.add('entityCreated', (player) => {
+            if (Player.isPlayer(player)) {
+                destroyedCallback = callback(player);
+                player.pushAlert;
+            }
+        });
+        mp.events.add('entityDestroyed', (player) => {
+            if (Player.isPlayer(player)) {
+                destroyedCallback && destroyedCallback(player);
+            }
+        });
+    }
+}
+/**
+ * Проверяет EntityMp === PlayerMp
+ */
+Object.defineProperty(Player, "isPlayer", {
+    enumerable: true,
+    configurable: true,
+    writable: true,
+    value: (entity) => entity.type === "player" /* RageEnums.EntityType.PLAYER */
+});
+/**
+ * Получает список игроков (авторизованных, играющих за персонажей)
+ */
+Object.defineProperty(Player, "getPlayerList", {
+    enumerable: true,
+    configurable: true,
+    writable: true,
+    value: ({ hasAuth, hasCharacter }) => {
+        if (hasAuth && !hasCharacter) {
+            return mp.players.toArrayFast().filter((player) => player.user);
+        }
+        if (hasCharacter) {
+            return mp.players.toArrayFast().filter((player) => player.user && player.character);
+        }
+        return mp.players.toArrayFast();
+    }
+});
+(() => {
+    mp.events.add('entityCreated', (player) => {
+        if (!Player.isPlayer(player))
+            return;
+        player.client = createClientProxy({
+            callClient: (name, args, opt) => callClient(player, name, args, opt)
+        });
+        player.dispatch = (action) => {
+            triggerBrowsers(player, 'internal.dispatch', action);
+        };
+        player.setView = (view) => {
+            triggerBrowsers(player, 'internal.setView', view);
+        };
+        player.pushHud = (hud) => {
+            triggerBrowsers(player, 'internal.pushHud', hud);
+        };
+        player.removeHud = (hud) => {
+            triggerBrowsers(player, 'internal.removeHud', hud);
+        };
+        player.setAlert = (_props) => {
+            throw new Error('Not implemented');
+        };
+        player.pushAlert = (_props) => {
+            throw new Error('Not implemented');
+        };
+        player.setConfirm = (_props) => {
+            throw new Error('Not implemented');
+        };
+        player.pushConfirm = (_props) => {
+            throw new Error('Not implemented');
+        };
+        player.setPhoneAlert = (_props) => {
+            throw new Error('Not implemented');
+        };
+        player.setPhoneConfirm = (_props) => {
+            throw new Error('Not implemented');
+        };
+        player.pushPhoneAlert = (_props) => {
+            throw new Error('Not implemented');
+        };
+        player.pushPhoneConfirm = (_props) => {
+            throw new Error('Not implemented');
+        };
+    });
+})();
+
+var CallStatus;
+(function (CallStatus) {
+    CallStatus[CallStatus["connecting"] = 0] = "connecting";
+    CallStatus[CallStatus["waiting"] = 1] = "waiting";
+    CallStatus[CallStatus["progress"] = 2] = "progress";
+    CallStatus[CallStatus["canceled"] = 3] = "canceled";
+})(CallStatus || (CallStatus = {}));
+let Phone$1 = class Phone extends Service {
+    constructor() {
+        super();
+        Player.created((player) => {
+            player.phone = {
+                activeCall: null
+            };
+            return (player) => {
+                const call = player.phone.activeCall;
+                if (call) {
+                    call.cancel();
+                }
+            };
+        });
+    }
+    rpcSyncMyContacts(_player) { }
+    rpcGetMyDialogList(_player) { }
+    rpcGetDialogMessages(_player) { }
+    rpcSendDialogMessage(_player, _callerId, _message) { }
+    rpcRequestCall(_player, callerId) {
+        console.log('phoneCall', callerId);
+    }
+};
+__decorate([
+    Service.access,
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
+], Phone$1.prototype, "rpcSyncMyContacts", null);
+__decorate([
+    Service.access,
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
+], Phone$1.prototype, "rpcGetMyDialogList", null);
+__decorate([
+    Service.access,
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
+], Phone$1.prototype, "rpcGetDialogMessages", null);
+__decorate([
+    Service.access,
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, String, String]),
+    __metadata("design:returntype", void 0)
+], Phone$1.prototype, "rpcSendDialogMessage", null);
+__decorate([
+    Service.access,
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, String]),
+    __metadata("design:returntype", void 0)
+], Phone$1.prototype, "rpcRequestCall", null);
+Phone$1 = __decorate([
+    Service.namespace,
+    __metadata("design:paramtypes", [])
+], Phone$1);
+var Phone$2 = Phone$1;
+
 const services = {
-    Faction: Faction$1
+    Faction: Faction$1,
+    Phone: Phone$2
 };
 Service.combineServices(services);
 
@@ -1128,6 +1318,89 @@ Business = __decorate([
     typeorm.Entity()
 ], Business);
 
+let Message = class Message {
+    constructor() {
+        Object.defineProperty(this, "text", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: ''
+        });
+    }
+};
+__decorate([
+    typeorm.Column(),
+    __metadata("design:type", String)
+], Message.prototype, "text", void 0);
+Message = __decorate([
+    typeorm.Entity()
+], Message);
+let Dialog = class Dialog {
+    constructor(targetId) {
+        Object.defineProperty(this, "targetId", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: void 0
+        });
+        Object.defineProperty(this, "lastTimestamp", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: ''
+        });
+        Object.defineProperty(this, "messageList", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: []
+        });
+        this.targetId = targetId;
+    }
+};
+__decorate([
+    typeorm.Column(),
+    __metadata("design:type", String)
+], Dialog.prototype, "targetId", void 0);
+__decorate([
+    typeorm.Column(),
+    __metadata("design:type", String)
+], Dialog.prototype, "lastTimestamp", void 0);
+__decorate([
+    typeorm.Column(),
+    __metadata("design:type", Array)
+], Dialog.prototype, "messageList", void 0);
+Dialog = __decorate([
+    typeorm.Entity(),
+    __metadata("design:paramtypes", [String])
+], Dialog);
+let Phone = class Phone {
+    constructor() {
+        Object.defineProperty(this, "callerId", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: ''
+        });
+        Object.defineProperty(this, "dialogList", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: []
+        });
+    }
+};
+__decorate([
+    typeorm.Column(),
+    __metadata("design:type", String)
+], Phone.prototype, "callerId", void 0);
+__decorate([
+    typeorm.Column(),
+    __metadata("design:type", Array)
+], Phone.prototype, "dialogList", void 0);
+Phone = __decorate([
+    typeorm.Entity()
+], Phone);
 let Character = class Character {
     constructor() {
         Object.defineProperty(this, "id", {
@@ -1256,6 +1529,12 @@ let Character = class Character {
             writable: true,
             value: void 0
         });
+        Object.defineProperty(this, "phone", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: new Phone()
+        });
     }
 };
 __decorate([
@@ -1342,6 +1621,10 @@ __decorate([
     typeorm.Column({ default: () => '[]' }),
     __metadata("design:type", Array)
 ], Character.prototype, "fraction", void 0);
+__decorate([
+    typeorm.Column(),
+    __metadata("design:type", Phone)
+], Character.prototype, "phone", void 0);
 Character = __decorate([
     typeorm.Entity()
 ], Character);
@@ -1462,7 +1745,7 @@ Fraction = __decorate([
     typeorm.Entity()
 ], Fraction);
 
-let Houses = class Houses {
+let House = class House {
     constructor() {
         Object.defineProperty(this, "id", {
             enumerable: true,
@@ -1529,48 +1812,48 @@ let Houses = class Houses {
 __decorate([
     typeorm.PrimaryGeneratedColumn(),
     __metadata("design:type", Number)
-], Houses.prototype, "id", void 0);
+], House.prototype, "id", void 0);
 __decorate([
     typeorm.Column(),
     __metadata("design:type", Number)
-], Houses.prototype, "type", void 0);
+], House.prototype, "type", void 0);
 __decorate([
     typeorm.Column(),
     __metadata("design:type", Number)
-], Houses.prototype, "class", void 0);
+], House.prototype, "class", void 0);
 __decorate([
     typeorm.Column('simple-json'),
     __metadata("design:type", Object)
-], Houses.prototype, "owner", void 0);
+], House.prototype, "owner", void 0);
 __decorate([
     typeorm.Column('simple-json'),
     __metadata("design:type", Object)
-], Houses.prototype, "position", void 0);
+], House.prototype, "position", void 0);
 __decorate([
     typeorm.Column(),
     __metadata("design:type", Number)
-], Houses.prototype, "dimension", void 0);
+], House.prototype, "dimension", void 0);
 __decorate([
     typeorm.Column('simple-json'),
     __metadata("design:type", Object)
-], Houses.prototype, "interior", void 0);
+], House.prototype, "interior", void 0);
 __decorate([
     typeorm.Column(),
     __metadata("design:type", Number)
-], Houses.prototype, "price", void 0);
+], House.prototype, "price", void 0);
 __decorate([
     typeorm.Column('simple-json'),
     __metadata("design:type", Object)
-], Houses.prototype, "garage", void 0);
+], House.prototype, "garage", void 0);
 __decorate([
     typeorm.Column(),
     __metadata("design:type", Number)
-], Houses.prototype, "locked", void 0);
-Houses = __decorate([
+], House.prototype, "locked", void 0);
+House = __decorate([
     typeorm.Entity()
-], Houses);
+], House);
 
-let Users = class Users {
+let User = class User {
     constructor() {
         Object.defineProperty(this, "id", {
             enumerable: true,
@@ -1691,84 +1974,84 @@ let Users = class Users {
 __decorate([
     typeorm.PrimaryGeneratedColumn(),
     __metadata("design:type", Number)
-], Users.prototype, "id", void 0);
+], User.prototype, "id", void 0);
 __decorate([
     typeorm.Column(),
     __metadata("design:type", String)
-], Users.prototype, "username", void 0);
+], User.prototype, "username", void 0);
 __decorate([
     typeorm.Column('varchar', { length: 200 }),
     __metadata("design:type", String)
-], Users.prototype, "password", void 0);
+], User.prototype, "password", void 0);
 __decorate([
     typeorm.Column('varchar', { length: 70 }),
     __metadata("design:type", String)
-], Users.prototype, "email", void 0);
+], User.prototype, "email", void 0);
 __decorate([
     typeorm.Column(),
     __metadata("design:type", String)
-], Users.prototype, "promo", void 0);
+], User.prototype, "promo", void 0);
 __decorate([
     typeorm.Column(),
     __metadata("design:type", String)
-], Users.prototype, "regIP", void 0);
+], User.prototype, "regIP", void 0);
 __decorate([
     typeorm.Column({ type: 'timestamp', default: 'CURRENT_TIMESTAMP' }),
     __metadata("design:type", String)
-], Users.prototype, "regDate", void 0);
+], User.prototype, "regDate", void 0);
 __decorate([
     typeorm.Column({ default: '[0]' }),
     __metadata("design:type", Array)
-], Users.prototype, "buy_slots_chars", void 0);
+], User.prototype, "buy_slots_chars", void 0);
 __decorate([
     typeorm.Column({ type: 'timestamp', default: 'CURRENT_TIMESTAMP' }),
     __metadata("design:type", String)
-], Users.prototype, "lastDate", void 0);
+], User.prototype, "lastDate", void 0);
 __decorate([
     typeorm.Column(),
     __metadata("design:type", String)
-], Users.prototype, "lastIP", void 0);
+], User.prototype, "lastIP", void 0);
 __decorate([
     typeorm.Column('simple-json', { default: () => '{}' }),
     __metadata("design:type", Object)
-], Users.prototype, "settings", void 0);
+], User.prototype, "settings", void 0);
 __decorate([
     typeorm.Column(),
     __metadata("design:type", Number)
-], Users.prototype, "admin", void 0);
+], User.prototype, "admin", void 0);
 __decorate([
     typeorm.Column('varchar', { length: 200 }),
     __metadata("design:type", String)
-], Users.prototype, "adminPassword", void 0);
+], User.prototype, "adminPassword", void 0);
 __decorate([
     typeorm.Column('simple-json', { default: () => '{}' }),
     __metadata("design:type", Object)
-], Users.prototype, "adminData", void 0);
+], User.prototype, "adminData", void 0);
 __decorate([
     typeorm.Column(),
     __metadata("design:type", Number)
-], Users.prototype, "adminBan", void 0);
+], User.prototype, "adminBan", void 0);
 __decorate([
     typeorm.Column({ default: () => -1 }),
     __metadata("design:type", Number)
-], Users.prototype, "online", void 0);
+], User.prototype, "online", void 0);
 __decorate([
     typeorm.Column({ default: () => -1 }),
     __metadata("design:type", Number)
-], Users.prototype, "onlineChar", void 0);
+], User.prototype, "onlineChar", void 0);
 __decorate([
     typeorm.Column({ default: () => '{}' }),
     __metadata("design:type", Object)
-], Users.prototype, "keysSettings", void 0);
+], User.prototype, "keysSettings", void 0);
 __decorate([
     typeorm.Column({ default: () => 0 }),
     __metadata("design:type", Number)
-], Users.prototype, "donate", void 0);
-Users = __decorate([
+], User.prototype, "donate", void 0);
+User = __decorate([
     typeorm.Entity()
-], Users);
+], User);
 
-let Vehicles = class Vehicles {
+let Vehicle = class Vehicle {
     constructor() {
         Object.defineProperty(this, "id", {
             enumerable: true,
@@ -1841,50 +2124,50 @@ let Vehicles = class Vehicles {
 __decorate([
     typeorm.PrimaryGeneratedColumn(),
     __metadata("design:type", Number)
-], Vehicles.prototype, "id", void 0);
+], Vehicle.prototype, "id", void 0);
 __decorate([
     typeorm.Column(),
     __metadata("design:type", Object)
-], Vehicles.prototype, "model", void 0);
+], Vehicle.prototype, "model", void 0);
 __decorate([
     typeorm.Column('simple-json'),
     __metadata("design:type", Object)
-], Vehicles.prototype, "position", void 0);
+], Vehicle.prototype, "position", void 0);
 __decorate([
     typeorm.Column(),
     __metadata("design:type", Number)
-], Vehicles.prototype, "heading", void 0);
+], Vehicle.prototype, "heading", void 0);
 __decorate([
     typeorm.Column(),
     __metadata("design:type", Number)
-], Vehicles.prototype, "dimension", void 0);
+], Vehicle.prototype, "dimension", void 0);
 __decorate([
     typeorm.Column('simple-json'),
     __metadata("design:type", String)
-], Vehicles.prototype, "owner", void 0);
+], Vehicle.prototype, "owner", void 0);
 __decorate([
     typeorm.Column(),
     __metadata("design:type", Number)
-], Vehicles.prototype, "locked", void 0);
+], Vehicle.prototype, "locked", void 0);
 __decorate([
     typeorm.Column(),
     __metadata("design:type", Object)
-], Vehicles.prototype, "number", void 0);
+], Vehicle.prototype, "number", void 0);
 __decorate([
     typeorm.Column(),
     __metadata("design:type", Object)
-], Vehicles.prototype, "color", void 0);
+], Vehicle.prototype, "color", void 0);
 __decorate([
     typeorm.Column(),
     __metadata("design:type", Number)
-], Vehicles.prototype, "mileage", void 0);
+], Vehicle.prototype, "mileage", void 0);
 __decorate([
     typeorm.Column(),
     __metadata("design:type", Number)
-], Vehicles.prototype, "fuel", void 0);
-Vehicles = __decorate([
+], Vehicle.prototype, "fuel", void 0);
+Vehicle = __decorate([
     typeorm.Entity()
-], Vehicles);
+], Vehicle);
 
 new typeorm.DataSource({
     type: CONFIG_DATABASE_TYPE,
@@ -1895,61 +2178,7 @@ new typeorm.DataSource({
     database: CONFIG_DATABASE_DB,
     synchronize: true,
     logging: false,
-    entities: [Fraction, Business, Character, Houses, Vehicles, Users],
+    entities: [Fraction, Business, Character, House, Vehicle, User],
     migrations: [],
     subscribers: []
-});
-
-const createClientProxy = (rpc) => {
-    const clientProxyCache = new Map();
-    return new Proxy({}, {
-        get(_, service) {
-            if (clientProxyCache.has(service)) {
-                return clientProxyCache.get(service);
-            }
-            else {
-                const proxy = new Proxy({}, {
-                    get(_, event) {
-                        const call = (noRet, ...args) => {
-                            const eventName = `${service.capitalize()}${event.capitalize()}`;
-                            return rpc.callClient(eventName, args, noRet ? { noRet: true } : { timeout: 60 * 1000, noRet: false });
-                        };
-                        const f = call.bind(null, false);
-                        f.noRet = (...args) => {
-                            call(true, ...args);
-                        };
-                        return f;
-                    }
-                });
-                clientProxyCache.set(service, proxy);
-                return proxy;
-            }
-        }
-    });
-};
-
-const isPlayer = (entity) => entity.type === "player" /* RageEnums.EntityType.PLAYER */;
-console.log("player" /* RageEnums.EntityType.PLAYER */);
-mp.events.add('entityCreated', (player) => {
-    if (!isPlayer(player))
-        return;
-    console.log('PLAYER');
-    player.clientProxy = createClientProxy({
-        callClient: (name, args, opt) => callClient(player, name, args, opt)
-    });
-    player.dispatch = (action) => {
-        triggerBrowsers(player, 'internal.dispatch', action);
-    };
-    player.setView = (view) => {
-        triggerBrowsers(player, 'internal.setView', view);
-    };
-    setTimeout(() => {
-        player.setView(null);
-    }, 5000);
-    player.pushHud = (hud) => {
-        triggerBrowsers(player, 'internal.pushHud', hud);
-    };
-    player.removeHud = (hud) => {
-        triggerBrowsers(player, 'internal.removeHud', hud);
-    };
 });

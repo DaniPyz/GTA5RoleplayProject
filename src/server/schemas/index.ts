@@ -10,9 +10,9 @@ import { DataSource } from 'typeorm';
 import { Business } from './Business';
 import { Character } from './Character';
 import { Fraction } from './Faction';
-import { Houses } from './House';
-import { Users } from './User';
-import { Vehicles } from './Vehicles';
+import { House } from './House';
+import { User } from './User';
+import { Vehicle } from './Vehicles';
 
 export const AppDataSource = new DataSource({
 	type: CONFIG_DATABASE_TYPE,
@@ -23,7 +23,7 @@ export const AppDataSource = new DataSource({
 	database: CONFIG_DATABASE_DB,
 	synchronize: true,
 	logging: false,
-	entities: [Fraction, Business, Character, Houses, Vehicles, Users],
+	entities: [Fraction, Business, Character, House, Vehicle, User],
 	migrations: [],
 	subscribers: []
 });
