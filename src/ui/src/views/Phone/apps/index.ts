@@ -8,4 +8,6 @@ import { default as Taxi } from './Taxi';
 
 const appList = { Browser, Call, Contacts, Home, Messages, Settings, Taxi };
 
+export type AppList = keyof typeof appList;
+
 export default appList;

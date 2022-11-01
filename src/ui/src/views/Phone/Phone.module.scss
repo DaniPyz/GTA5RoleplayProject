@@ -1,16 +1,48 @@
-@import "../../styles/zoom.scss";
+@import '../../styles/zoom.scss';
 
 .phone {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: flex-end;
-  align-items: flex-end;
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	display: flex;
+	justify-content: flex-end;
+	align-items: flex-end;
+	padding: 5vh;
+	font-family: "SF";
 
-  .phoneVector {
-    margin: 5vh;
-    width: 35vh;
-    height: auto;
-  }
+	.app {
+		position: absolute;
+		width: 35vh;
+		height: 71vh;
+		padding: 1.5vh 1.7vh 1.5vh 1.7vh;
+	}
+
+	.phoneVector {
+		position: relative;
+		width: 35vh;
+		pointer-events: none;
+		height: auto;
+	}
+
+	.overlay {
+		position: absolute;
+		margin-top: 3.2vh;
+		margin-left: 6.5vh;
+		width: 24vh;
+		color: white;
+		display: flex;
+		justify-content: space-between;
+
+		.time {
+			font-size: 1.5vh;
+			font-weight: 400;
+		}
+
+		.other {
+			display: flex;
+			justify-items: center;
+			align-items: center;
+			gap: 1vh;
+		}
+	}
 }

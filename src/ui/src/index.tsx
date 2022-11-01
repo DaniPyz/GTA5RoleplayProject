@@ -1,6 +1,5 @@
 import './styles/index.scss';
 import { AppDispatch, store } from 'store';
-import { Fraction, Temp } from 'views';
 import { HUD_LIST, VIEW_LIST } from './constant';
 import { createClientProxy, createServerProxy } from 'bridge/proxy';
 import type { ClientServices } from '../../client/services';
@@ -31,7 +30,7 @@ declare global {
 }
 
 window.setView = (view) => {
-	console.log(view)
+	console.log(view);
 	store.dispatch({ type: 'ROOT_VIEW_SET', view });
 };
 

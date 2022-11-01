@@ -1127,8 +1127,9 @@ let Phone$1 = class Phone extends Service {
     rpcGetMyDialogList(_player) { }
     rpcGetDialogMessages(_player) { }
     rpcSendDialogMessage(_player, _callerId, _message) { }
-    rpcRequestCall(_player, callerId) {
+    rpcRequestCall(player, callerId) {
         console.log('phoneCall', callerId);
+        player.client.temp.gefwewf();
     }
 };
 __decorate([

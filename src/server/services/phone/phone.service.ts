@@ -80,8 +80,10 @@ class Phone extends Service {
 	public rpcSendDialogMessage(_player: PlayerServer, _callerId: string, _message: string) {}
 
 	@Service.access
-	public rpcRequestCall(_player: PlayerServer, callerId: string) {
+	public rpcRequestCall(player: PlayerServer, callerId: string) {
 		console.log('phoneCall', callerId);
+
+		player.client.temp.gefwewf();
 	}
 }
 

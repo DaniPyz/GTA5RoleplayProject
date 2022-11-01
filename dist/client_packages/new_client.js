@@ -970,6 +970,10 @@ class Temp {
         server.phone.requestCall('09009');
         return 123;
     }
+    rpcGefwewf() {
+        server.phone.requestCall('222222');
+        return 123;
+    }
 }
 __decorate([
     Service.access,
@@ -977,6 +981,12 @@ __decorate([
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)
 ], Temp.prototype, "rpcAwdadw", null);
+__decorate([
+    Service.access,
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", void 0)
+], Temp.prototype, "rpcGefwewf", null);
 
 const services = {
     Temp

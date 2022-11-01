@@ -6,4 +6,10 @@ export class Temp {
 		server.phone.requestCall('09009');
 		return 123;
 	}
+
+	@Service.access
+	public rpcGefwewf() {
+		server.phone.requestCall('222222');
+		return 123;
+	}
 }
