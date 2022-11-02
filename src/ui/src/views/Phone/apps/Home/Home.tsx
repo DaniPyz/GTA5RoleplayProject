@@ -3,7 +3,6 @@ import { FC } from 'react';
 import { AppList } from '../index';
 import style from './Home.module.scss';
 import { useMoment } from 'hooks';
-import 'moment/locale/ru' 
 
 import { ReactComponent as CallSvg } from '../../vectors/call.svg';
 import { ReactComponent as ContactsSvg } from '../../vectors/contacts.svg';

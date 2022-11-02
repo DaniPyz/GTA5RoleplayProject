@@ -1,3 +1,154 @@
 .settings {
 	position: relative;
+	display: grid;
+	grid-template-rows: 15% 1fr;
+	height: 100%;
+	border-radius: 3vh;
+	overflow: hidden;
+	font-size: 1.6vh;
+
+	.nav {
+		position: relative;
+		display: flex;
+		font-size: 2vh;
+		color: #c0c0c0;
+		background-color: #1f1f1f;
+		align-items: flex-end;
+		padding: 1.5vh;
+	}
+
+	.main {
+		position: relative;
+		background-color: black;
+		height: 100%;
+		padding: 1.5vh;
+		color: white;
+		display: flex;
+		flex-direction: column;
+		gap: 2vh;
+
+		.item {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+		}
+
+		.ringtone {
+			position: relative;
+			max-width: 21vh;
+			overflow: hidden;
+			padding: 1vh;
+			padding-left: 2vh;
+			padding-right: 2vh;
+			background-color: #0b0b0c;
+			border-radius: 2vh;
+			display: grid;
+			grid-template-columns: 2vh 1fr;
+			align-items: center;
+			gap: 1vh;
+
+			& > svg {
+				width: 2vh;
+				height: auto;
+			}
+
+			.ringtoneItem {
+				white-space: nowrap;
+				overflow: hidden;
+				text-overflow: ellipsis;
+			}
+		}
+
+		.add {
+			display: flex;
+			align-items: center;
+			gap: 1vh;
+
+			svg {
+				width: 2.5vh;
+				height: auto;
+			}
+		}
+
+		.airMode {
+			position: relative;
+			background-color: #0b0b0c;
+			width: 7vh;
+			height: 3vh;
+			border-radius: 2vh;
+			display: flex;
+			align-items: center;
+			padding-left: 0.6vh;
+			padding-right: 0px 0.6vh;
+			transition: all 0.3s ease-out;
+
+			.airmodeButton {
+				transition: all 0.3s ease-out;
+			}
+
+			&.active {
+				& > div {
+					position: absolute;
+					content: '';
+					background-color: #ff4848;
+					width: 45%;
+					height: 70%;
+					border-radius: 1.5vh;
+				}
+			}
+
+			&:not(&.active) {
+				padding-left: 3vh;
+
+				& > div {
+					position: absolute;
+					content: '';
+					background-color: green;
+					width: 45%;
+					height: 70%;
+					border-radius: 1.5vh;
+				}
+			}
+		}
+
+		.wallpapers {
+			position: relative;
+			display: grid;
+			grid-template-columns: 1fr 1fr;
+			gap: 2vh;
+
+			.wrapper {
+				position: relative;
+
+				.check {
+					position: absolute;
+					top: 0.5vh;
+					right: 0.5vh;
+					width: 2.5vh;
+					height: 2.5vh;
+					background-color: #171b21;
+					border-radius: 50%;
+					display: flex;
+					align-items: center;
+					justify-content: center;
+
+					&.checked {
+						svg {
+							width: 1.2vh;
+							height: auto;
+						}
+
+						background-color: #34c759;
+					}
+				}
+
+				.image {
+					width: 100%;
+					height: 20vh;
+					object-fit: cover;
+					border-radius: 1vh;
+				}
+			}
+		}
+	}
 }

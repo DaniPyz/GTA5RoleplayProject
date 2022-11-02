@@ -1,8 +1,9 @@
-import moment from "moment";
-import { useCallback, useEffect, useState } from "react";
+import moment from 'moment';
+import { useCallback, useEffect, useState } from 'react';
+import 'moment/locale/ru';
 
 interface IUseMomentProps {
-	update: "s" | "m" | "h";
+	update: 's' | 'm' | 'h';
 }
 
 const useMoment = (props: IUseMomentProps) => {
@@ -18,7 +19,7 @@ const useMoment = (props: IUseMomentProps) => {
 					setMom(currentMom);
 				}
 			},
-			props.update === "s" ? 100 : props.update === "m" ? 1000 : 5000
+			props.update === 's' ? 100 : props.update === 'm' ? 1000 : 5000
 		);
 
 		return () => clearInterval(int);

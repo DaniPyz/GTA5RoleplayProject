@@ -8,13 +8,39 @@
 	justify-content: flex-end;
 	align-items: flex-end;
 	padding: 5vh;
-	font-family: "SF";
+	font-family: 'SF';
 
 	.app {
 		position: absolute;
 		width: 35vh;
 		height: 71vh;
 		padding: 1.5vh 1.7vh 1.5vh 1.7vh;
+
+		.appWrapper {
+			position: absolute;
+			width: 35vh;
+			height: 71vh;
+			padding: 1.5vh 1.7vh 1.5vh 1.7vh;
+		}
+
+		.bottomBar {
+			position: absolute;
+			left: 50%;
+			transform: translate(-50%, 0);
+			width: 40%;
+			height: 2vh;
+			bottom: 2.5vh;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+
+			div {
+				border-radius: 2vh;
+				width: 90%;
+				height: 30%;
+				background-color: white;
+			}
+		}
 	}
 
 	.phoneVector {

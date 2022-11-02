@@ -1,4 +1,4 @@
-import { useAppSelector } from 'hooks';
+import { useAppDispatch, useAppSelector } from 'hooks';
 import useMoment from 'hooks/useMoment';
 import { FC } from 'react';
 import { animated } from 'react-spring';
@@ -15,6 +15,7 @@ const Phone: FC = () => {
 	const phone = useAppSelector((state) => state.phoneState);
 	const moment = useMoment({ update: 'm' });
 	const OpenedApp = AppList[phone.app];
+	const dispatch = useAppDispatch();
 
 	return (
 		<div className={style.phone}>
@@ -24,15 +25,26 @@ const Phone: FC = () => {
 						<animated.div style={styles}>
 							<div className={style.app}>
 								<OpenedApp />
+								{phone.app !== 'Home' ? (
+									<div className={style.bottomBar} onClick={() => dispatch({ type: 'PHONE_APP_SET', app: 'Home' })}>
+										<div />
+									</div>
+								) : null}
 							</div>
 							<div className={style.overlay}>
 								<div className={style.time}>{moment.format('HH:mm')}</div>
 								<div className={style.other}>
-									<NetSvg />
-									<NavSvg />
+									{!phone.airmode ? (
+										<>
+											<NetSvg />
+											<NavSvg />
+										</>
+									) : null}
+
 									<BatterySvg />
 								</div>
 							</div>
+
 							<PhoneSvg className={style.phoneVector}></PhoneSvg>
 						</animated.div>
 					)
