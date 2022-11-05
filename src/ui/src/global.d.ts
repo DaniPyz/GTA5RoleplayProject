@@ -5,5 +5,9 @@ declare global {
 		isRunAsBrowser: boolean;
 	}
 }
-
+declare module 'react' {
+	interface HTMLAttributes<T> extends AriaAttributes, DOMAttributes<T> {
+		_customdata?: any;
+	}
+}
 export {};

@@ -1,14 +1,12 @@
 import { FC, useCallback, useEffect, useState } from 'react';
-import { client, server } from 'index';
-import { useAppDispatch, useAppSelector, useKeyboard } from 'hooks';
+import { useAppSelector, useKeyboard } from 'hooks';
 
 import { FRACTION_DATA } from './Fraction.config';
-import { HTML5Backend } from 'react-dnd-html5-backend';
 import ItemCell from './../../components/ItemCell/ItemCell';
 import { ItemInfo } from 'components';
 import { ReactComponent as WeightVector } from './vectors/weight.svg';
 import { animated } from 'react-spring';
-import cls from 'classnames';
+// import cls from 'classnames';
 import s from './Fraction.module.scss';
 import { setView } from 'index';
 import useMasterSpring from './Fraction.spring';
@@ -20,6 +18,14 @@ const Fraction: FC = () => {
 	const [selected, setSelected] = useState(0);
 	const [selectedCell, setSelectedCell] = useState<number | null>(null);
 	const { hideTransition } = useMasterSpring();
+
+	useEffect(() => {
+
+		setFractionId(1 - 1)
+		return () => {
+
+		}
+	}, [state])
 
 	useKeyboard(
 		'esc',
@@ -79,6 +85,7 @@ const Fraction: FC = () => {
 								</h1>
 							</div>
 							<div className={s.category}>
+								
 								{FRACTION_DATA[fractionId].categories.map((el, index) => (
 									<button
 										onClick={() => {

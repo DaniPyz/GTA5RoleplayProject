@@ -1,3 +1,5 @@
+import { useEffect, useState } from 'react';
+
 import { DragManager } from './DragManager';
 import cls from 'classnames';
 import s from './ItemCell.module.scss';
@@ -9,11 +11,15 @@ interface Props {
   img?: string,
   count?: number,
   change?: (index: number) => void;
-  selectedFilter: number
+  selectedFilter: number;
+  isLocker?: boolean
 }
 
-const ItemCell = ({ index, change, selectedCell = null, img, selectedFilter }: Props) => {
+const ItemCell = ({ index, change, selectedCell = null, img, selectedFilter, isLocker = false }: Props) => {
 
+  const [locker, setLocker] = useState(isLocker)
+ 
+  
   const dispatch = useAppDispatch();
   let dragging = false
   DragManager.onDragCancel = function (dragObject) {
@@ -23,19 +29,23 @@ const ItemCell = ({ index, change, selectedCell = null, img, selectedFilter }: P
 
   DragManager.onDragEnd = function (dragObject, dropElem) {
     dragObject.elem.style.display = 'none';
-    dispatch({ type: 'WAREHOUSE_CHANGE', data: { index: parseInt(dragObject.initId), indexNew: parseInt(dropElem.id), selectedFilter: selectedFilter } });
+    
+    if (dragObject.elem.dataset.customInfo) {
+      dispatch({ type: 'LOCKER_CHANGE', data: { index: parseInt(dragObject.initId), indexNew: parseInt(dropElem.id), selectedFilter: selectedFilter } });
+
+    } else {
+      dispatch({ type: 'WAREHOUSE_CHANGE', data: { index: parseInt(dragObject.initId), indexNew: parseInt(dropElem.id), selectedFilter: selectedFilter } });
+    }
     if (change && parseInt(dragObject.initId) === selectedCell) {
 
       let newId = parseInt(dropElem.id)
       change(newId)
     }
-    
+
   };
   DragManager.onDragInit = function (status: { status: boolean }) {
-
+ 
     if (status.status) {
-
-
       dragging = status.status
     } else {
 
@@ -53,13 +63,11 @@ const ItemCell = ({ index, change, selectedCell = null, img, selectedFilter }: P
         img ? (
           <div
             className={"draggable " + cls({ [s.ItemCell]: true, [s.ItemCell_exist]: img && index !== selectedCell, [s.ItemCell_selected]: index === selectedCell, [s.ItemCell_element]: dragging })}
-
-            // onMouseDown={onClickDown}
             id={index.toString()}
             onDragStart={() => {
               return false;
             }}
-
+            data-custom-info={isLocker}
           >
 
             {

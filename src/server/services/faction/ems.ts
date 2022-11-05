@@ -7,7 +7,6 @@ import { Service } from 'bridge';
 // 	}
 // ];
 
-
 @Service.namespace
 class Ems extends Service {
 	autosalonShapes: Map<string, string>;
@@ -19,40 +18,36 @@ class Ems extends Service {
 		mp.events.add({
 			'server::new:death': (player) => {
 				mp.events.call('chat::fraction:ems', `Человек умер напишите /accept ${player.id} что бы принять вызов`);
+			},
+			'playerStartedResuscitation': (player: PlayerServer, nearPlayer: PlayerServer) => {
+				this.playerStartedResuscitation(player, nearPlayer);
+			},
+			'givePlayerPill': (nearPlayer: PlayerServer) => {
+				this.givePillToPlayer(nearPlayer);
 			}
 		});
 	}
 
+	public playerStartedResuscitation(player: PlayerServer, nearPlayer: PlayerServer): void {
+		console.log(player, nearPlayer);
+		if (nearPlayer === undefined || nearPlayer._death === false) return;
 
-	
+		player.playAnimation('missheistfbi3b_ig8_2', 'cpr_loop_paramedic', 1, 1);
 
-	// public async rpcGetUser(player: PlayerServer): Promise<PlayerServer> {
-	// 	player.dispatch({
-	// 		type: "ROOT_HUD_PUSH",
-	// 		hud: "Temp",
-	// 	});
-	// player.pushHud("Temp");
-	// player.pushHud("Temp2");
-	// player.setView("Temp");
-	// player.setView(null);
-	// player.removeHud("Temp2");
-	// let s = await player.clientProxy.temp.awdadw();
+		setTimeout(() => {
+			player.stopAnimation();
+			nearPlayer.health = 100;
+		}, 7000);
+	}
+	public givePillToPlayer(nearPlayer: PlayerServer): void {
+		if (nearPlayer === undefined || nearPlayer._death === true) return;
 
-	// @Service.access
-	// public async rpcGetUser(player: PlayerServer): Promise<PlayerServer> {
-	// 	player.dispatch({
-	// 		type: 'ROOT_HUD_PUSH',
-	// 		hud: 'Temp'
-	// 	});
-	// 	player.pushHud();
-	// 	player.pushHud('Temp2');
-	// 	player.setView('Temp');
-	// 	player.setView(null);
-	// 	player.removeHud('Temp2');
-	// 	// let s = await player.clientProxy.temp.awdadw();
-
-	// 	return player;
-	// }
+		nearPlayer.health = 100;
+	}
 }
-
+declare global {
+	interface PlayerMp {
+		_death: boolean;
+	}
+}
 export default Ems;

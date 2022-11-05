@@ -1,7 +1,7 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
-export class Users {
+export class User {
 	@PrimaryGeneratedColumn()
 	id!: number;
 
@@ -23,7 +23,7 @@ export class Users {
 	@Column({ type: 'timestamp', default: 'CURRENT_TIMESTAMP' })
 	regDate!: string;
 
-	@Column({ default: '[0]' })
+	@Column('simple-json', { default: '[0]', array: true })
 	buy_slots_chars!: [];
 
 	@Column({ type: 'timestamp', default: 'CURRENT_TIMESTAMP' })
@@ -65,7 +65,7 @@ export class Users {
 	@Column({ default: () => -1 })
 	onlineChar!: number;
 
-	@Column({ default: () => '{}' })
+	@Column('simple-json',{ default: () => '{}' })
 	keysSettings!: object;
 
 	@Column({ default: () => 0 })

@@ -29,164 +29,6 @@ function __metadata(metadataKey, metadataValue) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(metadataKey, metadataValue);
 }
 
-String.prototype.capitalize = function capitalize() {
-    return this.charAt(0).toUpperCase() + this.slice(1);
-};
-String.prototype.uncapitalize = function uncap() {
-    return this.charAt(0).toLowerCase() + this.slice(1);
-};
-String.prototype.replaceAll = function (str, newStr) {
-    if (Object.prototype.toString.call(str).toLowerCase() === '[object regexp]') {
-        return this.replace(str, newStr);
-    }
-    return this.replace(new RegExp(str, 'g'), newStr);
-};
-Array.prototype.remove = function (value) {
-    const index = this.indexOf(value);
-    if (index !== -1) {
-        this.splice(index, 1);
-        return true;
-    }
-    else {
-        return false;
-    }
-};
-
-/* eslint-disable @typescript-eslint/consistent-type-assertions */
-const install = (rpc, env) => {
-    class Service {
-        constructor() {
-            Object.defineProperty(this, "services", {
-                enumerable: true,
-                configurable: true,
-                writable: true,
-                value: Service.namespacesUncap
-            });
-        }
-        static hookThisContextFromSingle(Target) {
-            let name = Target.constructor.name;
-            if (name === 'Function') {
-                name = Reflect.get(Target, 'name');
-            }
-            return this.namespaces[name];
-        }
-        static combineServices(services) {
-            let arr = Object.keys(Service.namespaces);
-            for (const key in services) {
-                // arr.splice(arr.indexOf(key), 1);
-                arr.remove(key);
-            }
-            if (arr.length !== 0) {
-                throw new Error(`Runtime error: ${arr} is missing to combineServices`);
-            }
-            return services;
-        }
-        static namespace(Target) {
-            if (Service.namespaces[Target.name]) {
-                throw new Error(`Error: namespace '${Target.name}' is already defined`);
-            }
-            const single = new Target();
-            Service.namespaces[Target.name] = single;
-            Service.namespacesUncap[Target.name.uncapitalize()] = single;
-            let eventMethods = Object.getOwnPropertyNames(Target.prototype).filter((name) => Service.EV_PREFIX.test(name));
-            for (const iterator of eventMethods) {
-                const name = `${Target.name}${iterator.replace(Service.EV_PREFIX, '')}`;
-                if (!Service.procedures.has(name)) {
-                    throw new Error(`Error: ${iterator} in ${Target.name} has no decorator @access`);
-                }
-                else {
-                    const f = Service.procedures.get(name);
-                    if (f) {
-                        Service.procedures.set(name, f.bind(single));
-                    }
-                    else {
-                        throw new Error(`Runtime error: ${name} is not registered`);
-                    }
-                }
-            }
-        }
-        static access(Target, propertyKey) {
-            let prefix = Target.constructor.name;
-            if (prefix === 'Function') {
-                prefix = Reflect.get(Target, 'name');
-            }
-            if (!Service.EV_PREFIX.test(propertyKey)) {
-                throw new Error(`Error: ${propertyKey} in ${prefix} no 'event' prefix`);
-            }
-            let name = `${prefix}${propertyKey.replace(Service.EV_PREFIX, '')}`;
-            if (Service.procedures.has(name)) {
-                throw new Error(`Error: event ${name} is already registered`);
-            }
-            else {
-                let f = Reflect.get(Target, propertyKey);
-                if (f instanceof Function) {
-                    Service.procedures.set(name, f);
-                    console.log(name, 'system ready');
-                    if (env === 'client') {
-                        // @ts-ignore
-                        rpc.register(name, (argumentList) => Service.procedures.get(name)(...argumentList));
-                    }
-                    else {
-                        // @ts-ignore
-                        rpc.register(name, (argumentList, { player }) => Service.procedures.get(name)(player, ...argumentList));
-                    }
-                }
-                else {
-                    throw new Error(`Runtime error: ${name} is not a function`);
-                }
-            }
-        }
-    }
-    Object.defineProperty(Service, "namespaces", {
-        enumerable: true,
-        configurable: true,
-        writable: true,
-        value: {}
-    });
-    Object.defineProperty(Service, "namespacesUncap", {
-        enumerable: true,
-        configurable: true,
-        writable: true,
-        value: {}
-    });
-    Object.defineProperty(Service, "EV_PREFIX", {
-        enumerable: true,
-        configurable: true,
-        writable: true,
-        value: /^rpc/
-    });
-    Object.defineProperty(Service, "procedures", {
-        enumerable: true,
-        configurable: true,
-        writable: true,
-        value: new Map()
-    });
-    Object.defineProperty(Service, "Invoker", {
-        enumerable: true,
-        configurable: true,
-        writable: true,
-        value: class Invoker {
-            constructor() {
-                Object.defineProperty(this, "call", {
-                    enumerable: true,
-                    configurable: true,
-                    writable: true,
-                    value: ((name, ...args) => {
-                        const proc = Service.procedures.get(name);
-                        if (proc) {
-                            return proc(...args);
-                        }
-                        else {
-                            throw new Error(`Runtime error: remote procedure ${name} is not defined`);
-                        }
-                    })
-                });
-            }
-        }
-    });
-    return Service;
-};
-
 // @ts-nocheck
 var MpTypes;
 (function (MpTypes) {
@@ -934,7 +776,194 @@ var rpc = /*#__PURE__*/Object.freeze({
     'default': index
 });
 
+String.prototype.capitalize = function capitalize() {
+    return this.charAt(0).toUpperCase() + this.slice(1);
+};
+String.prototype.uncapitalize = function uncap() {
+    return this.charAt(0).toLowerCase() + this.slice(1);
+};
+String.prototype.replaceAll = function (str, newStr) {
+    if (Object.prototype.toString.call(str).toLowerCase() === '[object regexp]') {
+        return this.replace(str, newStr);
+    }
+    return this.replace(new RegExp(str, 'g'), newStr);
+};
+Array.prototype.remove = function (value) {
+    const index = this.indexOf(value);
+    if (index !== -1) {
+        this.splice(index, 1);
+        return true;
+    }
+    else {
+        return false;
+    }
+};
+
+const createClientProxy = (rpc) => {
+    const clientProxyCache = new Map();
+    return new Proxy({}, {
+        get(_, service) {
+            if (clientProxyCache.has(service)) {
+                return clientProxyCache.get(service);
+            }
+            else {
+                const proxy = new Proxy({}, {
+                    get(_, event) {
+                        const call = (noRet, ...args) => {
+                            const eventName = `${service.capitalize()}${event.capitalize()}`;
+                            return rpc.callClient(eventName, args, noRet ? { noRet: true } : { timeout: 60 * 1000, noRet: false });
+                        };
+                        const f = call.bind(null, false);
+                        f.noRet = (...args) => {
+                            call(true, ...args);
+                        };
+                        return f;
+                    }
+                });
+                clientProxyCache.set(service, proxy);
+                return proxy;
+            }
+        }
+    });
+};
+
+/* eslint-disable @typescript-eslint/consistent-type-assertions */
+const install = (rpc, env) => {
+    class Service {
+        constructor() {
+            Object.defineProperty(this, "services", {
+                enumerable: true,
+                configurable: true,
+                writable: true,
+                value: Service.namespacesUncap
+            });
+        }
+        static hookThisContextFromSingle(Target) {
+            let name = Target.constructor.name;
+            if (name === 'Function') {
+                name = Reflect.get(Target, 'name');
+            }
+            return this.namespaces[name];
+        }
+        static combineServices(services) {
+            let arr = Object.keys(Service.namespaces);
+            for (const key in services) {
+                // arr.splice(arr.indexOf(key), 1);
+                arr.remove(key);
+            }
+            if (arr.length !== 0) {
+                throw new Error(`Runtime error: ${arr} is missing to combineServices`);
+            }
+            return services;
+        }
+        static namespace(Target) {
+            if (Service.namespaces[Target.name]) {
+                throw new Error(`Error: namespace '${Target.name}' is already defined`);
+            }
+            const single = new Target();
+            Service.namespaces[Target.name] = single;
+            Service.namespacesUncap[Target.name.uncapitalize()] = single;
+            let eventMethods = Object.getOwnPropertyNames(Target.prototype).filter((name) => Service.EV_PREFIX.test(name));
+            for (const iterator of eventMethods) {
+                const name = `${Target.name}${iterator.replace(Service.EV_PREFIX, '')}`;
+                if (!Service.procedures.has(name)) {
+                    throw new Error(`Error: ${iterator} in ${Target.name} has no decorator @access`);
+                }
+                else {
+                    const f = Service.procedures.get(name);
+                    if (f) {
+                        Service.procedures.set(name, f.bind(single));
+                    }
+                    else {
+                        throw new Error(`Runtime error: ${name} is not registered`);
+                    }
+                }
+            }
+        }
+        static access(Target, propertyKey) {
+            let prefix = Target.constructor.name;
+            if (prefix === 'Function') {
+                prefix = Reflect.get(Target, 'name');
+            }
+            if (!Service.EV_PREFIX.test(propertyKey)) {
+                throw new Error(`Error: ${propertyKey} in ${prefix} no 'event' prefix`);
+            }
+            let name = `${prefix}${propertyKey.replace(Service.EV_PREFIX, '')}`;
+            if (Service.procedures.has(name)) {
+                throw new Error(`Error: event ${name} is already registered`);
+            }
+            else {
+                let f = Reflect.get(Target, propertyKey);
+                if (f instanceof Function) {
+                    Service.procedures.set(name, f);
+                    console.log(name, 'system ready');
+                    if (env === 'client') {
+                        // @ts-ignore
+                        rpc.register(name, (argumentList) => Service.procedures.get(name)(...argumentList));
+                    }
+                    else {
+                        // @ts-ignore
+                        rpc.register(name, (argumentList, { player }) => Service.procedures.get(name)(player, ...argumentList));
+                    }
+                }
+                else {
+                    throw new Error(`Runtime error: ${name} is not a function`);
+                }
+            }
+        }
+    }
+    Object.defineProperty(Service, "namespaces", {
+        enumerable: true,
+        configurable: true,
+        writable: true,
+        value: {}
+    });
+    Object.defineProperty(Service, "namespacesUncap", {
+        enumerable: true,
+        configurable: true,
+        writable: true,
+        value: {}
+    });
+    Object.defineProperty(Service, "EV_PREFIX", {
+        enumerable: true,
+        configurable: true,
+        writable: true,
+        value: /^rpc/
+    });
+    Object.defineProperty(Service, "procedures", {
+        enumerable: true,
+        configurable: true,
+        writable: true,
+        value: new Map()
+    });
+    Object.defineProperty(Service, "Invoker", {
+        enumerable: true,
+        configurable: true,
+        writable: true,
+        value: class Invoker {
+            constructor() {
+                Object.defineProperty(this, "call", {
+                    enumerable: true,
+                    configurable: true,
+                    writable: true,
+                    value: ((name, ...args) => {
+                        const proc = Service.procedures.get(name);
+                        if (proc) {
+                            return proc(...args);
+                        }
+                        else {
+                            throw new Error(`Runtime error: remote procedure ${name} is not defined`);
+                        }
+                    })
+                });
+            }
+        }
+    });
+    return Service;
+};
+
 const Service = install(rpc, 'server');
+createClientProxy(rpc);
 
 // const AUTOSALON_LIST = [
 // 	{
@@ -956,8 +985,29 @@ let Ems = class Ems extends Service {
         mp.events.add({
             'server::new:death': (player) => {
                 mp.events.call('chat::fraction:ems', `Человек умер напишите /accept ${player.id} что бы принять вызов`);
+            },
+            'playerStartedResuscitation': (player, nearPlayer) => {
+                this.playerStartedResuscitation(player, nearPlayer);
+            },
+            'givePlayerPill': (nearPlayer) => {
+                this.givePillToPlayer(nearPlayer);
             }
         });
+    }
+    playerStartedResuscitation(player, nearPlayer) {
+        console.log(player, nearPlayer);
+        if (nearPlayer === undefined || nearPlayer._death === false)
+            return;
+        player.playAnimation('missheistfbi3b_ig8_2', 'cpr_loop_paramedic', 1, 1);
+        setTimeout(() => {
+            player.stopAnimation();
+            nearPlayer.health = 100;
+        }, 7000);
+    }
+    givePillToPlayer(nearPlayer) {
+        if (nearPlayer === undefined || nearPlayer._death === true)
+            return;
+        nearPlayer.health = 100;
     }
 };
 Ems = __decorate([
@@ -973,6 +1023,235 @@ const CONFIG_DATABASE_USER = 'root';
 const CONFIG_DATABASE_DB = 'newyork';
 const CONFIG_DATABASE_PASS = '';
 
+let Characters = class Characters {
+    constructor() {
+        Object.defineProperty(this, "id", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: void 0
+        });
+        Object.defineProperty(this, "userid", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: void 0
+        });
+        Object.defineProperty(this, "name", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: void 0
+        });
+        Object.defineProperty(this, "gender", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: void 0
+        });
+        Object.defineProperty(this, "age", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: void 0
+        });
+        Object.defineProperty(this, "skin", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: void 0
+        });
+        Object.defineProperty(this, "clothes", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: void 0
+        });
+        Object.defineProperty(this, "birthday", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: void 0
+        });
+        Object.defineProperty(this, "level", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: void 0
+        });
+        Object.defineProperty(this, "exp", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: void 0
+        });
+        Object.defineProperty(this, "cash", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: void 0
+        });
+        Object.defineProperty(this, "bankcash", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: void 0
+        });
+        Object.defineProperty(this, "createchar", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: void 0
+        });
+        Object.defineProperty(this, "lastDate", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: void 0
+        });
+        Object.defineProperty(this, "quests", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: void 0
+        });
+        Object.defineProperty(this, "questsOld", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: void 0
+        });
+        Object.defineProperty(this, "inventory", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: void 0
+        });
+        Object.defineProperty(this, "backpack", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: void 0
+        });
+        Object.defineProperty(this, "backpackStatus", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: void 0
+        });
+        Object.defineProperty(this, "donateRoullete", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: void 0
+        });
+        Object.defineProperty(this, "fractionId", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: void 0
+        });
+        Object.defineProperty(this, "fractionRank", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: void 0
+        });
+    }
+};
+__decorate([
+    typeorm.PrimaryGeneratedColumn(),
+    __metadata("design:type", Number)
+], Characters.prototype, "id", void 0);
+__decorate([
+    typeorm.Column(),
+    __metadata("design:type", Number)
+], Characters.prototype, "userid", void 0);
+__decorate([
+    typeorm.Column('simple-json'),
+    __metadata("design:type", Array)
+], Characters.prototype, "name", void 0);
+__decorate([
+    typeorm.Column({ default: 0 }),
+    __metadata("design:type", Number)
+], Characters.prototype, "gender", void 0);
+__decorate([
+    typeorm.Column({ default: 0 }),
+    __metadata("design:type", Number)
+], Characters.prototype, "age", void 0);
+__decorate([
+    typeorm.Column('simple-json'),
+    __metadata("design:type", Object)
+], Characters.prototype, "skin", void 0);
+__decorate([
+    typeorm.Column('simple-json', { default: () => '{}' }),
+    __metadata("design:type", Object)
+], Characters.prototype, "clothes", void 0);
+__decorate([
+    typeorm.Column({ type: 'timestamp', default: 'CURRENT_TIMESTAMP' }),
+    __metadata("design:type", String)
+], Characters.prototype, "birthday", void 0);
+__decorate([
+    typeorm.Column({ default: 1 }),
+    __metadata("design:type", Number)
+], Characters.prototype, "level", void 0);
+__decorate([
+    typeorm.Column({ default: 0 }),
+    __metadata("design:type", Number)
+], Characters.prototype, "exp", void 0);
+__decorate([
+    typeorm.Column({ default: 200 }),
+    __metadata("design:type", Number)
+], Characters.prototype, "cash", void 0);
+__decorate([
+    typeorm.Column({ default: 0 }),
+    __metadata("design:type", Number)
+], Characters.prototype, "bankcash", void 0);
+__decorate([
+    typeorm.Column({ default: 1 }),
+    __metadata("design:type", Number)
+], Characters.prototype, "createchar", void 0);
+__decorate([
+    typeorm.Column({ type: 'timestamp', default: 'CURRENT_TIMESTAMP' }),
+    __metadata("design:type", String)
+], Characters.prototype, "lastDate", void 0);
+__decorate([
+    typeorm.Column('simple-json', { default: () => '{}' }),
+    __metadata("design:type", Object)
+], Characters.prototype, "quests", void 0);
+__decorate([
+    typeorm.Column('simple-json', { default: () => '[]' }),
+    __metadata("design:type", Array)
+], Characters.prototype, "questsOld", void 0);
+__decorate([
+    typeorm.Column('simple-json', { default: () => '[]', array: true }),
+    __metadata("design:type", Array)
+], Characters.prototype, "inventory", void 0);
+__decorate([
+    typeorm.Column('simple-json', { default: () => '[]' }),
+    __metadata("design:type", Array)
+], Characters.prototype, "backpack", void 0);
+__decorate([
+    typeorm.Column({ default: 0 }),
+    __metadata("design:type", Number)
+], Characters.prototype, "backpackStatus", void 0);
+__decorate([
+    typeorm.Column('simple-json', { default: '{ "status": false, "data": [], "time": 0 }' }),
+    __metadata("design:type", Object)
+], Characters.prototype, "donateRoullete", void 0);
+__decorate([
+    typeorm.Column({ default: () => 0 }),
+    __metadata("design:type", Number)
+], Characters.prototype, "fractionId", void 0);
+__decorate([
+    typeorm.Column({ default: () => 0 }),
+    __metadata("design:type", Number)
+], Characters.prototype, "fractionRank", void 0);
+Characters = __decorate([
+    typeorm.Entity()
+], Characters);
+console.log(123);
+
 let Fraction = class Fraction {
     constructor() {
         Object.defineProperty(this, "id", {
@@ -981,12 +1260,8 @@ let Fraction = class Fraction {
             writable: true,
             value: void 0
         });
-        Object.defineProperty(this, "type", {
-            enumerable: true,
-            configurable: true,
-            writable: true,
-            value: void 0
-        });
+        // @Column()
+        // type!: number;
         Object.defineProperty(this, "name", {
             enumerable: true,
             configurable: true,
@@ -1049,10 +1324,6 @@ __decorate([
 ], Fraction.prototype, "id", void 0);
 __decorate([
     typeorm.Column(),
-    __metadata("design:type", Number)
-], Fraction.prototype, "type", void 0);
-__decorate([
-    typeorm.Column(),
     __metadata("design:type", String)
 ], Fraction.prototype, "name", void 0);
 __decorate([
@@ -1093,8 +1364,204 @@ Fraction = __decorate([
     typeorm.Entity()
 ], Fraction);
 
-// import { Houses } from './schemas/House';
-// import { Users } from './schemas/User';
+let User = class User {
+    constructor() {
+        Object.defineProperty(this, "id", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: void 0
+        });
+        Object.defineProperty(this, "username", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: void 0
+        });
+        Object.defineProperty(this, "password", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: void 0
+        });
+        Object.defineProperty(this, "email", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: void 0
+        });
+        Object.defineProperty(this, "promo", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: void 0
+        });
+        Object.defineProperty(this, "regIP", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: void 0
+        });
+        Object.defineProperty(this, "regDate", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: void 0
+        });
+        Object.defineProperty(this, "buy_slots_chars", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: void 0
+        });
+        Object.defineProperty(this, "lastDate", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: void 0
+        });
+        Object.defineProperty(this, "lastIP", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: void 0
+        });
+        Object.defineProperty(this, "settings", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: void 0
+        });
+        Object.defineProperty(this, "admin", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: void 0
+        });
+        Object.defineProperty(this, "adminPassword", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: void 0
+        });
+        Object.defineProperty(this, "adminData", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: void 0
+        });
+        Object.defineProperty(this, "adminBan", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: void 0
+        });
+        Object.defineProperty(this, "online", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: void 0
+        });
+        Object.defineProperty(this, "onlineChar", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: void 0
+        });
+        Object.defineProperty(this, "keysSettings", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: void 0
+        });
+        Object.defineProperty(this, "donate", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: void 0
+        });
+    }
+};
+__decorate([
+    typeorm.PrimaryGeneratedColumn(),
+    __metadata("design:type", Number)
+], User.prototype, "id", void 0);
+__decorate([
+    typeorm.Column(),
+    __metadata("design:type", String)
+], User.prototype, "username", void 0);
+__decorate([
+    typeorm.Column('varchar', { length: 200 }),
+    __metadata("design:type", String)
+], User.prototype, "password", void 0);
+__decorate([
+    typeorm.Column('varchar', { length: 70 }),
+    __metadata("design:type", String)
+], User.prototype, "email", void 0);
+__decorate([
+    typeorm.Column(),
+    __metadata("design:type", String)
+], User.prototype, "promo", void 0);
+__decorate([
+    typeorm.Column(),
+    __metadata("design:type", String)
+], User.prototype, "regIP", void 0);
+__decorate([
+    typeorm.Column({ type: 'timestamp', default: 'CURRENT_TIMESTAMP' }),
+    __metadata("design:type", String)
+], User.prototype, "regDate", void 0);
+__decorate([
+    typeorm.Column('simple-json', { default: '[0]', array: true }),
+    __metadata("design:type", Array)
+], User.prototype, "buy_slots_chars", void 0);
+__decorate([
+    typeorm.Column({ type: 'timestamp', default: 'CURRENT_TIMESTAMP' }),
+    __metadata("design:type", String)
+], User.prototype, "lastDate", void 0);
+__decorate([
+    typeorm.Column(),
+    __metadata("design:type", String)
+], User.prototype, "lastIP", void 0);
+__decorate([
+    typeorm.Column('simple-json', { default: () => '{}' }),
+    __metadata("design:type", Object)
+], User.prototype, "settings", void 0);
+__decorate([
+    typeorm.Column(),
+    __metadata("design:type", Number)
+], User.prototype, "admin", void 0);
+__decorate([
+    typeorm.Column('varchar', { length: 200 }),
+    __metadata("design:type", String)
+], User.prototype, "adminPassword", void 0);
+__decorate([
+    typeorm.Column('simple-json', { default: () => '{}' }),
+    __metadata("design:type", Object)
+], User.prototype, "adminData", void 0);
+__decorate([
+    typeorm.Column(),
+    __metadata("design:type", Number)
+], User.prototype, "adminBan", void 0);
+__decorate([
+    typeorm.Column({ default: () => -1 }),
+    __metadata("design:type", Number)
+], User.prototype, "online", void 0);
+__decorate([
+    typeorm.Column({ default: () => -1 }),
+    __metadata("design:type", Number)
+], User.prototype, "onlineChar", void 0);
+__decorate([
+    typeorm.Column('simple-json', { default: () => '{}' }),
+    __metadata("design:type", Object)
+], User.prototype, "keysSettings", void 0);
+__decorate([
+    typeorm.Column({ default: () => 0 }),
+    __metadata("design:type", Number)
+], User.prototype, "donate", void 0);
+User = __decorate([
+    typeorm.Entity()
+], User);
+
 // import { Vehicles } from './schemas/Vehicles';
 const AppDataSource = new typeorm.DataSource({
     type: CONFIG_DATABASE_TYPE,
@@ -1105,54 +1572,135 @@ const AppDataSource = new typeorm.DataSource({
     database: CONFIG_DATABASE_DB,
     synchronize: false,
     logging: false,
-    entities: [Fraction],
+    entities: [Fraction, User, Characters],
     // Business, Character, Houses, Vehicles, Users
     migrations: [],
     subscribers: []
 });
 
-const AUTOSALON_LIST = [
+const SHARED_FRACTIONS_DATA = [
+    [
+        {
+            name: 'Стажер',
+            clothes: [0, 0, 0, 0, 122, 0, 54, 0, 0, 0, 0, 384],
+            weapons: ['weapon_specialcarbine_mk2', 'weapon_stungun']
+        },
+        {
+            name: 'Уверенный',
+            clothes: [0, 0, 0, 0, 122, 0, 54, 0, 0, 0, 0, 384],
+            weapons: ['weapon_specialcarbine_mk2', 'weapon_stungun', 'weapon_raypistol']
+        },
+        {
+            name: 'Обычный',
+            clothes: [0, 0, 0, 0, 122, 0, 54, 0, 0, 0, 0, 384],
+            weapons: ['weapon_specialcarbine_mk2']
+        }
+    ],
+    [
+        {
+            name: 'Офицер',
+            clothes: [0, 0, 0, 0, 122, 0, 54, 0, 0, 0, 0, 384]
+        },
+        {
+            name: 'Уверенный',
+            clothes: [0, 0, 0, 0, 122, 0, 54, 0, 0, 0, 0, 384]
+        },
+        {
+            name: 'Обычный',
+            clothes: [0, 0, 0, 0, 122, 0, 54, 0, 0, 0, 0, 384]
+        }
+    ]
+];
+
+const FRACTION_LIST = [
     {
-        name: 'San Andreas',
-        pos: new mp.Vector3(-20.840431213378906, -699.7188720703125, 250.41355895996094),
-        vehicleHeading: 195
+        name: 'Ems',
+        pos: new mp.Vector3(-20.840431213378906, -699.7188720703125, 249.41355895996094),
+        id: 1,
+        sprite: 489,
+        color: 1,
+        changeClothes: new mp.Vector3(-10.840431213378906, -699.7188720703125, 249.41355895996094)
+    },
+    {
+        name: 'Lspd',
+        pos: new mp.Vector3(451.61663818359375, -980.2980346679688, 29.689603805541992),
+        id: 2,
+        sprite: 60,
+        color: 38,
+        changeClothes: new mp.Vector3(456.4762268066406, -988.3687133789062, 30.689586639404297)
     }
 ];
-const autosalonShapes = new Map();
+const fractionShapes = new Map();
 let Faction = class Faction extends Service {
     constructor() {
         super();
-        Object.defineProperty(this, "autosalonShapes", {
+        Object.defineProperty(this, "fractionShapes", {
             enumerable: true,
             configurable: true,
             writable: true,
             value: void 0
         });
-        this.autosalonShapes = new Map();
-        for (let autosalon of AUTOSALON_LIST) {
-            const autosalonShape = mp.colshapes.newSphere(autosalon.pos.x, autosalon.pos.y, autosalon.pos.z, 2, 0);
-            mp.blips.new(1, autosalon.pos);
-            mp.markers.new(1, autosalon.pos, 1);
-            autosalonShapes.set(autosalonShape, autosalon);
+        this.fractionShapes = new Map();
+        for (let fraction of FRACTION_LIST) {
+            const fractionWarehouseShape = mp.colshapes.newSphere(fraction.pos.x, fraction.pos.y, fraction.pos.z, 2, 0);
+            const fractionClothesShape = mp.colshapes.newSphere(fraction.changeClothes.x, fraction.changeClothes.y, fraction.changeClothes.z, 2, 0);
+            mp.blips.new(fraction.sprite, fraction.pos, {
+                name: fraction.name,
+                shortRange: true,
+                color: fraction.color
+            });
+            mp.markers.new(1, fraction.pos, 1);
+            mp.markers.new(1, fraction.changeClothes, 1);
+            fractionShapes.set(fractionWarehouseShape, {
+                ...fraction,
+                isWarehouseShape: true
+            });
+            fractionShapes.set(fractionClothesShape, {
+                ...fraction,
+                isClothesShape: true
+            });
         }
-        mp.events.add('playerEnterColshape', (player, colshape) => this.enterInAutosalon(player, colshape));
+        mp.events.add('playerEnterColshape', (player, colshape) => {
+            this.enterInWarehouse(player, colshape);
+            this.enterInChangeClothes(player, colshape);
+        });
     }
-    // @Service.access
-    async enterInAutosalon(player, colshape) {
-        const autosalon = autosalonShapes.get(colshape);
+    async enterInChangeClothes(player, colshape) {
+        const fraction = fractionShapes.get(colshape);
+        if (!fraction || fraction.isClothesShape !== true)
+            return;
+        console.log(player.character);
+        if (fraction && player.character.fractionId !== 0 && player.character.fractionRank !== 0) {
+            let clothes = SHARED_FRACTIONS_DATA[--player.character.fractionId][--player.character.fractionRank].clothes;
+            clothes.map((value, index) => {
+                player.setClothes(index, value, 0, 0);
+            });
+        }
+    }
+    async enterInWarehouse(player, colshape) {
+        const fraction = fractionShapes.get(colshape);
+        if (!fraction || fraction.isWarehouseShape !== true)
+            return;
         const users = AppDataSource.getRepository('Fraction');
         const user = await users.findOneBy({
-            id: 1
+            id: fraction.id
         });
         if (user === null)
             return;
-        if (autosalon) {
-            player.call('server::user:cursor', [true, false]);
-            player.dispatch({ type: 'WAREHOUSE_ADD', warehouse: user.warehouse });
+        if (fraction) {
+            // player.call('newserver::user:cursor', true);
+            player.dispatch({ type: 'WAREHOUSE_ADD', warehouse: user.warehouse, fractionId: user.id });
             player.setView('Fraction');
         }
     }
-    // player, id, count = 1, data = {}, onlyInv = false, customWeight = 0, canStack = false
+    // public async enterInReanimationZone(player: PlayerServer, colshape: RageEnums.ColshapeType): Promise<void> {
+    // 	//@ts-ignore
+    // 	const deathPlayer = colshape.getVariable('deathPlayerID');
+    // 	if (!deathPlayer) return;
+    // 	if (deathPlayer) {
+    // 		player.call('server::user:toggleActionText', [true, 'E', 'Восп']);
+    // 	}
+    // }
     async rpcGivePlayerItem(player, id, _fractionId, selected, selectedCell) {
         const users = AppDataSource.getRepository('Fraction');
         const user = await users.findOneBy({
@@ -1164,7 +1712,7 @@ let Faction = class Faction extends Service {
         newData[selected][selectedCell] = null;
         user.warehouse = newData;
         await users.save(user);
-        player.dispatch({ type: 'WAREHOUSE_ADD', warehouse: newData });
+        player.dispatch({ type: 'WAREHOUSE_ADD', warehouse: newData, fractionId: user.id });
         mp.events.call('serverNew::give:item', player, id, 1, {}, false, 0, false);
     }
 };
@@ -1180,65 +1728,216 @@ Faction = __decorate([
 ], Faction);
 var Faction$1 = Faction;
 
+class Player {
+    /**
+     * Обертка entityCreated, entityDestroyed.
+     * Первый callback вызывается, когда игрок создается, коллбек, который был возвращен, когда игрок уничтожился
+     */
+    static created(callback) {
+        let destroyedCallback = undefined;
+        mp.events.add('entityCreated', (player) => {
+            if (Player.isPlayer(player)) {
+                destroyedCallback = callback(player);
+                player.pushAlert;
+            }
+        });
+        mp.events.add('entityDestroyed', (player) => {
+            if (Player.isPlayer(player)) {
+                destroyedCallback && destroyedCallback(player);
+            }
+        });
+    }
+}
+/**
+ * Проверяет EntityMp === PlayerMp
+ */
+Object.defineProperty(Player, "isPlayer", {
+    enumerable: true,
+    configurable: true,
+    writable: true,
+    value: (entity) => entity.type === "player" /* RageEnums.EntityType.PLAYER */
+});
+/**
+ * Получает список игроков (авторизованных, играющих за персонажей)
+ */
+Object.defineProperty(Player, "getPlayerList", {
+    enumerable: true,
+    configurable: true,
+    writable: true,
+    value: ({ hasAuth, hasCharacter }) => {
+        if (hasAuth && !hasCharacter) {
+            return mp.players.toArrayFast().filter((player) => player.user);
+        }
+        if (hasCharacter) {
+            return mp.players.toArrayFast().filter((player) => player.user && player.character);
+        }
+        return mp.players.toArrayFast();
+    }
+});
+(() => {
+    mp.events.add('entityCreated', (player) => {
+        if (!Player.isPlayer(player))
+            return;
+        player.client = createClientProxy({
+            callClient: (name, args, opt) => callClient(player, name, args, opt)
+        });
+        player.dispatch = (action) => {
+            triggerBrowsers(player, 'internal.dispatch', action);
+        };
+        player.setView = (view) => {
+            triggerBrowsers(player, 'internal.setView', view);
+        };
+        player.pushHud = (hud) => {
+            triggerBrowsers(player, 'internal.pushHud', hud);
+        };
+        player.removeHud = (hud) => {
+            triggerBrowsers(player, 'internal.removeHud', hud);
+        };
+        player.setAlert = (_props) => {
+            throw new Error('Not implemented');
+        };
+        player.pushAlert = (_props) => {
+            throw new Error('Not implemented');
+        };
+        player.setConfirm = (_props) => {
+            throw new Error('Not implemented');
+        };
+        player.pushConfirm = (_props) => {
+            throw new Error('Not implemented');
+        };
+        player.setPhoneAlert = (_props) => {
+            throw new Error('Not implemented');
+        };
+        player.setPhoneConfirm = (_props) => {
+            throw new Error('Not implemented');
+        };
+        player.pushPhoneAlert = (_props) => {
+            throw new Error('Not implemented');
+        };
+        player.pushPhoneConfirm = (_props) => {
+            throw new Error('Not implemented');
+        };
+        mp.events.add('playerHasLogged', async (userId) => {
+            const Characters = AppDataSource.getRepository('Characters');
+            const Character = await Characters.findOneBy({
+                userid: userId
+            });
+            if (Character === null)
+                return;
+            //@ts-ignore
+            player.character = Character;
+        });
+    });
+})();
+
+let jails = [
+    new mp.Vector3(459.25750732421875, -1001.5284423828125, 24.914859771728516),
+    new mp.Vector3(459.3766174316406, -997.9525756835938, 24.914859771728516),
+    new mp.Vector3(460.325927734375, -994.3788452148438, 24.914859771728516)
+];
+let JailExit = {
+    pos: new mp.Vector3(443.1412658691406, -982.986083984375, 29.689594268798828),
+    heading: 80
+};
+let Lspd = class Lspd extends Service {
+    constructor() {
+        super();
+        Object.defineProperty(this, "jail", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: (_player, nearPlayer, time) => {
+                let jail = this.getRandomJail();
+                if (nearPlayer[1] === undefined)
+                    return;
+                if (!nearPlayer[1].isCuff)
+                    return;
+                if (nearPlayer[1].wantedStars == 0)
+                    return;
+                if (jail.subtract(nearPlayer[1].position).length() > 10)
+                    return;
+                nearPlayer[1].position = jail;
+                setTimeout(() => {
+                    nearPlayer[1].position = JailExit.pos;
+                    nearPlayer[1].isCuff = false;
+                }, time);
+            }
+        });
+        Object.defineProperty(this, "giveStars", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: (_player, targetPlayer, stars) => {
+                if (targetPlayer === undefined)
+                    return;
+                targetPlayer.wantedStars = stars;
+            }
+        });
+        Player.created((player) => {
+            player.isCuff = false;
+        });
+        mp.events.add({
+            'server::new:death': (player) => {
+                mp.events.call('chat::fraction:lspd', `Поступил вызов что бы принять напишите /accept ${player.id} .`);
+            },
+            'server::lspd:keyPressed': () => {
+                console.log('Привет');
+            },
+            'server::lspd:jail': (player, nearPlayer, time) => {
+                this.jail(player, nearPlayer, time);
+            },
+            'server::lspd:giveStars': (player, targetPlayer, stars) => {
+                this.giveStars(player, targetPlayer, stars);
+            }
+        });
+    }
+    // user.setClothes(player, clothes, false)
+    rpcCuffPlayer(player) {
+        player.client.lspd.cuffPlayer();
+        player.isCuff = !player.isCuff;
+        if (player.isCuff) {
+            player.playAnimation('mp_arresting', 'idle', 1, 53); // или вместо 53 49
+        }
+        else {
+            player.stopAnimation();
+        }
+    }
+    rpcDragCuffedPlayer(player) {
+        player.client.lspd.dragPlayer();
+    }
+    getRandomJail() {
+        //@ts-ignore
+        return jails[mp.getRandomInRange(0, jails.length - 1)];
+    }
+};
+__decorate([
+    Service.access,
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
+], Lspd.prototype, "rpcCuffPlayer", null);
+__decorate([
+    Service.access,
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
+], Lspd.prototype, "rpcDragCuffedPlayer", null);
+Lspd = __decorate([
+    Service.namespace,
+    __metadata("design:paramtypes", [])
+], Lspd);
+var Lspd$1 = Lspd;
+
+//@ts-ignore
+mp.getRandomInRange = (min, max) => {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+};
 const services = {
     Faction: Faction$1,
-    Ems: Ems$1
+    Ems: Ems$1,
+    Lspd: Lspd$1
 };
 Service.combineServices(services);
-
-const createClientProxy = (rpc) => {
-    const clientProxyCache = new Map();
-    return new Proxy({}, {
-        get(_, service) {
-            if (clientProxyCache.has(service)) {
-                return clientProxyCache.get(service);
-            }
-            else {
-                const proxy = new Proxy({}, {
-                    get(_, event) {
-                        const call = (noRet, ...args) => {
-                            const eventName = `${service.capitalize()}${event.capitalize()}`;
-                            return rpc.callClient(eventName, args, noRet ? { noRet: true } : { timeout: 60 * 1000, noRet: false });
-                        };
-                        const f = call.bind(null, false);
-                        f.noRet = (...args) => {
-                            call(true, ...args);
-                        };
-                        return f;
-                    }
-                });
-                clientProxyCache.set(service, proxy);
-                return proxy;
-            }
-        }
-    });
-};
-
-const isPlayer = (entity) => entity.type === "player" /* RageEnums.EntityType.PLAYER */;
-console.log("player" /* RageEnums.EntityType.PLAYER */);
-mp.events.add('entityCreated', (player) => {
-    if (!isPlayer(player))
-        return;
-    player.clientProxy = createClientProxy({
-        callClient: (name, args, opt) => callClient(player, name, args, opt)
-    });
-    player.dispatch = (action) => {
-        triggerBrowsers(player, 'internal.dispatch', action);
-    };
-    player.setView = (view) => {
-        triggerBrowsers(player, 'internal.setView', view);
-    };
-    // setTimeout(() => {
-    // 	console.log('Отработал')
-    // 	player.setView('Fraction');
-    // }, 10000);
-    player.pushHud = (hud) => {
-        triggerBrowsers(player, 'internal.pushHud', hud);
-    };
-    player.removeHud = (hud) => {
-        triggerBrowsers(player, 'internal.removeHud', hud);
-    };
-});
 
 AppDataSource.initialize()
     .then(async () => {

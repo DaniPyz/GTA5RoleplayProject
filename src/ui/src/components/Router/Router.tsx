@@ -1,7 +1,8 @@
-import { createContext, FC, ReactNode, useEffect, useMemo, useState } from 'react';
-import { useAppSelector } from 'hooks';
-import style from './Router.module.scss';
+import { FC, ReactNode, createContext, useEffect, useMemo, useState } from 'react';
+
 import { Hud } from 'index';
+import style from './Router.module.scss';
+import { useAppSelector } from 'hooks';
 
 interface IRouterProps {
 	views: { [key: string]: FC<IViewControllerProps> };

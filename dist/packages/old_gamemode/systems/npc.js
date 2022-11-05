@@ -15,6 +15,7 @@ try {
     const chat = require('../chat')
     const sys_vehicle = require('./vehicle')
     const func = require('../modules/func')
+    const SHARED_FRACTIONS_DATA = require('../../../../src/shared/constants')
 
     const sys_npc = {}
 
@@ -239,7 +240,7 @@ try {
                                     user.destroyCamera(player, { ease: 1000 })
                                     return
                                 }
-                                
+
                                 player.call('server::user:setMarker', [-374.61431884765625, -2809.68994140625, 3.000308513641357, 0, 'Точка приема', true, 77, 371])
                                 container.set('user', player.id, "work", [workId, 1])
                                 user.setClothes(player, 'work', false)
@@ -299,12 +300,12 @@ try {
 
                     player._npcDialogCallback = (id, btn) => {
                         if (btn === 0) {
-                             if (container.has('user', player.id, "work") === true) {
-                                    user.notify(player, `Сначала увольтесь с прошлой работы`, 'error')
-                                    user.npcdialogHide(player)
-                                    user.destroyCamera(player, { ease: 1000 })
-                                    return
-                                }
+                            if (container.has('user', player.id, "work") === true) {
+                                user.notify(player, `Сначала увольтесь с прошлой работы`, 'error')
+                                user.npcdialogHide(player)
+                                user.destroyCamera(player, { ease: 1000 })
+                                return
+                            }
                             container.set('user', player.id, "work", [workId, 1])
                             user.setClothes(player, 'work', false)
                             user.notify(player, 'Теперь иди на поле и сажай семена.')
@@ -365,15 +366,15 @@ try {
                             container.set('work', workId, 'online', container.get('work', workId, 'online') - 1)
                             user.updateClothes(player)
                             container.clear('user', player.id, "work")
-                            if (container.get('user', player.id, 'rentVehicle') !== null ) {
+                            if (container.get('user', player.id, 'rentVehicle') !== null) {
                                 // container.get('user', player.id, 'rentVehicle').vehicle
                                 container.get('vehicles', container.get('user', player.id, 'rentVehicle').vehicle.id, 'owner').cab
 
                                 sys_works_cab.respawnCar(player, container.get('user', player.id, 'rentVehicle').vehicle.numberPlate.split(' ')[1])
                                 sys_vehicle.destroy(container.get('user', player.id, 'rentVehicle').vehicle.id)
                             }
-                            
-                            
+
+
 
                             // setTimeout(() => {
                             user.npcdialogHide(player)
@@ -391,11 +392,11 @@ try {
                     player._npcDialogCallback = (id, btn) => {
                         if (btn === 0) {
                             if (container.has('user', player.id, "work") === true) {
-                                    user.notify(player, `Сначала увольтесь с прошлой работы`, 'error')
-                                    user.npcdialogHide(player)
-                                    user.destroyCamera(player, { ease: 1000 })
-                                    return
-                                }
+                                user.notify(player, `Сначала увольтесь с прошлой работы`, 'error')
+                                user.npcdialogHide(player)
+                                user.destroyCamera(player, { ease: 1000 })
+                                return
+                            }
                             container.set('work', workId, 'online', container.get('work', workId, 'online') + 1)
                             container.set('user', player.id, "work", [workId, 1])
                             user.setClothes(player, 'work', false)
@@ -453,14 +454,14 @@ try {
                     user.npcdialogShow(player, npcId, npcName, npcDesc, 'Привет, хочешь устроиться на работу мусоровозом?', ['Да', 'Нет'])
 
                     player._npcDialogCallback = (id, btn) => {
-                        
+
                         if (btn === 0) {
                             if (container.has('user', player.id, "work") === true) {
-                                    user.notify(player, `Сначала увольтесь с прошлой работы`, 'error')
-                                    user.npcdialogHide(player)
-                                    user.destroyCamera(player, { ease: 1000 })
-                                    return
-                                }
+                                user.notify(player, `Сначала увольтесь с прошлой работы`, 'error')
+                                user.npcdialogHide(player)
+                                user.destroyCamera(player, { ease: 1000 })
+                                return
+                            }
                             container.set('work', workId, 'online', container.get('work', workId, 'online') + 1)
                             container.set('user', player.id, "work", [workId, 1])
                             user.setClothes(player, 'work', false)
@@ -529,6 +530,56 @@ try {
                             container.set('work', workId, 'online', container.get('work', workId, 'online') + 1)
                             container.set('user', player.id, "work", [workId, 1])
                             user.setClothes(player, 'work', false)
+
+                            // setTimeout(() => {
+                            user.npcdialogHide(player)
+                            user.destroyCamera(player, { ease: 1000 })
+                            // }, 3000)
+                        }
+                        else {
+                            user.npcdialogHide(player)
+                            user.destroyCamera(player, { ease: 1000 })
+                        }
+                    }
+                }
+
+                break
+            }
+            case 'fractionlspdnpc': {
+                let fractionId = 2
+                const npcId = 'fractionlspdnpc'
+                const npcName = 'Andreas'
+                const npcDesc = 'NPC Выдает оружие'
+                sys_npc.setCamera(player, id)
+                if (user.isWorkingAtIdFraction(player, fractionId)) {
+
+                    user.npcdialogShow(player, npcId, npcName, npcDesc, 'Снова привет, хочешь сдать все оружие?', ['Да', 'Нет'])
+                    player._npcDialogCallback = (id, btn) => {
+                        if (btn === 0) {
+
+
+
+                            // setTimeout(() => {
+                            user.npcdialogHide(player)
+                            user.destroyCamera(player, { ease: 1000 })
+                            // }, 3000)
+                        }
+                        else {
+                            user.npcdialogHide(player)
+                            user.destroyCamera(player, { ease: 1000 })
+                        }
+                    }
+                } else {
+                    user.npcdialogShow(player, npcId, npcName, npcDesc, 'Привет, хочешь получить оружие?', ['Да', 'Нет'])
+
+                    player._npcDialogCallback = (id, btn) => {
+
+                        if (btn === 0) {
+
+                            SHARED_FRACTIONS_DATA[--player.character.fractionId][--player.character.fractionRank].weapons.map(el => {
+                                player.giveWeapon(mp.joaat(el), 1000);
+                            })
+
 
                             // setTimeout(() => {
                             user.npcdialogHide(player)

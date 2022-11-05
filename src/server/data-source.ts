@@ -8,12 +8,12 @@ import {
 } from 'constant';
 
 // import { Business } from './schemas/Business';
-// import { Character } from './schemas/Character';
+import { Characters } from './schemas/Characters';
 import { DataSource } from 'typeorm';
 import { Fraction } from './schemas/Faction';
-
 // import { Houses } from './schemas/House';
-// import { Users } from './schemas/User';
+import { User } from './schemas/User';
+
 // import { Vehicles } from './schemas/Vehicles';
 
 export const AppDataSource = new DataSource({
@@ -25,7 +25,7 @@ export const AppDataSource = new DataSource({
 	database: CONFIG_DATABASE_DB,
 	synchronize: false,
 	logging: false,
-	entities: [Fraction],
+	entities: [Fraction, User, Characters],
 	// Business, Character, Houses, Vehicles, Users
 	migrations: [],
 	subscribers: []

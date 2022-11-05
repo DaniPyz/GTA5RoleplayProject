@@ -5,8 +5,8 @@ export class Fraction {
 	@PrimaryGeneratedColumn()
 	id!: number;
 
-	@Column()
-	type!: number;
+	// @Column()
+	// type!: number;
 
 	@Column()
 	name!: string;

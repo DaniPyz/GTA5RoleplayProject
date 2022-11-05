@@ -15,6 +15,21 @@ const Temp: FC = () => {
 			// some date;
 		}, [])
 	);
+	useKeyboard(
+		'k',
+		useCallback(() => {
+
+			server.lspd.dragCuffedPlayer()
+		}, [])
+	);
+	useKeyboard(
+		'j',
+		useCallback(() => {
+
+			server.lspd.cuffPlayer()
+		}, [])
+	);
+
 
 	useEffect(() => {
 		// (async () => {

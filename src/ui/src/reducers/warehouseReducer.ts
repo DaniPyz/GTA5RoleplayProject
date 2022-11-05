@@ -10,7 +10,8 @@ type WarehouseReducerActions = ArrayToUnion<
 	[
 		{
 			type: 'WAREHOUSE_ADD';
-			warehouse:any;
+			warehouse: any;
+			fractionId: number;
 		},
 		{
 			type: 'WAREHOUSE_CHANGE';
@@ -25,6 +26,7 @@ type WarehouseReducerActions = ArrayToUnion<
 
 interface IWarehouseState {
 	warehouse: (WarehouseType | null)[][];
+	fractionId: number;
 }
 
 const initial: IWarehouseState = {
@@ -68,14 +70,16 @@ const initial: IWarehouseState = {
 			null,
 			null
 		]
-	]
+	],
+	fractionId: 0
 };
 const WarehouseReducer = (state = initial, action: WarehouseReducerActions): IWarehouseState => {
 	switch (action.type) {
 		case 'WAREHOUSE_ADD': {
 			return {
 				...state,
-				warehouse: action.warehouse
+				warehouse: action.warehouse,
+				fractionId: action.fractionId
 			};
 		}
 		case 'WAREHOUSE_CHANGE': {
@@ -85,7 +89,8 @@ const WarehouseReducer = (state = initial, action: WarehouseReducerActions): IWa
 			newArr[action.data.selectedFilter][action.data.index] = null;
 
 			return {
-				warehouse: newArr
+				warehouse: newArr,
+				fractionId: state.fractionId
 			};
 		}
 

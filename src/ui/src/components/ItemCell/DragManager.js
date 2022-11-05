@@ -23,9 +23,12 @@ export var DragManager = new function () {
 
 
     var elem1 = e.target.closest('.draggable');
-    elem1.classList = elem1.classList + " " + cls({ [s.ItemCell_element]: true })
+    if (elem1) {
+      elem1.classList = elem1.classList + " " + cls({ [s.ItemCell_element]: true })
+
+    }
     if (elem1 === null) return
-    
+
     let elem = elem1.cloneNode(true);
 
     if (!elem) return;
@@ -64,10 +67,10 @@ export var DragManager = new function () {
       // аватар создан успешно
       // создать вспомогательные свойства shiftX/shiftY
       var coords = getCoords(dragObject.avatar);
-      dragObject.shiftX = dragObject.downX - 200;
-      dragObject.shiftY = dragObject.downY - 400;
-      // dragObject.shiftX = 30;
-      // dragObject.shiftY = 30;
+      // dragObject.shiftX = dragObject.downX - 800;
+      // dragObject.shiftY = dragObject.downY - 400;
+      dragObject.shiftX = 30;
+      dragObject.shiftY = 80;
       startDrag(e); // отобразить начало переноса
     }
 
@@ -90,7 +93,7 @@ export var DragManager = new function () {
 
   function finishDrag(e) {
     var dropElem = findDroppable(e);
-    
+
     self.onDragInit({
       status: false
     }, dragObject.initId);
@@ -99,7 +102,7 @@ export var DragManager = new function () {
     let classes = dragObject.initElem.classList.value
     // const lastIndexOfSpace = classes.classList.lastIndexOf(' ');
     const lastIndexOfSpace = classes.lastIndexOf(' ');
-   
+
     const withSpaces = classes.substring(0, lastIndexOfSpace);;
 
     dragObject.initElem.className = withSpaces

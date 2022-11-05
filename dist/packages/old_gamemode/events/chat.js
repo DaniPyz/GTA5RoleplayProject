@@ -14,6 +14,9 @@ try
         },
         "chat::fraction:ems": (text,id = 1) => {
             chat.ems(id,text)
+        },
+        "chat::fraction:lspd": (text, id = 2) => {
+            chat.lspd(id, text)
         }
     })
 }

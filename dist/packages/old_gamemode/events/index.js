@@ -85,6 +85,7 @@ mp.events.add({
         houses.enterColshape(player, shape)
         sys_works_port.enterColshape(player, shape)
         biz.enterColshape(player, shape)
+      
     },
     'playerExitColshape': (player, shape) => {
         sys_npc.exitColshape(player, shape)
@@ -102,6 +103,7 @@ mp.events.add({
         user.uiSend(player, 'client::death', 'death', {
             timer: 30000
         })
+        
         user.toggleHud(player, false)
         user.cursor(player, true)
 
@@ -113,6 +115,9 @@ mp.events.add({
             a: player.position.heading,
             vw: player.dimension
         })
+        
+        player._death = true  
+        // mp.colshapes.newSphere(player.position.x, player.position.y, player.position.z, 1, 0).setVariable('deathPlayerID', player.id)
         // user.freeze(player, true)
     },
 

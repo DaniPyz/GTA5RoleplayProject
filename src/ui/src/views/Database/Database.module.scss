@@ -1,0 +1,492 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&display=swap');
+
+.database {
+	margin: 0 auto;
+	margin-top: 5%;
+	font-family: 'Montserrat';
+	width: 920px;
+	height: 700px;
+	background-image: url('./vectors/iPad.png');
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	button {
+		font-family: 'Montserrat';
+	}
+	.mainLeft {
+		background: linear-gradient(180deg, rgba(194, 194, 194, 0) 18.58%, rgba(77, 77, 77, 0.12) 100%);
+		border-radius: 16px;
+		width: 199px;
+		height: 410px;
+		padding: 0px 10px;
+		img {
+			margin: 0 15%;
+			width: 111px;
+			height: 124px;
+		}
+		div {
+			margin-bottom: 6px;
+			padding: 8px 12px;
+			width: 179px;
+			height: 49px;
+
+			background: rgba(255, 255, 255, 0.07);
+			border: 1px solid rgba(255, 255, 255, 0.2);
+			border-radius: 4px;
+			p {
+				font-weight: 500;
+				font-size: 12px;
+				line-height: 15px;
+				/* identical to box height */
+
+				color: #ffffff;
+
+				text-shadow: 0px 0px 34px rgba(255, 255, 255, 0.55);
+			}
+			h1 {
+				font-weight: 600;
+				font-size: 14px;
+				line-height: 17px;
+				/* identical to box height */
+
+				color: #b2ef30;
+
+				text-shadow: 0px 0px 34px rgba(178, 239, 48, 0.55);
+			}
+		}
+	}
+	.mainContent {
+		width: 858px;
+		height: 638px;
+		position: relative;
+		.header {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+
+			div {
+				align-items: center;
+				p {
+					margin-right: 3px;
+					color: #ffffff;
+					font-size: 14px;
+				}
+				display: flex;
+			}
+		}
+		.top {
+			margin-top: 15px;
+			display: flex;
+			justify-content: space-between;
+			div + div {
+				input {
+					color: white;
+					margin-right: 5px;
+					width: 443px;
+					height: 27px;
+					background: rgba(255, 255, 255, 0.05);
+					border-radius: 3px;
+					border: 0;
+					padding-left: 10px;
+					&::placeholder {
+						font-style: normal;
+						font-weight: 400;
+						font-size: 12px;
+						line-height: 15px;
+
+						color: rgba(255, 255, 255, 0.25);
+					}
+				}
+				button {
+					font-weight: 400;
+					font-size: 14px;
+					line-height: 17px;
+					/* identical to box height */
+
+					color: #ffffff;
+					background: rgba(255, 255, 255, 0.05);
+					border-radius: 3px;
+					border: 0;
+					padding: 5px 17px;
+				}
+			}
+		}
+		.main {
+			margin-top: 18px;
+			display: flex;
+			justify-content: space-between;
+
+			.mainRight {
+				.mainSection {
+					height: 397px;
+					display: flex;
+					width: 620px;
+					flex-wrap: wrap;
+					justify-content: space-around;
+					align-content: space-between;
+
+					div {
+						padding: 16px 19px;
+
+						width: 200px;
+						height: 194px;
+						background: linear-gradient(180deg, rgba(144, 97, 250, 0.07) 0%, rgba(255, 255, 255, 0) 100%);
+						border: 1px solid rgba(255, 255, 255, 0.2);
+						border-radius: 4px;
+						span {
+							display: inline-block;
+							width: 71px;
+							height: 71px;
+							background-color: #b2ef30;
+						}
+						div {
+							border: 0;
+							background: none;
+							align-items: center;
+							padding: 0;
+							margin-top: 50px;
+							p {
+								font-weight: 500;
+								font-size: 12px;
+								line-height: 15px;
+								/* identical to box height */
+
+								color: #ffffff;
+
+								text-shadow: 0px 0px 34px rgba(255, 255, 255, 0.55);
+							}
+							h1 {
+								font-weight: 600;
+								font-size: 20px;
+								line-height: 24px;
+
+								color: #b2ef30;
+
+								text-shadow: 0px 0px 34px rgba(178, 239, 48, 0.55);
+							}
+						}
+					}
+				}
+				.callsSection {
+					height: 397px;
+					width: 620px;
+					.callsItem {
+						text-align: center;
+						align-items: center;
+						display: flex;
+						margin-bottom: 5px;
+						width: 614px;
+						height: 37px;
+						left: 229px;
+						top: 131px;
+
+						background: rgba(255, 255, 255, 0.07);
+						border: 1px solid rgba(255, 255, 255, 0.2);
+						h1 {
+							margin-left: 13px;
+							font-weight: 700;
+							font-size: 13px;
+							line-height: 16px;
+							/* identical to box height */
+
+							color: #ffffff;
+
+							text-shadow: 0px 0px 34px rgba(255, 255, 255, 0.55);
+							margin-right: 35px;
+						}
+						h2 {
+							font-weight: 700;
+							font-size: 13px;
+							line-height: 16px;
+							/* identical to box height */
+
+							color: #ffffff;
+
+							text-shadow: 0px 0px 34px rgba(255, 255, 255, 0.55);
+							margin-right: 70px;
+						}
+						span {
+							font-weight: 700;
+							font-size: 13px;
+							line-height: 16px;
+							/* identical to box height */
+
+							color: #ffffff;
+
+							text-shadow: 0px 0px 34px rgba(255, 255, 255, 0.55);
+							margin-right: 120px;
+						}
+						button {
+							font-weight: 400;
+							font-size: 11px;
+							line-height: 15px;
+							/* identical to box height */
+
+							color: #ffffff;
+							padding: 4px 13px;
+							background: rgba(178, 239, 48, 0.25);
+							/* Обводка кнопки */
+
+							border: 1px solid #b2ef30;
+						}
+					}
+					.callsInfo {
+						display: flex;
+						margin-bottom: 16px;
+						h1,
+						h2,
+						h3,
+						h4 {
+							opacity: 0.55;
+							font-weight: 400;
+							font-size: 12px;
+							line-height: 15px;
+
+							color: #ffffff;
+						}
+						h1 {
+							margin-left: 5px;
+							margin-right: 50px;
+						}
+						h2 {
+							margin-right: 38px;
+						}
+						h3 {
+							margin-right: 210px;
+						}
+					}
+				}
+				.spySection {
+					height: 397px;
+					width: 620px;
+					.spyItem {
+						text-align: center;
+						align-items: center;
+						display: flex;
+						margin-bottom: 5px;
+						width: 614px;
+						height: 37px;
+						left: 229px;
+						top: 131px;
+
+						background: rgba(255, 255, 255, 0.07);
+						border: 1px solid rgba(255, 255, 255, 0.2);
+						h1 {
+							margin-left: 13px;
+							font-weight: 700;
+							font-size: 13px;
+							line-height: 16px;
+							/* identical to box height */
+
+							color: #ffffff;
+
+							text-shadow: 0px 0px 34px rgba(255, 255, 255, 0.55);
+							margin-right: 60px;
+						}
+						h2 {
+							font-weight: 700;
+							font-size: 13px;
+							line-height: 16px;
+							/* identical to box height */
+
+							color: #ffffff;
+
+							text-shadow: 0px 0px 34px rgba(255, 255, 255, 0.55);
+							margin-right: 80px;
+						}
+						span {
+							font-weight: 700;
+							font-size: 13px;
+							line-height: 16px;
+							/* identical to box height */
+
+							color: #ffffff;
+
+							text-shadow: 0px 0px 34px rgba(255, 255, 255, 0.55);
+							margin-right: 56px;
+						}
+						button {
+							font-weight: 400;
+							font-size: 11px;
+							line-height: 15px;
+							/* identical to box height */
+
+							color: #ffffff;
+							padding: 4px 13px;
+							background: rgba(178, 239, 48, 0.25);
+							/* Обводка кнопки */
+
+							border: 1px solid #b2ef30;
+						}
+					}
+					.spyInfo {
+						display: flex;
+						margin-bottom: 16px;
+						h1,
+						h2,
+						h3,
+						h4 {
+							opacity: 0.55;
+							font-weight: 400;
+							font-size: 12px;
+							line-height: 15px;
+
+							color: #ffffff;
+						}
+						h1 {
+							margin-left: 5px;
+							margin-right: 110px;
+						}
+						h2 {
+							margin-right: 150px;
+						}
+						h3 {
+							margin-right: 94px;
+						}
+					}
+				}
+				.ticketsSection {
+					height: 397px;
+					width: 620px;
+					.ticketsItem {
+						text-align: center;
+						align-items: center;
+						display: flex;
+						margin-bottom: 5px;
+						width: 614px;
+						height: 37px;
+						left: 229px;
+						top: 131px;
+
+						background: rgba(255, 255, 255, 0.07);
+						border: 1px solid rgba(255, 255, 255, 0.2);
+						h1 {
+							margin-left: 13px;
+							font-weight: 700;
+							font-size: 13px;
+							line-height: 16px;
+							/* identical to box height */
+
+							color: #ffffff;
+
+							text-shadow: 0px 0px 34px rgba(255, 255, 255, 0.55);
+							margin-right: 60px;
+						}
+						h2 {
+							font-weight: 700;
+							font-size: 13px;
+							line-height: 16px;
+							/* identical to box height */
+
+							color: #ffffff;
+
+							text-shadow: 0px 0px 34px rgba(255, 255, 255, 0.55);
+							margin-right: 71px;
+						}
+						span {
+							font-weight: 700;
+							font-size: 13px;
+							line-height: 16px;
+							/* identical to box height */
+
+							color: #ffffff;
+
+							text-shadow: 0px 0px 34px rgba(255, 255, 255, 0.55);
+							margin-right: 135px;
+						}
+						h3 {
+							font-weight: 600;
+							font-size: 13px;
+							line-height: 16px;
+							/* identical to box height */
+
+							color: #ffffff;
+
+							text-shadow: 0px 0px 34px rgba(255, 255, 255, 0.55);
+						}
+					}
+					.ticketsInfo {
+						display: flex;
+						margin-bottom: 16px;
+						h1,
+						h2,
+						h3,
+						h4 {
+							opacity: 0.55;
+							font-weight: 400;
+							font-size: 12px;
+							line-height: 15px;
+
+							color: #ffffff;
+						}
+						h1 {
+							margin-left: 5px;
+							margin-right: 120px;
+						}
+						h2 {
+							margin-right: 131px;
+						}
+						h3 {
+							margin-right: 167px;
+						}
+					}
+				}
+			}
+		}
+		.bottom {
+			margin-top: 8px;
+			width: 199px;
+			height: 130px;
+			background: linear-gradient(180deg, rgba(194, 194, 194, 0.04) 18.58%, rgba(77, 77, 77, 0.12) 100%);
+			border-radius: 16px;
+			padding: 11px;
+
+			div {
+				width: 177px;
+				height: 71px;
+				display: flex;
+				flex-wrap: wrap;
+				justify-content: space-around;
+				align-content: space-between;
+				button {
+					width: 87px;
+					height: 34px;
+					font-weight: 600;
+					font-size: 14px;
+					line-height: 17px;
+					/* identical to box height */
+
+					color: #ffffff;
+
+					text-shadow: 0px 0px 34px rgba(255, 255, 255, 0.55);
+					padding: 8px 14px;
+					background: rgba(255, 255, 255, 0.07);
+					border: 1px solid rgba(255, 255, 255, 0.2);
+					border-radius: 4px;
+				}
+			}
+			.mainBtn {
+				width: 177px;
+				height: 34px;
+				background: rgba(178, 239, 48, 0.25);
+				/* Обводка кнопки */
+				margin-top: 3px;
+				border: 1px solid #b2ef30;
+				border-radius: 4px;
+				font-weight: 600;
+				font-size: 14px;
+				line-height: 17px;
+				/* identical to box height */
+
+				text-align: center;
+
+				color: #ffffff;
+
+				text-shadow: 0px 0px 34px rgba(255, 255, 255, 0.55);
+			}
+		}
+	}
+}
