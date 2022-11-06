@@ -14,7 +14,8 @@ import { ReactComponent as TaxiSvg } from '../../vectors/taxi.svg';
 const wallpaperList = ['main.png'];
 
 interface IAppWrapper {
-	name: AppList;
+	name: string;
+	app: AppList;
 	Icon: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
 }
 
@@ -22,36 +23,41 @@ const Home: FC = () => {
 	const phone = useAppSelector((state) => state.phoneState);
 	const dispatch = useAppDispatch();
 	const moment = useMoment({ update: 'm' });
-	moment.locale('RU-ru');
 
 	const background = require(`./wallpapers/${wallpaperList[phone.wallpaper]}`);
 
 	const bottomsApps: IAppWrapper[] = [
 		{
-			name: 'Call',
-			Icon: CallSvg
+			app: 'Telephone',
+			Icon: CallSvg,
+			name: 'Телефон'
 		},
 		{
-			name: 'Contacts',
+			app: 'Telephone',
+			name: 'Контакты',
 			Icon: ContactsSvg
 		},
 		{
-			name: 'Settings',
+			app: 'Settings',
+			name: 'Настройки',
 			Icon: SettingsSvg
 		},
 		{
-			name: 'Messages',
+			app: 'Messages',
+			name: 'Сообщения',
 			Icon: MessagesSvg
 		}
 	];
 
 	const centerApps: IAppWrapper[] = [
 		{
-			name: 'Taxi',
+			app: 'Taxi',
+			name: 'Такси',
 			Icon: TaxiSvg
 		},
 		{
-			name: 'Browser',
+			app: 'Browser',
+			name: 'Браузер',
 			Icon: BrowserSvg
 		}
 	];
@@ -71,7 +77,9 @@ const Home: FC = () => {
 									<div
 										className={style.appContainer}
 										key={app.name}
-										onClick={() => dispatch({ type: 'PHONE_APP_SET', app: app.name })}
+										onClick={() => {
+											dispatch({ type: 'PHONE_APP_SET', app: app.app });
+										}}
 									>
 										<app.Icon className={style.appIcon} />
 									</div>
@@ -82,7 +90,16 @@ const Home: FC = () => {
 									<div
 										className={style.appContainer}
 										key={app.name}
-										onClick={() => dispatch({ type: 'PHONE_APP_SET', app: app.name })}
+										onClick={() => {
+											if (app.app === 'Telephone') {
+												if (app.name === 'Телефон') {
+													dispatch({ type: 'PHONE_TELEPHONE_PAGE_SET', page: 'call' });
+												} else {
+													dispatch({ type: 'PHONE_TELEPHONE_PAGE_SET', page: 'contacts' });
+												}
+											}
+											dispatch({ type: 'PHONE_APP_SET', app: app.app });
+										}}
 									>
 										<app.Icon className={style.appIcon} />
 									</div>

@@ -25,6 +25,8 @@ const useMoment = (props: IUseMomentProps) => {
 		return () => clearInterval(int);
 	}, [makeMoment, mom, props, setMom]);
 
+	mom.locale('RU-ru');
+
 	return mom;
 };
 
