@@ -1,0 +1,358 @@
+.telephone {
+	position: relative;
+	background-color: black;
+	width: 100%;
+	height: 100%;
+	border-radius: 4vh;
+	overflow: hidden;
+
+	.call {
+		position: relative;
+
+		.main {
+			display: flex;
+			flex-direction: column;
+			padding-top: 9vh;
+			align-items: center;
+			gap: 2vh;
+
+			.numberEnter {
+				color: white;
+				font-size: 2vh;
+				height: 2vh;
+			}
+
+			.createContact {
+				padding: 1vh;
+				font-size: 1.4vh;
+				padding-left: 1.9vh;
+				padding-right: 1.9vh;
+				display: flex;
+				align-items: center;
+				gap: 1vh;
+				border-radius: 2vh;
+				background-color: #b2ef30;
+			}
+
+			.keyList {
+				display: grid;
+				grid-template-columns: repeat(3, 1fr);
+				gap: 2vh;
+
+				.keyDelete {
+					display: flex;
+					align-items: center;
+					justify-content: center;
+
+					svg {
+						width: 3.3vh;
+						height: auto;
+					}
+				}
+
+				.keyCall {
+					background-color: #34c759;
+					width: 6.2vh;
+					height: 6.2vh;
+					border-radius: 50%;
+					display: flex;
+					align-self: center;
+					justify-content: center;
+
+					svg {
+						width: 2.2vh;
+						height: auto;
+					}
+				}
+
+				.keyItem {
+					background-color: #333333;
+					display: flex;
+					aspect-ratio: 1;
+					border-radius: 50%;
+					align-items: center;
+					justify-content: center;
+					flex-direction: column;
+					color: white;
+					padding: 2vh;
+					width: 6.2vh;
+					height: 6.2vh;
+
+					&:nth-child(10) {
+						.keyName {
+							padding-top: 1.75vh;
+							font-size: 4vh;
+						}
+					}
+
+					.keyName {
+						font-size: 2.5vh;
+					}
+
+					&:nth-child(1) {
+						.keyLetters {
+							opacity: 0;
+						}
+					}
+
+					.keyLetters {
+						font-size: 1.3vh;
+						font-weight: 300;
+					}
+				}
+			}
+		}
+
+		.addContact {
+			position: absolute;
+			will-change: bottom;
+			z-index: 2;
+			background-color: #242426;
+			width: 100%;
+			height: 67vh;
+			border-radius: 2vh;
+			bottom: -14vh;
+
+			.header {
+				display: flex;
+				padding: 1.5vh;
+				font-size: 1.4vh;
+				justify-content: space-between;
+				color: white;
+
+				.title {
+					font-size: 1.6vh;
+				}
+
+				.button {
+					color: #1b76ff;
+				}
+			}
+
+			.avatar {
+				display: flex;
+				justify-content: center;
+
+				svg {
+					width: 14vh;
+					height: auto;
+				}
+			}
+
+			.nameEnter {
+				padding-top: 2vh;
+
+				.input {
+					color: white;
+					margin: 0;
+					padding: 1vh;
+					width: 100%;
+					font-size: 1.4vh;
+					outline: none;
+					border: none;
+					background-color: #363638;
+				}
+			}
+
+			.numberEnter {
+				padding-top: 2vh;
+
+				.numberInput {
+					color: white;
+					font-size: 1.6vh;
+					background-color: #363638;
+					padding: 2vh;
+					width: 100%;
+					outline: none;
+					border: none;
+				}
+			}
+		}
+	}
+
+	.recent {
+		position: relative;
+		padding-top: 5vh;
+		padding-right: 1vh;
+		padding-left: 2vh;
+		display: flex;
+		flex-direction: column;
+		gap: 1vh;
+
+		.header {
+			display: flex;
+			justify-content: flex-end;
+
+			.wrapper {
+				display: flex;
+				gap: 2vh;
+				align-items: center;
+
+				.selector {
+					font-size: 1.5vh;
+					background-color: #2e2e2e;
+					display: flex;
+					color: white;
+					border-radius: 0.7vh;
+					overflow: hidden;
+					text-align: center;
+
+					div {
+						margin: 0.3vh;
+						padding: 0.7vh;
+						width: 7vh;
+						border-radius: 0.5vh;
+					}
+
+					.btn {
+						background-color: #727176;
+					}
+				}
+
+				.edit {
+					color: #1b76ff;
+					font-size: 1.5vh;
+				}
+			}
+		}
+
+		.title {
+			font-size: 2.2vh;
+			color: white;
+			padding-bottom: 0.5vh;
+			border-bottom: 0.2vh solid #c4c4c4;
+		}
+
+		.recentItem {
+			padding-bottom: 0.5vh;
+			border-bottom: 0.2vh solid #c4c4c4;
+
+			.name {
+				color: white;
+				font-size: 1.5vh;
+
+        &.missed {
+          color: rgb(189, 31, 31);
+        }
+			}
+
+			.mobile {
+				color: #807f85;
+				font-size: 1.2vh;
+			}
+		}
+	}
+
+	.contacts {
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		color: white;
+		padding-left: 2vh;
+		padding-top: 6vh;
+		padding-right: 2vh;
+		gap: 1vh;
+
+		.header {
+			font-size: 2.5vh;
+			display: flex;
+			flex-direction: column;
+			gap: 0.8vh;
+
+			.searchInput {
+				display: flex;
+				align-items: center;
+
+				svg {
+					position: absolute;
+					margin-left: 0.5vh;
+					width: 1.2vh;
+					height: auto;
+				}
+
+				.search {
+					background-color: #2e2e2e;
+					border: none;
+					color: white;
+					width: 100%;
+					outline: none;
+					border-radius: 0.5vh;
+					font-size: 1.4vh;
+					padding: 0.5vh;
+					padding-left: 2vh;
+				}
+			}
+		}
+
+		.myCard {
+			display: flex;
+			gap: 1.5vh;
+
+			.myCardSvg {
+				svg {
+					width: 6vh;
+					height: auto;
+				}
+			}
+
+			.myCardWrapper {
+				display: flex;
+				flex-direction: column;
+				gap: 0.5vh;
+
+				.name {
+					color: white;
+					font-size: 1.8vh;
+				}
+
+				.myNumber {
+					color: #7d7d7d;
+					font-size: 1.5vh;
+				}
+			}
+		}
+
+		.letterBlock {
+			color: #8be803;
+			padding-bottom: 0.7vh;
+			border-bottom: 0.2vh solid #7d7d7d;
+			font-size: 1.5vh;
+		}
+
+		.contactBlock {
+			font-size: 1.5vh;
+			padding-bottom: 0.7vh;
+			border-bottom: 0.2vh solid #7d7d7d;
+		}
+	}
+
+	.bottomPanel {
+		position: absolute;
+		bottom: 0;
+		background-color: #1a1a1a;
+		width: 100%;
+		display: grid;
+		grid-template-columns: 1fr 1fr 1fr;
+		padding-bottom: 2.5vh;
+		padding-top: 1vh;
+
+		.bottomItem {
+			color: #808080;
+			gap: 0.5vh;
+			align-items: center;
+			display: flex;
+			flex-direction: column;
+			font-size: 1vh;
+			height: 4vh;
+
+			&.isFocus {
+				color: #1b76ff;
+			}
+
+			svg {
+				width: auto;
+				height: 2vh;
+			}
+		}
+	}
+}

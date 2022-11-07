@@ -95,6 +95,9 @@ const install = (rpc, env) => {
                     console.log(name, 'system ready');
                     if (env === 'client') {
                         // @ts-ignore
+                        mp.console.logInfo(name);
+                        // console.log(name);
+                        // @ts-ignore
                         rpc.register(name, (argumentList) => Service.procedures.get(name)(...argumentList));
                     }
                     else {
@@ -156,6 +159,34 @@ const install = (rpc, env) => {
         }
     });
     return Service;
+};
+
+const createServerProxy = (rpc) => {
+    const serverProxyCache = new Map();
+    return new Proxy({}, {
+        get(_, service) {
+            if (serverProxyCache.has(service)) {
+                return serverProxyCache.get(service);
+            }
+            else {
+                const proxy = new Proxy({}, {
+                    get(_, event) {
+                        const call = (noRet, ...args) => {
+                            const eventName = `${service.capitalize()}${event.capitalize()}`;
+                            return rpc.callServer(eventName, args, noRet ? { noRet: true } : { timeout: 60 * 1000, noRet: false });
+                        };
+                        const f = call.bind(null, false);
+                        f.noRet = (...args) => {
+                            call(true, ...args);
+                        };
+                        return f;
+                    }
+                });
+                serverProxyCache.set(service, proxy);
+                return proxy;
+            }
+        }
+    });
 };
 
 // @ts-nocheck
@@ -906,6 +937,7 @@ var rpc = /*#__PURE__*/Object.freeze({
 });
 
 const Service = install(rpc, 'client');
+const server = createServerProxy(rpc);
 
 /******************************************************************************
 Copyright (c) Microsoft Corporation.
@@ -935,6 +967,11 @@ function __metadata(metadataKey, metadataValue) {
 
 class Temp {
     rpcAwdadw() {
+        server.phone.requestCall('09009');
+        return 123;
+    }
+    rpcGefwewf() {
+        server.phone.requestCall('222222');
         return 123;
     }
 }
@@ -944,6 +981,12 @@ __decorate([
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)
 ], Temp.prototype, "rpcAwdadw", null);
+__decorate([
+    Service.access,
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", void 0)
+], Temp.prototype, "rpcGefwewf", null);
 
 const services = {
     Temp

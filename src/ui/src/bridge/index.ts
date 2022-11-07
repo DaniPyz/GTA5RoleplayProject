@@ -97,6 +97,9 @@ export const install = (rpc: any, env: 'client' | 'server') => {
 					console.log(name, 'system ready');
 					if (env === 'client') {
 						// @ts-ignore
+						mp.console.logInfo(name);
+						// console.log(name);
+						// @ts-ignore
 						rpc.register(name, (argumentList) => Service.procedures.get(name)(...argumentList));
 					} else {
 						// @ts-ignore

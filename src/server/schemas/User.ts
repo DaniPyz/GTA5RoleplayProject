@@ -1,7 +1,7 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
-export class Users {
+export class User {
 	@PrimaryGeneratedColumn()
 	id!: number;
 
@@ -70,4 +70,5 @@ export class Users {
 
 	@Column({ default: () => 0 })
 	donate!: number;
+
 }

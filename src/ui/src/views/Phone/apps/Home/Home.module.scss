@@ -1,0 +1,102 @@
+.home {
+	position: absolute;
+	width: 95%;
+	height: 98%;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	overflow: hidden;
+	border-radius: 5vh;
+	font-family: "SF";
+
+	.background {
+		position: absolute;
+		width: 100%;
+		height: 100%;
+
+		background-repeat: no-repeat;
+		background-size: cover;
+		background-position: center center;
+
+		.wrapper {
+			position: absolute;
+			width: 100%;
+			height: 100%;
+			border-radius: 5vh;
+			backdrop-filter: blur(0.5vh);
+
+			&::before {
+				content: '';
+				position: absolute;
+				width: 100%;
+				height: 100%;
+				background-color: rgba(black, 0.4);
+			}
+
+			.main {
+				padding: 1.5vh 1.7vh 1.5vh 1.7vh;
+				width: 100%;
+				height: 100%;
+			}
+		}
+	}
+}
+
+.layout {
+	position: relative;
+	width: 100%;
+	height: 100%;
+	display: grid;
+	grid-template-rows: 30% 1fr 8vh;
+	padding-bottom: 1vh;
+
+	.time {
+		align-self: flex-end;
+		position: relative;
+		color: white;
+		text-align: center;
+
+		& > :nth-child(1) {
+			font-size: 7vh;
+			font-weight: 100;
+		}
+
+		& > :nth-child(2) {
+			font-weight: 400;
+			font-size: 2vh;
+		}
+	}
+
+	.centerAppBlock {
+		position: relative;
+		margin: 1.5vh;
+		margin-top: 2vh;
+		display: grid;
+		aspect-ratio: 1;
+		grid-template-columns: repeat(4, 1fr);
+		grid-template-rows: repeat(4, 1fr);
+		justify-items: center;
+		gap: 1vh;
+	}
+
+	.bottomAppBlock {
+		display: flex;
+		width: 100%;
+		justify-content: center;
+		align-items: center;
+		background-color: rgba(white, 0.1);
+		backdrop-filter: blur(10px);
+		gap: 2vh;
+		border-radius: 2vh;
+	}
+}
+
+.appContainer {
+	display: flex;
+	align-items: center;
+
+	.appIcon {
+		width: 4.8vh;
+		height: 4.8vh;
+	}
+}

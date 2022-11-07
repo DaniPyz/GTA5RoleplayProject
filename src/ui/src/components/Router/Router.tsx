@@ -1,4 +1,4 @@
-import { createContext, FC, ReactNode, useEffect, useMemo, useState } from 'react';
+import { createContext, FC, useEffect, useMemo, useState } from 'react';
 import { useAppSelector } from 'hooks';
 import style from './Router.module.scss';
 import { Hud } from 'index';
@@ -6,10 +6,6 @@ import { Hud } from 'index';
 interface IRouterProps {
 	views: { [key: string]: FC<IViewControllerProps> };
 	hudList: { [key: string]: FC };
-}
-
-interface IISolatedProps {
-	children: ReactNode;
 }
 
 interface IViewControllerContext {
@@ -64,10 +60,6 @@ const withViewController = (Component: FC<any>): FC<IDefaultViewProps> => {
 	};
 };
 
-const IsolatedComponent: FC<IISolatedProps> = ({ children }) => {
-	return <div className={style.isolatedComponent}>{children}</div>;
-};
-
 const Router: FC<IRouterProps> = (props) => {
 	const state = useAppSelector((state) => state.rootState);
 
@@ -92,19 +84,15 @@ const Router: FC<IRouterProps> = (props) => {
 	}
 
 	return (
-		<>
+		<div className={style.isolatedViewport}>
 			{HudList.map((Hud, index) => (
-				<IsolatedComponent key={index}>
-					<Hud />
-				</IsolatedComponent>
+				<Hud key={index} />
 			))}
 
 			{views.map(([name, View]) => (
-				<IsolatedComponent key={name}>
-					<View render={name === state.view} />
-				</IsolatedComponent>
+				<View key={name} render={name === state.view} />
 			))}
-		</>
+		</div>
 	);
 };
 

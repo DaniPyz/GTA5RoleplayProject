@@ -1,1 +1,1 @@
-import './player';
+import './player.model';

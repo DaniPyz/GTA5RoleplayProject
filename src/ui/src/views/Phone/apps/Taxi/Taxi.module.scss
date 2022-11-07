@@ -1,0 +1,127 @@
+.taxi {
+	position: relative;
+	width: 100%;
+	height: 100%;
+	background-image: url('./back.png');
+	border-radius: 3vh;
+	overflow: hidden;
+
+	.wrapper {
+		position: relative;
+		backdrop-filter: blur(5px);
+		width: 100%;
+		height: 100%;
+		background: linear-gradient(180.02deg, #000000 1.08%, rgba(0, 0, 0, 0) 35.81%, #000000 78.76%);
+		display: flex;
+		flex-direction: column;
+		justify-content: flex-end;
+		align-items: center;
+
+		.topPanel {
+			position: absolute;
+			top: 5vh;
+			font-size: 1.6vh;
+			color: white;
+			display: grid;
+			grid-template-columns: 1fr 1fr 1fr;
+			align-items: center;
+
+			svg {
+				width: 1.8vh;
+				height: auto;
+			}
+		}
+
+		.panel {
+			position: absolute;
+			margin-bottom: 3.7vh;
+			width: 90%;
+			border-radius: 2vh;
+			background: rgba(19, 19, 19, 0.65);
+			padding: 1.5vh;
+			display: flex;
+			justify-content: space-between;
+			flex-direction: column;
+			gap: 2vh;
+
+			.contacts {
+				color: white;
+				display: flex;
+				gap: 2vh;
+
+				.columnRight {
+					display: flex;
+					flex-direction: column;
+					gap: 0.5vh;
+
+					.name {
+						font-size: 1.7vh;
+					}
+
+					.time {
+						display: flex;
+						align-items: center;
+						font-size: 1vh;
+						color: #565656;
+						gap: 0.5vh;
+
+						svg {
+							width: 1.5vh;
+							height: auto;
+						}
+					}
+
+					.location {
+						font-size: 1vh;
+						color: #565656;
+						display: flex;
+						align-items: center;
+						gap: 0.5vh;
+
+						svg {
+							width: 1.5vh;
+							height: auto;
+						}
+					}
+				}
+
+				svg {
+					width: 4vh;
+					height: auto;
+				}
+			}
+
+			.button {
+				color: black;
+				font-size: 1.7vh;
+				background: rgba(#b2ef30, 0.1);
+				text-align: center;
+				padding: 0.4vh;
+				border-radius: 1.5vh;
+				transition: opacity 0.3s ease-out;
+
+				&:hover {
+					opacity: 0.7;
+				}
+
+				& > div {
+					padding: 0.4vh;
+					background: rgba(#b2ef30, 0.5);
+					border-radius: 1.2vh;
+
+					& > div {
+						padding: 0.4vh;
+						background: rgba(#b2ef30, 0.7);
+						border-radius: 1vh;
+
+						& > div {
+							padding: 1vh;
+							background: #b2ef30;
+							border-radius: 0.8vh;
+						}
+					}
+				}
+			}
+		}
+	}
+}

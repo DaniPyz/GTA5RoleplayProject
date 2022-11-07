@@ -1,4 +1,5 @@
 import { Service } from 'bridge';
+
 const AUTOSALON_LIST = [
 	{
 		name: 'San Andreas',

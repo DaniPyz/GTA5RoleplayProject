@@ -1,11 +1,12 @@
 import { combineReducers } from 'redux';
-import { composeWithDevTools } from '@redux-devtools/extension';
 import rootState from './rootReducer';
 import warehouseState from './warehouseReducer';
+import phoneState from './phoneReducer';
 
 export const reducers = {
 	rootState,
-	warehouseState
+	warehouseState,
+	phoneState
 };
 
 const combinedReducers = combineReducers(reducers);

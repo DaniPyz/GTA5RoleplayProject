@@ -1,6 +1,28 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
+class Message {
+	@Column() public text: string = '';
+}
+
+@Entity()
+class Dialog {
+	constructor(targetId: string) {
+		this.targetId = targetId;
+	}
+
+	@Column() public targetId: string;
+	@Column() public lastTimestamp: string = '';
+	@Column() public messageList: Message[] = [];
+}
+
+@Entity()
+class Phone {
+	@Column() public callerId: string = '';
+	@Column() public dialogList: Dialog[] = [];
+}
+
+@Entity()
 export class Character {
 	@PrimaryGeneratedColumn()
 	id!: number;
@@ -136,6 +158,8 @@ export class Character {
 
 	@Column({ default: () => '[]' })
 	fraction!: [number, string, number];
+
+	@Column() public phone: Phone = new Phone();
 }
 
 console.log(123);

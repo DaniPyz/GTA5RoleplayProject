@@ -3,6 +3,10 @@ import { Hud, View } from '../index';
 import { DEFAULT_HUD_LIST } from '../constant';
 import { DEFAULT_VIEW } from '../constant';
 
+interface IPlayerState {
+	name: string;
+}
+
 type RootReducerActions = ArrayToUnion<
 	[
 		{
@@ -23,12 +27,15 @@ type RootReducerActions = ArrayToUnion<
 interface IRootState {
 	view: View | null;
 	hudList: Hud[];
-	
+	player: IPlayerState;
 }
 
 const initial: IRootState = {
 	view: DEFAULT_VIEW,
-	hudList: DEFAULT_HUD_LIST
+	hudList: DEFAULT_HUD_LIST,
+	player: {
+		name: 'Vladimir Rupasov'
+	}
 };
 
 const RootReducer = (state = initial, action: RootReducerActions): IRootState => {
