@@ -1,34 +1,33 @@
 [
-	"id",
-	"userid",
+    "id",
+    "userid",
 
-	"name",
+    "name",
 
-	"gender",
-	"age",
+    "gender",
+    "age",
+    
+    "skin",
+    "clothes",
 
-	"skin",
-	"clothes",
+    "birthday",
 
-	"birthday",
+    "level",
+    "exp",
 
-	"level",
-	"exp",
+    "cash",
+    "bankcash",
 
-	"cash",
-	"bankcash",
+    "lastDate",
+    "createchar",
 
-	"lastDate",
-	"createchar",
+    "quests",
+    "questsOld",
 
-	"quests",
-	"questsOld",
+    "inventory",
+    "backpack",
 
-	"inventory",
-	"backpack",
-
-	"backpackStatus",
-	"donateRoullete",
-	"fractionId",
-	"fractionRank"
+    "backpackStatus",
+    "donateRoullete",
+    "fraction"
 ]

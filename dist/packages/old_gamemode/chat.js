@@ -58,32 +58,6 @@ try {
            
         })
     }
-    chat.ems = (id, text) => {
-        mp.players.forEach(pl => {
-            if (user.isWorkingAtIdFraction(pl, id)) chat.me(pl, `[ Ems ] {#e0e0e0}${text}`, false, '#e76969')
-                    
-        })
-    }
-    chat.lspd = (id, text) => {
-        mp.players.forEach(pl => {
-            if (user.isWorkingAtIdFraction(pl, id)) chat.me(pl, `[ Lspd ] {#e0e0e0}${text}`, false, 'blue')
-
-        })
-    }
-    chat.gov = (text) => {
-        mp.players.forEach(pl => {
-            if (user.isFractionUser(pl)) chat.local(pl, `[ Lspd ] ${user.getCharName(pl)} (${pl.id}): {#e0e0e0}${text}`, '#318FFF','gov')
-                // chat.me(pl, `[ Lspd ] {#e0e0e0}${text}`, false, 'blue')
-
-        })
-    }
-    chat.dep = (text) => {
-        mp.players.forEach(pl => {
-            if (user.isWorkingAtIdFraction(pl, 2)) chat.local(pl, `[ Dep ] ${user.getCharName(pl)} (${pl.id}): {#e0e0e0}${text}`, '#318FFF')
-            // chat.me(pl, `[ Lspd ] {#e0e0e0}${text}`, false, 'blue')
-
-        })
-    }
 
     module.exports = chat
 }

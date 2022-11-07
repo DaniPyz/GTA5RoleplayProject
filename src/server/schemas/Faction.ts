@@ -5,8 +5,8 @@ export class Fraction {
 	@PrimaryGeneratedColumn()
 	id!: number;
 
-	// @Column()
-	// type!: number;
+	@Column()
+	type!: number;
 
 	@Column()
 	name!: string;
@@ -43,13 +43,11 @@ export class Fraction {
 	@Column()
 	stock!: number;
 
-	@Column('simple-json', {
-		array: true
-	})
-	warehouse!: ({
-		name: string;
-		img: string;
-		weight: number;
-		count: number;
-	} | null)[][];
+	// @Column()
+	// users: {
+	//     id: number,
+	//     name: string,
+	//     rank: number,
+	//     status: number
+	// };
 }

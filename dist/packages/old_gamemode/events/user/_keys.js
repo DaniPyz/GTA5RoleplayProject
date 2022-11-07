@@ -232,9 +232,6 @@ try {
                 sys_npc.action(player)
                 houses.action(player)
                 biz.action(player)
-
-
-
                 // sys_works_farm.action(player)
             }
         },
@@ -297,9 +294,8 @@ try {
                 user.cursor(player, true, false)
 
                 user.addOpened(player, 'phone')
-
             }
-        }
+        },
 
     })
 }

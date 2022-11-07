@@ -57,18 +57,9 @@ try {
                 case 'seed':
                     {
                         sys_works_farm.plantingSeed(player)
-                      
+                        console.log(invData.id, itemData.type, indexInSection)
 
                         user.removeInventory(player, invData.id, 1, false, indexInSection)
-
-                        break
-                    }
-                case 'aid':
-                    {
-                        
-                        
-
-                        mp.events.call('playerStartedResuscitation', player, mp.players.getClosestInDimension(player.position, 0, 2)[1])
 
                         break
                     }

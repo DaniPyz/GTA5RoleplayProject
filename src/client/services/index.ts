@@ -1,12 +1,8 @@
-import { Helpers } from './helpers';
-import { Lspd } from './fraction/lspd';
 import { Service } from '@/bridge';
 import { Temp } from './temp';
 
 const services = {
-	Temp,
-	Helpers,
-	Lspd
+	Temp
 };
 
 Service.combineServices(services);

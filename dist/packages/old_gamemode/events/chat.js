@@ -11,13 +11,7 @@ try
         "chat::admin:say": (text, color) =>
     	{
     		chat.admin(color, text, 'adm')
-        },
-        "chat::fraction:ems": (text,id = 1) => {
-            chat.ems(id,text)
-        },
-        "chat::fraction:lspd": (text, id = 2) => {
-            chat.lspd(id, text)
-        }
+    	}
     })
 }
 catch(e)

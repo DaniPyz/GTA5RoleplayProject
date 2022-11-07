@@ -20,6 +20,7 @@ import Orgmanu from "./components/orgmenu/Orgmenu";
 import Orgmenu from "./components/orgmenu/Orgmenu";
 import Orgstockmenu from "./components/orgstockmenu/Orgstockmenu";
 import Phone from "./components/phone/Phone";
+// import Autosalon from "components/autosalon";
 // @ts-nocheck
 import React from "react";
 import ReactDOM from "react-dom/client";
@@ -103,6 +104,7 @@ root.render(
 		<Captcha />
 		<House />
 		<Biz />
+
 		<Hud />
 	</React.StrictMode>
 );

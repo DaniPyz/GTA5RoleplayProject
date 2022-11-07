@@ -3,8 +3,28 @@
 var typeorm = require('typeorm');
 require('reflect-metadata');
 
-/******************************************************************************
-Copyright (c) Microsoft Corporation.
+String.prototype.capitalize = function capitalize() {
+    return this.charAt(0).toUpperCase() + this.slice(1);
+};
+String.prototype.uncapitalize = function uncap() {
+    return this.charAt(0).toLowerCase() + this.slice(1);
+};
+String.prototype.replaceAll = function (str, newStr) {
+    if (Object.prototype.toString.call(str).toLowerCase() === '[object regexp]') {
+        return this.replace(str, newStr);
+    }
+    return this.replace(new RegExp(str, 'g'), newStr);
+};
+Array.prototype.remove = function (value) {
+    const index = this.indexOf(value);
+    if (index !== -1) {
+        this.splice(index, 1);
+        return true;
+    }
+    else {
+        return false;
+    }
+};
 
 /* eslint-disable @typescript-eslint/consistent-type-assertions */
 const install = (rpc, env) => {
@@ -873,22 +893,22 @@ var index = {
 };
 
 var rpc = /*#__PURE__*/Object.freeze({
-    __proto__: null,
-    register: register,
-    unregister: unregister,
-    call: call,
-    callServer: callServer,
-    callClient: callClient,
-    callBrowsers: callBrowsers,
-    callBrowser: callBrowser,
-    on: on,
-    off: off,
-    trigger: trigger,
-    triggerClient: triggerClient,
-    triggerServer: triggerServer,
-    triggerBrowsers: triggerBrowsers,
-    triggerBrowser: triggerBrowser,
-    'default': index
+	__proto__: null,
+	register: register,
+	unregister: unregister,
+	call: call,
+	callServer: callServer,
+	callClient: callClient,
+	callBrowsers: callBrowsers,
+	callBrowser: callBrowser,
+	on: on,
+	off: off,
+	trigger: trigger,
+	triggerClient: triggerClient,
+	triggerServer: triggerServer,
+	triggerBrowsers: triggerBrowsers,
+	triggerBrowser: triggerBrowser,
+	'default': index
 });
 
 const Service = install(rpc, 'server');
@@ -926,193 +946,11 @@ const AUTOSALON_LIST = [
         // vehiclePos: new mp.Vector3(-43.445411682128906, -1096.7337646484375, 26.422353744506836),
         vehicleHeading: 195
     }
-    return this.replace(new RegExp(str, 'g'), newStr);
-};
-Array.prototype.remove = function (value) {
-    const index = this.indexOf(value);
-    if (index !== -1) {
-        this.splice(index, 1);
-        return true;
-    }
-    else {
-        return false;
-    }
-};
-
-const createClientProxy = (rpc) => {
-    const clientProxyCache = new Map();
-    return new Proxy({}, {
-        get(_, service) {
-            if (clientProxyCache.has(service)) {
-                return clientProxyCache.get(service);
-            }
-            else {
-                const proxy = new Proxy({}, {
-                    get(_, event) {
-                        const call = (noRet, ...args) => {
-                            const eventName = `${service.capitalize()}${event.capitalize()}`;
-                            return rpc.callClient(eventName, args, noRet ? { noRet: true } : { timeout: 60 * 1000, noRet: false });
-                        };
-                        const f = call.bind(null, false);
-                        f.noRet = (...args) => {
-                            call(true, ...args);
-                        };
-                        return f;
-                    }
-                });
-                clientProxyCache.set(service, proxy);
-                return proxy;
-            }
-        }
-    });
-};
-
-/* eslint-disable @typescript-eslint/consistent-type-assertions */
-const install = (rpc, env) => {
-    class Service {
-        constructor() {
-            Object.defineProperty(this, "services", {
-                enumerable: true,
-                configurable: true,
-                writable: true,
-                value: Service.namespacesUncap
-            });
-        }
-        static hookThisContextFromSingle(Target) {
-            let name = Target.constructor.name;
-            if (name === 'Function') {
-                name = Reflect.get(Target, 'name');
-            }
-            return this.namespaces[name];
-        }
-        static combineServices(services) {
-            let arr = Object.keys(Service.namespaces);
-            for (const key in services) {
-                // arr.splice(arr.indexOf(key), 1);
-                arr.remove(key);
-            }
-            if (arr.length !== 0) {
-                throw new Error(`Runtime error: ${arr} is missing to combineServices`);
-            }
-            return services;
-        }
-        static namespace(Target) {
-            if (Service.namespaces[Target.name]) {
-                throw new Error(`Error: namespace '${Target.name}' is already defined`);
-            }
-            const single = new Target();
-            Service.namespaces[Target.name] = single;
-            Service.namespacesUncap[Target.name.uncapitalize()] = single;
-            let eventMethods = Object.getOwnPropertyNames(Target.prototype).filter((name) => Service.EV_PREFIX.test(name));
-            for (const iterator of eventMethods) {
-                const name = `${Target.name}${iterator.replace(Service.EV_PREFIX, '')}`;
-                if (!Service.procedures.has(name)) {
-                    throw new Error(`Error: ${iterator} in ${Target.name} has no decorator @access`);
-                }
-                else {
-                    const f = Service.procedures.get(name);
-                    if (f) {
-                        Service.procedures.set(name, f.bind(single));
-                    }
-                    else {
-                        throw new Error(`Runtime error: ${name} is not registered`);
-                    }
-                }
-            }
-        }
-        static access(Target, propertyKey) {
-            let prefix = Target.constructor.name;
-            if (prefix === 'Function') {
-                prefix = Reflect.get(Target, 'name');
-            }
-            if (!Service.EV_PREFIX.test(propertyKey)) {
-                throw new Error(`Error: ${propertyKey} in ${prefix} no 'event' prefix`);
-            }
-            let name = `${prefix}${propertyKey.replace(Service.EV_PREFIX, '')}`;
-            if (Service.procedures.has(name)) {
-                throw new Error(`Error: event ${name} is already registered`);
-            }
-            else {
-                let f = Reflect.get(Target, propertyKey);
-                if (f instanceof Function) {
-                    Service.procedures.set(name, f);
-                    console.log(name, 'system ready');
-                    if (env === 'client') {
-                        // @ts-ignore
-                        rpc.register(name, (argumentList) => Service.procedures.get(name)(...argumentList));
-                    }
-                    else {
-                        // @ts-ignore
-                        rpc.register(name, (argumentList, { player }) => Service.procedures.get(name)(player, ...argumentList));
-                    }
-                }
-                else {
-                    throw new Error(`Runtime error: ${name} is not a function`);
-                }
-            }
-        }
-    }
-    Object.defineProperty(Service, "namespaces", {
-        enumerable: true,
-        configurable: true,
-        writable: true,
-        value: {}
-    });
-    Object.defineProperty(Service, "namespacesUncap", {
-        enumerable: true,
-        configurable: true,
-        writable: true,
-        value: {}
-    });
-    Object.defineProperty(Service, "EV_PREFIX", {
-        enumerable: true,
-        configurable: true,
-        writable: true,
-        value: /^rpc/
-    });
-    Object.defineProperty(Service, "procedures", {
-        enumerable: true,
-        configurable: true,
-        writable: true,
-        value: new Map()
-    });
-    Object.defineProperty(Service, "Invoker", {
-        enumerable: true,
-        configurable: true,
-        writable: true,
-        value: class Invoker {
-            constructor() {
-                Object.defineProperty(this, "call", {
-                    enumerable: true,
-                    configurable: true,
-                    writable: true,
-                    value: ((name, ...args) => {
-                        const proc = Service.procedures.get(name);
-                        if (proc) {
-                            return proc(...args);
-                        }
-                        else {
-                            throw new Error(`Runtime error: remote procedure ${name} is not defined`);
-                        }
-                    })
-                });
-            }
-        }
-    });
-    return Service;
-};
-
-const Service = install(rpc, 'server');
-createClientProxy(rpc);
-
-// const AUTOSALON_LIST = [
-// 	{
-// 		name: 'San Andreas',
-// 		pos: new mp.Vector3(-20.840431213378906, -699.7188720703125, 250.41355895996094),
-// 		vehicleHeading: 195
-// 	}
-// ];
-let Ems = class Ems extends Service {
+];
+const autosalonShapes = new Map();
+// export interface IFaction {
+// }
+let Faction = class Faction extends Service {
     constructor() {
         super();
         Object.defineProperty(this, "autosalonShapes", {
@@ -1137,7 +975,7 @@ let Ems = class Ems extends Service {
         }
     }
 };
-Ems = __decorate([
+Faction = __decorate([
     Service.namespace,
     __metadata("design:paramtypes", [])
 ], Faction);
@@ -1341,7 +1179,7 @@ const CONFIG_DATABASE_HOST = 'localhost';
 const CONFIG_DATABASE_PORT = 3306;
 const CONFIG_DATABASE_USER = 'root';
 const CONFIG_DATABASE_DB = 'newyork';
-const CONFIG_DATABASE_PASS = '';
+const CONFIG_DATABASE_PASS = 'newyork';
 
 let Business = class Business {
     constructor() {
@@ -1686,13 +1524,7 @@ let Character = class Character {
             writable: true,
             value: void 0
         });
-        Object.defineProperty(this, "fractionId", {
-            enumerable: true,
-            configurable: true,
-            writable: true,
-            value: void 0
-        });
-        Object.defineProperty(this, "fractionRank", {
+        Object.defineProperty(this, "fraction", {
             enumerable: true,
             configurable: true,
             writable: true,
@@ -1709,83 +1541,83 @@ let Character = class Character {
 __decorate([
     typeorm.PrimaryGeneratedColumn(),
     __metadata("design:type", Number)
-], Characters.prototype, "id", void 0);
+], Character.prototype, "id", void 0);
 __decorate([
     typeorm.Column(),
     __metadata("design:type", Number)
-], Characters.prototype, "userid", void 0);
+], Character.prototype, "userid", void 0);
 __decorate([
-    typeorm.Column('simple-json'),
+    typeorm.Column(),
     __metadata("design:type", Array)
-], Characters.prototype, "name", void 0);
+], Character.prototype, "name", void 0);
 __decorate([
     typeorm.Column({ default: 0 }),
     __metadata("design:type", Number)
-], Characters.prototype, "gender", void 0);
+], Character.prototype, "gender", void 0);
 __decorate([
     typeorm.Column({ default: 0 }),
     __metadata("design:type", Number)
-], Characters.prototype, "age", void 0);
+], Character.prototype, "age", void 0);
 __decorate([
     typeorm.Column('simple-json'),
     __metadata("design:type", Object)
-], Characters.prototype, "skin", void 0);
+], Character.prototype, "skin", void 0);
 __decorate([
     typeorm.Column('simple-json', { default: () => '{}' }),
     __metadata("design:type", Object)
-], Characters.prototype, "clothes", void 0);
+], Character.prototype, "clothes", void 0);
 __decorate([
     typeorm.Column({ type: 'timestamp', default: 'CURRENT_TIMESTAMP' }),
     __metadata("design:type", String)
-], Characters.prototype, "birthday", void 0);
+], Character.prototype, "birthday", void 0);
 __decorate([
     typeorm.Column({ default: 1 }),
     __metadata("design:type", Number)
-], Characters.prototype, "level", void 0);
+], Character.prototype, "level", void 0);
 __decorate([
     typeorm.Column({ default: 0 }),
     __metadata("design:type", Number)
-], Characters.prototype, "exp", void 0);
+], Character.prototype, "exp", void 0);
 __decorate([
     typeorm.Column({ default: 200 }),
     __metadata("design:type", Number)
-], Characters.prototype, "cash", void 0);
+], Character.prototype, "cash", void 0);
 __decorate([
     typeorm.Column({ default: 0 }),
     __metadata("design:type", Number)
-], Characters.prototype, "bankcash", void 0);
+], Character.prototype, "bankcash", void 0);
 __decorate([
     typeorm.Column({ default: 1 }),
     __metadata("design:type", Number)
-], Characters.prototype, "createchar", void 0);
+], Character.prototype, "createchar", void 0);
 __decorate([
     typeorm.Column({ type: 'timestamp', default: 'CURRENT_TIMESTAMP' }),
     __metadata("design:type", String)
-], Characters.prototype, "lastDate", void 0);
+], Character.prototype, "lastDate", void 0);
 __decorate([
     typeorm.Column('simple-json', { default: () => '{}' }),
     __metadata("design:type", Object)
-], Characters.prototype, "quests", void 0);
+], Character.prototype, "quests", void 0);
 __decorate([
     typeorm.Column('simple-json', { default: () => '[]' }),
     __metadata("design:type", Array)
-], Characters.prototype, "questsOld", void 0);
-__decorate([
-    typeorm.Column('simple-json', { default: () => '[]', array: true }),
-    __metadata("design:type", Array)
-], Characters.prototype, "inventory", void 0);
+], Character.prototype, "questsOld", void 0);
 __decorate([
     typeorm.Column('simple-json', { default: () => '[]' }),
     __metadata("design:type", Array)
-], Characters.prototype, "backpack", void 0);
+], Character.prototype, "inventory", void 0);
+__decorate([
+    typeorm.Column('simple-json', { default: () => '[]' }),
+    __metadata("design:type", Array)
+], Character.prototype, "backpack", void 0);
 __decorate([
     typeorm.Column({ default: 0 }),
     __metadata("design:type", Number)
-], Characters.prototype, "backpackStatus", void 0);
+], Character.prototype, "backpackStatus", void 0);
 __decorate([
-    typeorm.Column('simple-json', { default: '{ "status": false, "data": [], "time": 0 }' }),
+    typeorm.Column({ default: '{ "status": false, "data": [], "time": 0 }' }),
     __metadata("design:type", Object)
-], Characters.prototype, "donateRoullete", void 0);
+], Character.prototype, "donateRoullete", void 0);
 __decorate([
     typeorm.Column({ default: () => '[]' }),
     __metadata("design:type", Array)
@@ -1796,7 +1628,7 @@ __decorate([
 ], Character.prototype, "phone", void 0);
 Character = __decorate([
     typeorm.Entity()
-], Characters);
+], Character);
 console.log(123);
 
 let Fraction = class Fraction {
@@ -1807,8 +1639,12 @@ let Fraction = class Fraction {
             writable: true,
             value: void 0
         });
-        // @Column()
-        // type!: number;
+        Object.defineProperty(this, "type", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: void 0
+        });
         Object.defineProperty(this, "name", {
             enumerable: true,
             configurable: true,
@@ -1857,18 +1693,23 @@ let Fraction = class Fraction {
             writable: true,
             value: void 0
         });
-        Object.defineProperty(this, "warehouse", {
-            enumerable: true,
-            configurable: true,
-            writable: true,
-            value: void 0
-        });
+        // @Column()
+        // users: {
+        //     id: number,
+        //     name: string,
+        //     rank: number,
+        //     status: number
+        // };
     }
 };
 __decorate([
     typeorm.PrimaryGeneratedColumn(),
     __metadata("design:type", Number)
 ], Fraction.prototype, "id", void 0);
+__decorate([
+    typeorm.Column(),
+    __metadata("design:type", Number)
+], Fraction.prototype, "type", void 0);
 __decorate([
     typeorm.Column(),
     __metadata("design:type", String)
@@ -1901,12 +1742,6 @@ __decorate([
     typeorm.Column(),
     __metadata("design:type", Number)
 ], Fraction.prototype, "stock", void 0);
-__decorate([
-    typeorm.Column('simple-json', {
-        array: true
-    }),
-    __metadata("design:type", Array)
-], Fraction.prototype, "warehouse", void 0);
 Fraction = __decorate([
     typeorm.Entity()
 ], Fraction);
@@ -2166,7 +2001,7 @@ __decorate([
     __metadata("design:type", String)
 ], User.prototype, "regDate", void 0);
 __decorate([
-    typeorm.Column('simple-json', { default: '[0]', array: true }),
+    typeorm.Column({ default: '[0]' }),
     __metadata("design:type", Array)
 ], User.prototype, "buy_slots_chars", void 0);
 __decorate([
@@ -2206,7 +2041,7 @@ __decorate([
     __metadata("design:type", Number)
 ], User.prototype, "onlineChar", void 0);
 __decorate([
-    typeorm.Column('simple-json', { default: () => '{}' }),
+    typeorm.Column({ default: () => '{}' }),
     __metadata("design:type", Object)
 ], User.prototype, "keysSettings", void 0);
 __decorate([
@@ -2342,7 +2177,7 @@ new typeorm.DataSource({
     username: CONFIG_DATABASE_USER,
     password: CONFIG_DATABASE_PASS,
     database: CONFIG_DATABASE_DB,
-    synchronize: false,
+    synchronize: true,
     logging: false,
     entities: [Fraction, Business, Character, House, Vehicle, User],
     migrations: [],

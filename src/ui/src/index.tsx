@@ -49,7 +49,6 @@ rpc.on('internal.dispatch', (action: ReturnType<AppDispatch>) => {
 });
 
 rpc.on('internal.setView', (view: View) => {
-	mp.invoke('focus', true);
 	window.setView(view);
 });
 

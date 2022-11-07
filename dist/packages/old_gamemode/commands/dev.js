@@ -113,10 +113,6 @@ try {
             if (!type ) return chat.cmd(player, '/biz [type] (classes) [position] (data) [callback]')
 
             biz.create(type, postion)
-        },
-        "testdeath": (player) => {
-
-            mp.events.call('chat::fraction:ems', `Человек умер напишите /accept ${player.id} что бы принять вызов`);
         }
     })
 }

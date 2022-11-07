@@ -1,13 +1,15 @@
 import { DndProvider, useDrag, useDrop } from 'react-dnd';
 import { FC, useCallback, useEffect, useState } from 'react';
-import { useAppSelector, useKeyboard } from 'hooks';
+import { client, server } from 'index';
+import { useAppDispatch, useAppSelector, useKeyboard } from 'hooks';
 
 import { FRACTION_DATA } from './Fraction.config';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 import ItemCell from './../../components/ItemCell/ItemCell';
 import { ItemInfo } from 'components';
 import { ReactComponent as WeightVector } from './vectors/weight.svg';
 import { animated } from 'react-spring';
-// import cls from 'classnames';
+import cls from 'classnames';
 import s from './Fraction.module.scss';
 import { setView } from 'index';
 import useMasterSpring from './Fraction.spring';
@@ -22,17 +24,6 @@ const Fraction: FC = () => {
 	const [selectedCell, setSelectedCell] = useState<number | null>(null);
 	const { hideTransition } = useMasterSpring();
 
-<<<<<<< HEAD
-=======
-	useEffect(() => {
-
-		setFractionId(1 - 1)
-		return () => {
-
-		}
-	}, [state])
-
->>>>>>> fraction
 	useKeyboard(
 		'esc',
 		useCallback(() => {
@@ -43,14 +34,10 @@ const Fraction: FC = () => {
 	useKeyboard(
 		'right',
 		useCallback(() => {
-			setSelectedCell(null)
-			setSelectedCell(null)
-
 			if (selected + 1 === FRACTION_DATA[fractionId].categories.length) {
 				setSelected(0);
 				return;
 			}
-
 			setSelected(Math.min(selected + 1, FRACTION_DATA[fractionId].categories.length));
 		}, [selected])
 	);
@@ -58,8 +45,6 @@ const Fraction: FC = () => {
 	useKeyboard(
 		'left',
 		useCallback(() => {
-			setSelectedCell(null)
-
 			if (selected === 0) {
 				setSelected(FRACTION_DATA[fractionId].categories.length - 1);
 				return;
@@ -68,20 +53,11 @@ const Fraction: FC = () => {
 		}, [selected])
 	);
 
-<<<<<<< HEAD
 	const changeSelection = (index: number) => {
 		setSelectedCell(index);
 	};
 
 	// dispatch({ type: 'ROOT_HUD_PUSH', hud });
-=======
-	const changeSelection = (index: number | null) => {
-
-		setSelectedCell(index);
-	};
-
-
->>>>>>> fraction
 	return hideTransition(
 		(style: any, isOpened: boolean) =>
 			isOpened && (
@@ -99,15 +75,9 @@ const Fraction: FC = () => {
 								</h1>
 							</div>
 							<div className={s.category}>
-								
 								{FRACTION_DATA[fractionId].categories.map((el, index) => (
 									<button
-										onClick={() => {
-
-											setSelectedCell(null)
-											setSelected(index)
-
-										}}
+										onClick={() => setSelected(index)}
 										key={index}
 										className={`${s.btn_ui} ${index === selected && s.btn_ui_select}`}
 									>
@@ -130,15 +100,8 @@ const Fraction: FC = () => {
 									<div style={{ width: ` 8%` }} />
 								</div>
 							</div>
-<<<<<<< HEAD
 							<div className={s.cells}>
 								{Array.from({ length: 72 }, (_, index) => {
-=======
-							<div className={s.cells}
-							>
-								{Array.from({ length: 72 }, (_, index: number) => {
-
->>>>>>> fraction
 									if (state.warehouse && state.warehouse[selected] && state.warehouse[selected][index]) {
 										return (
 											<section key={index} onClick={() => setSelectedCell(index)}>
@@ -166,14 +129,9 @@ const Fraction: FC = () => {
 						{selectedCell !== null ? (
 							<div className={s.infoDialog}>
 								<ItemInfo
-									id={state.warehouse[selected][selectedCell]!.id}
 									img={state.warehouse[selected][selectedCell]!.img}
 									name={state.warehouse[selected][selectedCell]!.name}
 									weight={state.warehouse[selected][selectedCell]!.weight}
-									fractionId={fractionId}
-									selected={selected}
-									selectedCell={selectedCell}
-									change={changeSelection}
 								/>
 							</div>
 						) : (

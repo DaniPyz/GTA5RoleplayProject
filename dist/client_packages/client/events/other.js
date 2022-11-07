@@ -17,15 +17,8 @@ try
         },
         'server::other:createWaypoint': (x,y) => {
             mp.game.ui.setNewWaypoint(x, y);
-        },
-        'other:writeChat': (message) => {
-            chat
         }
     })
-    // mp.keys.bind(0x4B, true, function (player) {
-
-    //     mp.events.call('client::lspd:keyPressed', player, mp.players.getClosestInDimension(player.position, 0, 2)[0]);
-    // });
 }
 catch(e)
 {

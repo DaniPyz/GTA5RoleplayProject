@@ -10,14 +10,7 @@ try {
     require('./client/modules/_animLibrary')
     require('./client/modules/attach_editor')
 
-    //For new Client 
-    mp.game.object.doorControl(631614199, 461.8065, -994.4086, 25.06443, true, 0.0, 0.0, 0.0);
-    mp.game.object.doorControl(631614199, 461.8065, -997.6583, 25.06443, true, 0.0, 0.0, 0.0);
-    mp.game.object.doorControl(631614199, 461.8065, -1001.302, 25.06443, true, 0.0, 0.0, 0.0);
-    // 
 
-
-    
     mp.gui.chat.show(false)
     mp.game.ui.displayCash(false)
     mp.game.ui.displayAmmoThisFrame(false)
@@ -45,8 +38,10 @@ try {
     user.setCamera(new mp.Vector3(-433.9073181152344, 6206.02587890625, 125.67748260498047), [-177.31312561035156, 6252.0205078125, 35.86330795288086])
 
     logger.log('Client started is Successful')
-    ui.start()
-       
+    const timeout = setTimeout(() => {
+        ui.start()
+        clearTimeout(timeout)
+    }, 1000)
 }
 catch (e) {
     logger.error('Client started Error:', e)

@@ -221,16 +221,14 @@ try {
             user.spawn(player)
         },
         "client::user:deathClick": (player, status, timer) => {
-            if (!container.get('user', player.id, '_death')) return user.kick(player)               
+            logger.log('', status, timer)
+            if (!container.get('user', player.id, '_death')) return user.kick(player)
 
             if (!status) {
                 if (timer >= 120000) return user.notify(player, 'Вы сможете уйти на тот свет после 2х минут таймера', 'error')
                 user.spawn(player)
             }
-            else {
-        
-                mp.events.call('server::new:death', player, status, timer)
-            }
+            else user.notify(player, 'В разработке, пока не появится система фракций и медики :)', 'warning')
         },
         'client::playerCreateWaypoint': (player, positionX, postionY, positionZ) => {
            

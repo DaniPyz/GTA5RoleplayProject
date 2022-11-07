@@ -71,7 +71,6 @@ try {
             if (!res.length) return user.kick(player, "Загружаемый аккаунт не найден")
 
             try {
-                mp.events.call('playerHasLogged', res[0]['id'])
                 container.set('user', player.id, 'user_id', res[0]['id'])
                 container.set('user', player.id, 'user_name', res[0]['username'])
 
@@ -331,7 +330,7 @@ try {
     user.choiceChar = player => {
         if (user.isLogged(player) === true) return
 
-        mysql.query(`select id, name, birthday, level, cash, bankcash, fractionId, fractionRank from characters where userid = ?`, [user.getID(player)], (err, res) => {
+        mysql.query(`select id, name, birthday, level, cash, bankcash, fraction from characters where userid = ?`, [user.getID(player)], (err, res) => {
             if (err) return logger.error('user.choiceChar', err)
 
             try {
@@ -344,7 +343,7 @@ try {
                         birthDay: item.birthday,
                         level: item.level,
                         cash: item.cash,
-                        frac: item.fractionId !== undefined ? 'Отсутствует' : item.fractionId,
+                        frac: JSON.parse(item.fraction)[1] !== undefined ? JSON.parse(item.fraction)[1] : 'Отсутствует',
                         bankCash: item.bankcash
                     })
                     // JSON.parse(item.fraction)[1] !== undefined ? JSON.parse(item.fraction)[1] : 
@@ -894,7 +893,7 @@ try {
         return false
     }
 
-    user.toggleActionText = (player, toggle, keyName = "E", message = "Нажмите для взаимодействия") => {
+    user.toggleActionText = (player, toggle, keyName = "e", message = "Нажмите для взаимодействия") => {
         player.call('server::user:toggleActionText', [
             toggle,
             keyName,
@@ -1311,7 +1310,7 @@ try {
     }
 
 
-    user.updateUIInventory = (player, targetPlayer = false) => {
+    user.updateUIInventory = player => {
         let user_backpack = 0
         if (container.get('user', player.id, 'char_backpackStatus') > 0
             && CONFIG_INVENTORY[container.get('user', player.id, 'char_backpackStatus')]
@@ -1320,7 +1319,7 @@ try {
             user_backpack.id = container.get('user', player.id, 'char_backpackStatus')
         }
 
-        user.uiSend(targetPlayer === false ? player : targetPlayer, 'client::inventory', 'update', {
+        user.uiSend(player, 'client::inventory', 'update', {
             inventory: container.get('user', player.id, 'char_inventory'),
             backpack: container.get('user', player.id, 'char_backpack'),
             player: user.getCharName(player),
@@ -1445,7 +1444,7 @@ try {
 
 
     }
-    user.showBizDialog = (player, bizType, bizId, rentFee, bizFee, bizBalance, bizAccountBalance, bizPrice, btn = ['Окей'], stats, settings) => {
+    user.showBizDialog = (player,  bizType, bizId, rentFee, bizFee, bizBalance, bizAccountBalance, bizPrice, btn = ['Окей'], stats, settings) => {
 
         user.uiSend(player, 'client::biz', 'toggle', {
             status: true
@@ -1561,12 +1560,6 @@ try {
 
         return true
     }
-    user.isWorkingAtIdFraction = (player, id) => {
-        if (container.get('user', player.id, "fractionId") === undefined && container.get('user', player.id, "fractionId") !== id) return false
-
-        return true
-    }
-    
     module.exports = user
 }
 catch (e) {
