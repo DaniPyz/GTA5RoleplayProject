@@ -1,7 +1,7 @@
-import { Autosalon, Fraction, Temp, Phone } from 'views';
+import { Autosalon, Database, Fraction, Locker, Temp } from 'views';
 import { Hud, View } from 'index';
 
-export const DEFAULT_VIEW: View = 'Phone';
+export const DEFAULT_VIEW: View = 'Database';
 export const DEFAULT_HUD_LIST: Hud[] = [];
 
 export const HUD_LIST = {
@@ -10,7 +10,8 @@ export const HUD_LIST = {
 
 export const VIEW_LIST = {
 	Temp,
+	Locker,
 	Autosalon,
 	Fraction,
-	Phone
+	Database
 };

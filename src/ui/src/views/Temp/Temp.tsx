@@ -1,8 +1,9 @@
-import { useAppDispatch, useAppSelector, useKeyboard } from 'hooks';
-import { client, server } from 'index';
 import { FC, useCallback, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { client, server } from 'index';
+import { useAppDispatch, useAppSelector, useKeyboard } from 'hooks';
+
 import styles from './Temp.module.scss';
+import { useSelector } from 'react-redux';
 
 const Temp: FC = () => {
 	const dispatch = useAppDispatch();
@@ -14,6 +15,21 @@ const Temp: FC = () => {
 			// some date;
 		}, [])
 	);
+	useKeyboard(
+		'k',
+		useCallback(() => {
+
+			server.lspd.dragCuffedPlayer()
+		}, [])
+	);
+	useKeyboard(
+		'j',
+		useCallback(() => {
+
+			server.lspd.cuffPlayer()
+		}, [])
+	);
+
 
 	useEffect(() => {
 		// (async () => {

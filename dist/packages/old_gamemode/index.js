@@ -86,7 +86,15 @@ try {
             blipName: 'Листовки'
 
         })
+        // lspd
+        sys_npc.create([-581.3276977539062, 182.5081787109375, 71.10066986083984, 88.71720123291016, 0], 'fractionlspdnpc', 'Garcia', 'g_m_m_armboss_01', {
+            desc: 'NPC выдает оружие',
+            blip: false,
+            blipType: 67,
+            blipColor: 28,
+            blipName: 'Lspd'
 
+        })
 
 
 

@@ -1,14 +1,15 @@
-import s from './Autosalon.module.scss';
-import { FC, useState, useCallback, useEffect } from 'react';
-import { ReactComponent as ExitVector } from './vectors/exit.svg';
-import { ReactComponent as CarVector } from './vectors/car.svg';
-import { ReactComponent as SearchVector } from './vectors/search.svg';
-import { AUTOSALON_VEHICLE_STATS, AUTOSALON_CONFIG, AUTOSALON_COLORS } from './Autosalon.config';
-import cls from 'classnames';
-import { animated } from 'react-spring';
-import useMasterSpring from './Autosalon.spring';
+import { AUTOSALON_COLORS, AUTOSALON_CONFIG, AUTOSALON_VEHICLE_STATS } from './Autosalon.config';
+import { FC, useCallback, useEffect, useState } from 'react';
 import { useKeyboard, useViewController } from 'hooks';
+
+import { ReactComponent as CarVector } from './vectors/car.svg';
+import { ReactComponent as ExitVector } from './vectors/exit.svg';
+import { ReactComponent as SearchVector } from './vectors/search.svg';
+import { animated } from 'react-spring';
+import cls from 'classnames';
+import s from './Autosalon.module.scss';
 import { setView } from 'index';
+import useMasterSpring from './Autosalon.spring';
 
 const Autosalon: FC = () => {
 	const [search, setSearch] = useState('');

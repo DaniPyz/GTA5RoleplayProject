@@ -1,6 +1,7 @@
 require('./logger')
 require('./user')
 require('./chat')
+require('./newServer')
 require('./other')
 require('./vehicle')
 require('./autosalon')
@@ -84,6 +85,7 @@ mp.events.add({
         houses.enterColshape(player, shape)
         sys_works_port.enterColshape(player, shape)
         biz.enterColshape(player, shape)
+      
     },
     'playerExitColshape': (player, shape) => {
         sys_npc.exitColshape(player, shape)
@@ -96,10 +98,12 @@ mp.events.add({
 
     'playerDeath': (player, reason, killer) => {
         if (!user.isLogged(player)) return user.kick(player)
+        // player.setToRagdoll(1000, 1000, 0, true, true, true);
 
         user.uiSend(player, 'client::death', 'death', {
             timer: 30000
         })
+        
         user.toggleHud(player, false)
         user.cursor(player, true)
 
@@ -111,7 +115,10 @@ mp.events.add({
             a: player.position.heading,
             vw: player.dimension
         })
-        user.freeze(player, true)
+        
+        player._death = true  
+        // mp.colshapes.newSphere(player.position.x, player.position.y, player.position.z, 1, 0).setVariable('deathPlayerID', player.id)
+        // user.freeze(player, true)
     },
 
     'playerEnterVehicle': (player, vech, seat) => {

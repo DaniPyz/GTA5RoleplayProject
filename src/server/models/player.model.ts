@@ -5,7 +5,8 @@ import type { AppDispatch } from '../../ui/src/store';
 import type { ClientServices } from '../../client';
 import * as rpc from '../../shared/lib/rpc';
 import { User } from 'schemas/User';
-import { Character } from 'schemas/Character';
+import { Characters } from 'schemas/Characters';
+import { AppDataSource } from 'data-source';
 
 type ClientProxy = RuntimeTypes.IProxyClient<ClientServices>;
 
@@ -99,7 +100,7 @@ declare global {
 		/**
 		 * Колонки из базы данных активного персонажа
 		 */
-		character: Character;
+		character: Characters;
 	}
 }
 
@@ -198,6 +199,17 @@ export class Player {
 			player.pushPhoneConfirm = (_props) => {
 				throw new Error('Not implemented');
 			};
+			mp.events.add('playerHasLogged', async (userId) => {
+				const Characters = AppDataSource.getRepository('Characters');
+
+				const Character = await Characters.findOneBy({
+					userid: userId
+				});
+				
+				if (Character === null) return;
+				//@ts-ignore
+				player.character = Character;
+			});
 		});
 	}
 }

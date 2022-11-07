@@ -1,5 +1,6 @@
 // type WarehouseType = { name: string; img: string; weight: number; count: number }[];
 interface WarehouseType {
+	id: number;
 	name: string;
 	img: string;
 	weight: number;
@@ -9,7 +10,8 @@ type WarehouseReducerActions = ArrayToUnion<
 	[
 		{
 			type: 'WAREHOUSE_ADD';
-			warehouse: WarehouseType[];
+			warehouse: any;
+			fractionId: number;
 		},
 		{
 			type: 'WAREHOUSE_CHANGE';
@@ -24,18 +26,21 @@ type WarehouseReducerActions = ArrayToUnion<
 
 interface IWarehouseState {
 	warehouse: (WarehouseType | null)[][];
+	fractionId: number;
 }
 
 const initial: IWarehouseState = {
 	warehouse: [
 		[
 			{
+				id: 1,
 				name: 'Курточка',
-				img: 'jacket.png',
+				img: 'aid.png',
 				weight: 12,
 				count: 2
 			},
 			{
+				id: 2,
 				name: 'Желетка',
 				img: 'jacket.png',
 				weight: 2,
@@ -48,6 +53,7 @@ const initial: IWarehouseState = {
 		],
 		[
 			{
+				id: 1,
 				name: 'Курточка',
 				img: 'jacket.png',
 				weight: 12,
@@ -55,6 +61,7 @@ const initial: IWarehouseState = {
 			},
 			null,
 			{
+				id: 2,
 				name: 'Желетка',
 				img: 'jacket.png',
 				weight: 2,
@@ -63,24 +70,27 @@ const initial: IWarehouseState = {
 			null,
 			null
 		]
-	]
+	],
+	fractionId: 0
 };
 const WarehouseReducer = (state = initial, action: WarehouseReducerActions): IWarehouseState => {
 	switch (action.type) {
 		case 'WAREHOUSE_ADD': {
 			return {
 				...state,
-				// warehouse: action.warehouse
+				warehouse: action.warehouse,
+				fractionId: action.fractionId
 			};
 		}
 		case 'WAREHOUSE_CHANGE': {
 			let newArr = [...state.warehouse];
-	
+
 			newArr[action.data.selectedFilter][action.data.indexNew] = newArr[action.data.selectedFilter][action.data.index];
 			newArr[action.data.selectedFilter][action.data.index] = null;
 
 			return {
-				warehouse: newArr
+				warehouse: newArr,
+				fractionId: state.fractionId
 			};
 		}
 

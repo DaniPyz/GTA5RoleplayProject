@@ -1,4 +1,5 @@
 import keycode from 'keycode';
+import rpc from 'rage-rpc';
 import { useEffect } from 'react';
 import { store } from 'store';
 
@@ -36,6 +37,9 @@ export const useKeyboard = (keyName: KeyTypes, callback: Callback, type: 'keyup'
 				}
 
 				callback(e, keycode(e) as KeyTypes);
+			}
+			if (key === 'esc') {
+				mp.invoke('focus', false);
 			}
 		}
 

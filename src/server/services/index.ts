@@ -1,10 +1,16 @@
+import { Ems, Faction, Lspd } from './faction';
+
 import { Service } from 'bridge';
-import { Faction } from './faction';
-import { Phone } from './phone';
+
+//@ts-ignore
+mp.getRandomInRange = (min, max) => {
+	return Math.floor(Math.random() * (max - min + 1)) + min;
+};
 
 const services = {
 	Faction,
-	Phone
+	Ems,
+	Lspd
 };
 
 Service.combineServices(services);

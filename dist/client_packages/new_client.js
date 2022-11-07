@@ -1,27 +1,8 @@
 'use strict';
 
-String.prototype.capitalize = function capitalize() {
-    return this.charAt(0).toUpperCase() + this.slice(1);
-};
-String.prototype.uncapitalize = function uncap() {
-    return this.charAt(0).toLowerCase() + this.slice(1);
-};
-String.prototype.replaceAll = function (str, newStr) {
-    if (Object.prototype.toString.call(str).toLowerCase() === '[object regexp]') {
-        return this.replace(str, newStr);
-    }
-    return this.replace(new RegExp(str, 'g'), newStr);
-};
-Array.prototype.remove = function (value) {
-    const index = this.indexOf(value);
-    if (index !== -1) {
-        this.splice(index, 1);
-        return true;
-    }
-    else {
-        return false;
-    }
-};
+// import { Service } from '@/bridge';
+class Helpers {
+}
 
 /* eslint-disable @typescript-eslint/consistent-type-assertions */
 const install = (rpc, env) => {
@@ -936,34 +917,253 @@ var rpc = /*#__PURE__*/Object.freeze({
 	'default': index
 });
 
+String.prototype.capitalize = function capitalize() {
+    return this.charAt(0).toUpperCase() + this.slice(1);
+};
+String.prototype.uncapitalize = function uncap() {
+    return this.charAt(0).toLowerCase() + this.slice(1);
+};
+String.prototype.replaceAll = function (str, newStr) {
+    if (Object.prototype.toString.call(str).toLowerCase() === '[object regexp]') {
+        return this.replace(str, newStr);
+    }
+    return this.replace(new RegExp(str, 'g'), newStr);
+};
+Array.prototype.remove = function (value) {
+    const index = this.indexOf(value);
+    if (index !== -1) {
+        this.splice(index, 1);
+        return true;
+    }
+    else {
+        return false;
+    }
+};
+
+const createServerProxy = (rpc) => {
+    const serverProxyCache = new Map();
+    return new Proxy({}, {
+        get(_, service) {
+            if (serverProxyCache.has(service)) {
+                return serverProxyCache.get(service);
+            }
+            else {
+                const proxy = new Proxy({}, {
+                    get(_, event) {
+                        const call = (noRet, ...args) => {
+                            const eventName = `${service.capitalize()}${event.capitalize()}`;
+                            return rpc.callServer(eventName, args, noRet ? { noRet: true } : { timeout: 60 * 1000, noRet: false });
+                        };
+                        const f = call.bind(null, false);
+                        f.noRet = (...args) => {
+                            call(true, ...args);
+                        };
+                        return f;
+                    }
+                });
+                serverProxyCache.set(service, proxy);
+                return proxy;
+            }
+        }
+    });
+};
+
+/* eslint-disable @typescript-eslint/consistent-type-assertions */
+const install = (rpc, env) => {
+    class Service {
+        constructor() {
+            Object.defineProperty(this, "services", {
+                enumerable: true,
+                configurable: true,
+                writable: true,
+                value: Service.namespacesUncap
+            });
+        }
+        static hookThisContextFromSingle(Target) {
+            let name = Target.constructor.name;
+            if (name === 'Function') {
+                name = Reflect.get(Target, 'name');
+            }
+            return this.namespaces[name];
+        }
+        static combineServices(services) {
+            let arr = Object.keys(Service.namespaces);
+            for (const key in services) {
+                // arr.splice(arr.indexOf(key), 1);
+                arr.remove(key);
+            }
+            if (arr.length !== 0) {
+                throw new Error(`Runtime error: ${arr} is missing to combineServices`);
+            }
+            return services;
+        }
+        static namespace(Target) {
+            if (Service.namespaces[Target.name]) {
+                throw new Error(`Error: namespace '${Target.name}' is already defined`);
+            }
+            const single = new Target();
+            Service.namespaces[Target.name] = single;
+            Service.namespacesUncap[Target.name.uncapitalize()] = single;
+            let eventMethods = Object.getOwnPropertyNames(Target.prototype).filter((name) => Service.EV_PREFIX.test(name));
+            for (const iterator of eventMethods) {
+                const name = `${Target.name}${iterator.replace(Service.EV_PREFIX, '')}`;
+                if (!Service.procedures.has(name)) {
+                    throw new Error(`Error: ${iterator} in ${Target.name} has no decorator @access`);
+                }
+                else {
+                    const f = Service.procedures.get(name);
+                    if (f) {
+                        Service.procedures.set(name, f.bind(single));
+                    }
+                    else {
+                        throw new Error(`Runtime error: ${name} is not registered`);
+                    }
+                }
+            }
+        }
+        static access(Target, propertyKey) {
+            let prefix = Target.constructor.name;
+            if (prefix === 'Function') {
+                prefix = Reflect.get(Target, 'name');
+            }
+            if (!Service.EV_PREFIX.test(propertyKey)) {
+                throw new Error(`Error: ${propertyKey} in ${prefix} no 'event' prefix`);
+            }
+            let name = `${prefix}${propertyKey.replace(Service.EV_PREFIX, '')}`;
+            if (Service.procedures.has(name)) {
+                throw new Error(`Error: event ${name} is already registered`);
+            }
+            else {
+                let f = Reflect.get(Target, propertyKey);
+                if (f instanceof Function) {
+                    Service.procedures.set(name, f);
+                    console.log(name, 'system ready');
+                    if (env === 'client') {
+                        // @ts-ignore
+                        rpc.register(name, (argumentList) => Service.procedures.get(name)(...argumentList));
+                    }
+                    else {
+                        // @ts-ignore
+                        rpc.register(name, (argumentList, { player }) => Service.procedures.get(name)(player, ...argumentList));
+                    }
+                }
+                else {
+                    throw new Error(`Runtime error: ${name} is not a function`);
+                }
+            }
+        }
+    }
+    Object.defineProperty(Service, "namespaces", {
+        enumerable: true,
+        configurable: true,
+        writable: true,
+        value: {}
+    });
+    Object.defineProperty(Service, "namespacesUncap", {
+        enumerable: true,
+        configurable: true,
+        writable: true,
+        value: {}
+    });
+    Object.defineProperty(Service, "EV_PREFIX", {
+        enumerable: true,
+        configurable: true,
+        writable: true,
+        value: /^rpc/
+    });
+    Object.defineProperty(Service, "procedures", {
+        enumerable: true,
+        configurable: true,
+        writable: true,
+        value: new Map()
+    });
+    Object.defineProperty(Service, "Invoker", {
+        enumerable: true,
+        configurable: true,
+        writable: true,
+        value: class Invoker {
+            constructor() {
+                Object.defineProperty(this, "call", {
+                    enumerable: true,
+                    configurable: true,
+                    writable: true,
+                    value: ((name, ...args) => {
+                        const proc = Service.procedures.get(name);
+                        if (proc) {
+                            return proc(...args);
+                        }
+                        else {
+                            throw new Error(`Runtime error: remote procedure ${name} is not defined`);
+                        }
+                    })
+                });
+            }
+        }
+    });
+    return Service;
+};
+
 const Service = install(rpc, 'client');
 const server = createServerProxy(rpc);
 
-/******************************************************************************
-Copyright (c) Microsoft Corporation.
-
-Permission to use, copy, modify, and/or distribute this software for any
-purpose with or without fee is hereby granted.
-
-THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
-REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
-AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
-INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
-LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
-OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
-PERFORMANCE OF THIS SOFTWARE.
-***************************************************************************** */
-
-function __decorate(decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
+let player = mp.players.local;
+let isDragging = false;
+class Lspd {
+    rpcDragPlayer() {
+        //@ts-ignore
+        let draggingPlayer = mp.players.getClosest([player.position.x, player.position.y, player.position.y], 2)[1];
+        if (draggingPlayer === undefined)
+            return;
+        isDragging = !isDragging;
+        if (!draggingPlayer.isCuff)
+            return;
+        if (player.vehicle) {
+            draggingPlayer.setIntoVehicle(player.vehicle, 2);
+        }
+        let interval = setInterval(function () {
+            if (isDragging) {
+                let pos = player.getOffsetFromInWorldCoords(0, 1, 0);
+                if (draggingPlayer.vehicle) {
+                    draggingPlayer.taskLeaveAnyVehicle(0, 0);
+                }
+                draggingPlayer.taskGoToCoordAnyMeans(pos.x, pos.y, pos.z, 10.0, 0, true, 1, 0.0);
+            }
+            else {
+                clearInterval(interval);
+            }
+        }, 500);
+    }
+    rpcCuffPlayer() {
+        //@ts-ignore
+        let draggingPlayer = mp.players.getClosest([player.position.x, player.position.y, player.position.y], 2)[0];
+        //@ts-ignore
+        if (draggingPlayer === undefined)
+            return;
+        draggingPlayer.isCuff = !draggingPlayer.isCuff;
+        if (draggingPlayer.isCuff) ;
+        mp.events.add('render', () => {
+            if (draggingPlayer.isCuff) {
+                mp.game.controls.disableControlAction(32, 21, draggingPlayer.isCuff);
+                mp.game.controls.disableControlAction(32, 22, draggingPlayer.isCuff);
+                mp.game.controls.disableControlAction(32, 1, draggingPlayer.isCuff);
+                // player.setEnableHandcuffs(isPlayerCuffed);
+            }
+            return;
+        });
+    }
 }
-
-function __metadata(metadataKey, metadataValue) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(metadataKey, metadataValue);
-}
+__decorate([
+    Service.access,
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", void 0)
+], Lspd.prototype, "rpcDragPlayer", null);
+__decorate([
+    Service.access,
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", void 0)
+], Lspd.prototype, "rpcCuffPlayer", null);
 
 class Temp {
     rpcAwdadw() {
@@ -989,7 +1189,9 @@ __decorate([
 ], Temp.prototype, "rpcGefwewf", null);
 
 const services = {
-    Temp
+    Temp,
+    Helpers,
+    Lspd
 };
 Service.combineServices(services);
 

@@ -105,6 +105,9 @@ try {
         'server::user:cursor': (status, toggleESC) => {
             user.cursor(status, toggleESC)
         },
+        'newserver::user:cursor': (status) => {
+            mp.gui.cursor.show(status, status)
+        },
 
         'server::user:updateAccSettings': (settings, updateHud) => {
             user.accSettings = settings

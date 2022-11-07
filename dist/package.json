@@ -16,9 +16,9 @@
 		"path": "^0.12.7",
 		"svg-captcha": "^1.4.0",
 		"colorette": "^2.0.16",
-		"mysql": "^2.18.1",
+		"typeorm": "0.3.10",
 		"reflect-metadata": "^0.1.13",
-		"typeorm": "^0.3.10"
+		"mysql": "^2.14.1"
 	},
 	"devDependencies": {
 		"@ragempcommunity/types-cef": "^2.0.2",
