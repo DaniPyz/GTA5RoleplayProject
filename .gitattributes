@@ -4,6 +4,7 @@
 *.exe binary
 *.dll binary
 *.ttf binary
+*.otf binary
 *.listcache binary
 *.dat binary
 *ragemp-server binary
