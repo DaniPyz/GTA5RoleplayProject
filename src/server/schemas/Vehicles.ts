@@ -5,7 +5,7 @@ export class Vehicle {
 	@PrimaryGeneratedColumn()
 	id!: number;
 
-	@Column()
+	@Column('simple-json')
 	model!: number | string;
 
 	@Column('simple-json')
@@ -27,10 +27,10 @@ export class Vehicle {
 	@Column()
 	locked!: 0 | 1;
 
-	@Column()
+	@Column('simple-json')
 	number!: number | string;
 
-	@Column()
+	@Column('simple-json')
 	color!: [[number, number, number], [number, number, number]] | string;
 
 	@Column()

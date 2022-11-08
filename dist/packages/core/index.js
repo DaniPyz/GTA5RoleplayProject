@@ -1174,12 +1174,11 @@ const services = {
 };
 Service.combineServices(services);
 
-const CONFIG_DATABASE_TYPE = 'mysql';
-const CONFIG_DATABASE_HOST = 'localhost';
+const CONFIG_DATABASE_HOST = '51.91.79.226';
 const CONFIG_DATABASE_PORT = 3306;
-const CONFIG_DATABASE_USER = 'root';
+const CONFIG_DATABASE_USER = 'server';
 const CONFIG_DATABASE_DB = 'newyork';
-const CONFIG_DATABASE_PASS = 'newyork';
+const CONFIG_DATABASE_PASS = 'MLhpAjQJgF8o';
 
 let Business = class Business {
     constructor() {
@@ -1304,7 +1303,7 @@ __decorate([
     __metadata("design:type", Number)
 ], Business.prototype, "accountBalance", void 0);
 __decorate([
-    typeorm.Column('jsonb', { nullable: true }),
+    typeorm.Column('simple-json', { nullable: true }),
     __metadata("design:type", Array)
 ], Business.prototype, "warehouse", void 0);
 __decorate([
@@ -1396,7 +1395,7 @@ __decorate([
     __metadata("design:type", String)
 ], Phone.prototype, "callerId", void 0);
 __decorate([
-    typeorm.Column(),
+    typeorm.Column('simple-json'),
     __metadata("design:type", Array)
 ], Phone.prototype, "dialogList", void 0);
 Phone = __decorate([
@@ -1547,7 +1546,7 @@ __decorate([
     __metadata("design:type", Number)
 ], Character.prototype, "userid", void 0);
 __decorate([
-    typeorm.Column(),
+    typeorm.Column('simple-array'),
     __metadata("design:type", Array)
 ], Character.prototype, "name", void 0);
 __decorate([
@@ -1567,7 +1566,7 @@ __decorate([
     __metadata("design:type", Object)
 ], Character.prototype, "clothes", void 0);
 __decorate([
-    typeorm.Column({ type: 'timestamp', default: 'CURRENT_TIMESTAMP' }),
+    typeorm.Column('datetime'),
     __metadata("design:type", String)
 ], Character.prototype, "birthday", void 0);
 __decorate([
@@ -1615,15 +1614,15 @@ __decorate([
     __metadata("design:type", Number)
 ], Character.prototype, "backpackStatus", void 0);
 __decorate([
-    typeorm.Column({ default: '{ "status": false, "data": [], "time": 0 }' }),
+    typeorm.Column({ default: '{ "status": false, "data": [], "time": 0 }', type: 'simple-json' }),
     __metadata("design:type", Object)
 ], Character.prototype, "donateRoullete", void 0);
 __decorate([
-    typeorm.Column({ default: () => '[]' }),
+    typeorm.Column({ default: () => '[]', type: 'simple-json' }),
     __metadata("design:type", Array)
 ], Character.prototype, "fraction", void 0);
 __decorate([
-    typeorm.Column(),
+    typeorm.Column('simple-json'),
     __metadata("design:type", Phone)
 ], Character.prototype, "phone", void 0);
 Character = __decorate([
@@ -2001,7 +2000,7 @@ __decorate([
     __metadata("design:type", String)
 ], User.prototype, "regDate", void 0);
 __decorate([
-    typeorm.Column({ default: '[0]' }),
+    typeorm.Column({ default: '[0]', type: 'simple-array' }),
     __metadata("design:type", Array)
 ], User.prototype, "buy_slots_chars", void 0);
 __decorate([
@@ -2041,7 +2040,7 @@ __decorate([
     __metadata("design:type", Number)
 ], User.prototype, "onlineChar", void 0);
 __decorate([
-    typeorm.Column({ default: () => '{}' }),
+    typeorm.Column({ default: () => '{}', type: 'simple-json' }),
     __metadata("design:type", Object)
 ], User.prototype, "keysSettings", void 0);
 __decorate([
@@ -2127,7 +2126,7 @@ __decorate([
     __metadata("design:type", Number)
 ], Vehicle.prototype, "id", void 0);
 __decorate([
-    typeorm.Column(),
+    typeorm.Column('simple-json'),
     __metadata("design:type", Object)
 ], Vehicle.prototype, "model", void 0);
 __decorate([
@@ -2151,11 +2150,11 @@ __decorate([
     __metadata("design:type", Number)
 ], Vehicle.prototype, "locked", void 0);
 __decorate([
-    typeorm.Column(),
+    typeorm.Column('simple-json'),
     __metadata("design:type", Object)
 ], Vehicle.prototype, "number", void 0);
 __decorate([
-    typeorm.Column(),
+    typeorm.Column('simple-json'),
     __metadata("design:type", Object)
 ], Vehicle.prototype, "color", void 0);
 __decorate([
@@ -2171,7 +2170,7 @@ Vehicle = __decorate([
 ], Vehicle);
 
 new typeorm.DataSource({
-    type: CONFIG_DATABASE_TYPE,
+    type: 'mariadb',
     host: CONFIG_DATABASE_HOST,
     port: CONFIG_DATABASE_PORT,
     username: CONFIG_DATABASE_USER,
@@ -2183,3 +2182,7 @@ new typeorm.DataSource({
     migrations: [],
     subscribers: []
 });
+(async () => {
+    // const s = await AppDataSource.initialize();
+    // console.log(s);
+})();

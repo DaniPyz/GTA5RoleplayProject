@@ -43,7 +43,7 @@ export class Business {
 	@Column()
 	accountBalance!: number;
 
-	@Column('jsonb', { nullable: true })
+	@Column('simple-json', { nullable: true })
 	warehouse!: object[];
 
 	@Column('simple-json')

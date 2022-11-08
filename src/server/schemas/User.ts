@@ -23,7 +23,7 @@ export class User {
 	@Column({ type: 'timestamp', default: 'CURRENT_TIMESTAMP' })
 	regDate!: string;
 
-	@Column({ default: '[0]' })
+	@Column({ default: '[0]', type: 'simple-array' })
 	buy_slots_chars!: [];
 
 	@Column({ type: 'timestamp', default: 'CURRENT_TIMESTAMP' })
@@ -65,10 +65,9 @@ export class User {
 	@Column({ default: () => -1 })
 	onlineChar!: number;
 
-	@Column({ default: () => '{}' })
+	@Column({ default: () => '{}', type: 'simple-json' })
 	keysSettings!: object;
 
 	@Column({ default: () => 0 })
 	donate!: number;
-
 }

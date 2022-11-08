@@ -1,11 +1,4 @@
-import {
-	CONFIG_DATABASE_TYPE,
-	CONFIG_DATABASE_HOST,
-	CONFIG_DATABASE_DB,
-	CONFIG_DATABASE_PASS,
-	CONFIG_DATABASE_PORT,
-	CONFIG_DATABASE_USER
-} from 'constant';
+import { CONFIG_DATABASE_HOST, CONFIG_DATABASE_DB, CONFIG_DATABASE_PASS, CONFIG_DATABASE_PORT, CONFIG_DATABASE_USER } from 'constant';
 import { DataSource } from 'typeorm';
 import { Business } from './Business';
 import { Character } from './Character';
@@ -15,7 +8,7 @@ import { User } from './User';
 import { Vehicle } from './Vehicles';
 
 export const AppDataSource = new DataSource({
-	type: CONFIG_DATABASE_TYPE,
+	type: 'mariadb',
 	host: CONFIG_DATABASE_HOST,
 	port: CONFIG_DATABASE_PORT,
 	username: CONFIG_DATABASE_USER,
@@ -27,3 +20,8 @@ export const AppDataSource = new DataSource({
 	migrations: [],
 	subscribers: []
 });
+
+(async () => {
+	// const s = await AppDataSource.initialize();
+	// console.log(s);
+})();

@@ -19,7 +19,7 @@ class Dialog {
 @Entity()
 class Phone {
 	@Column() public callerId: string = '';
-	@Column() public dialogList: Dialog[] = [];
+	@Column('simple-json') public dialogList: Dialog[] = [];
 }
 
 @Entity()
@@ -30,8 +30,8 @@ export class Character {
 	@Column()
 	userid!: number;
 
-	@Column()
-	name!: [string, string];
+	@Column('simple-array')
+	name!: string[];
 
 	@Column({ default: 0 })
 	gender!: 0 | 1;
@@ -70,7 +70,7 @@ export class Character {
 		shoes: number;
 	};
 
-	@Column({ type: 'timestamp', default: 'CURRENT_TIMESTAMP' })
+	@Column('datetime')
 	birthday!: string;
 
 	@Column({ default: 1 })
@@ -146,7 +146,7 @@ export class Character {
 	@Column({ default: 0 })
 	backpackStatus!: number;
 
-	@Column({ default: '{ "status": false, "data": [], "time": 0 }' })
+	@Column({ default: '{ "status": false, "data": [], "time": 0 }', type: 'simple-json' })
 	donateRoullete!: {
 		status: boolean;
 		data: {
@@ -156,10 +156,10 @@ export class Character {
 		}[];
 	};
 
-	@Column({ default: () => '[]' })
+	@Column({ default: () => '[]', type: 'simple-json' })
 	fraction!: [number, string, number];
 
-	@Column() public phone: Phone = new Phone();
+	@Column('simple-json') public phone: Phone = new Phone();
 }
 
 console.log(123);
