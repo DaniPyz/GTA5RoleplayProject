@@ -1,7 +1,7 @@
 {
-    "host": "51.91.79.226",
-    "user": "server",
-    "port": 3306,
-    "password": "MLhpAjQJgF8o",
-    "database": "newyork"
+	"host": "51.91.79.226",
+	"user": "server",
+	"port": 3306,
+	"password": "MLhpAjQJgF8o",
+	"database": "newyork"
 }
